@@ -1,0 +1,11 @@
+{
+  "name": "l",
+  "version": "0.0.0",
+  "description": "A language that is not implemented",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panlina/l.git"
+  },
+  "author": "Jack Lu <jacklu@jacklu.me>",
+  "license": "ISC"
+}
