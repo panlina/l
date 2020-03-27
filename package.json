@@ -7,5 +7,8 @@
     "url": "git+https://github.com/panlina/l.git"
   },
   "author": "Jack Lu <jacklu@jacklu.me>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ohm-js": "^0.14.0"
+  }
 }
