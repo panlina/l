@@ -18,6 +18,15 @@ class Name extends Expression {
 	}
 }
 
+class Call extends Expression {
+	constructor(expression, argument) {
+		super('call');
+		this.expression = expression;
+		this.argument = argument;
+	}
+}
+
 module.exports = Expression;
 module.exports.Literal = Literal;
 module.exports.Name = Name;
+module.exports.Call = Call;

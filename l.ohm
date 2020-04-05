@@ -1,5 +1,12 @@
 l {
-	Expression = ExpressionName | number
+	Expression = ExpressionCall
+	ExpressionCall =
+		ExpressionAtom ExpressionCall	-- call
+		| ExpressionAtom
+	ExpressionAtom =
+		"(" Expression ")"	-- parentheses
+		| ExpressionName
+		| number
 	ExpressionName = identifier
 	identifier = &(letter|"_") (alnum|"_")+
 	number = digit+
