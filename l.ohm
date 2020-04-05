@@ -1,4 +1,6 @@
 l {
-	Expression = number
+	Expression = ExpressionName | number
+	ExpressionName = identifier
+	identifier = &(letter|"_") (alnum|"_")+
 	number = digit+
 }
