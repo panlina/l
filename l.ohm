@@ -10,4 +10,6 @@ l {
 	ExpressionName = identifier
 	identifier = &(letter|"_") (alnum|"_")+
 	number = digit+
+	Statement = StatementAssign
+	StatementAssign = ExpressionName "=" Expression ";"
 }
