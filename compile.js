@@ -12,6 +12,8 @@ function compile(program, interpretation) {
 				return interpretation.expression.call(expression, compile);
 		}
 	}
+	if (program instanceof Array)
+		return interpretation.statement['[]'](program, compile);
 	if (program instanceof Statement) {
 		var statement = program;
 		switch (statement.type) {

@@ -18,6 +18,8 @@ function generate(program) {
 				return `${$expression} ${argument}`;
 		}
 	}
+	if (program instanceof Array)
+		return program.map(generate).join('');
 	if (program instanceof Statement) {
 		var statement = program;
 		switch (statement.type) {

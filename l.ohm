@@ -1,4 +1,7 @@
 l {
+	Program =
+		Expression end	-- expression
+		| Statement* end	-- statement
 	Expression = ExpressionCall
 	ExpressionCall =
 		ExpressionAtom ExpressionCall	-- call

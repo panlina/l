@@ -7,6 +7,8 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionName: identifier => new Expression.Name(identifier.parse()),
 	ExpressionAtom_parentheses: (open, expression, close) => expression.parse(),
 	ExpressionCall_call: (expression, argument) => new Expression.Call(expression.parse(), argument.parse()),
-	StatementAssign: (left, equal, right, semicolon) => new Statement.Assign(left.parse(), right.parse())
+	StatementAssign: (left, equal, right, semicolon) => new Statement.Assign(left.parse(), right.parse()),
+	Program_expression: (expression, end) => expression.parse(),
+	Program_statement: (statement, end) => statement.children.map(s => s.parse())
 });
 module.exports = semantics;
