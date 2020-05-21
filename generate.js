@@ -10,10 +10,10 @@ function generate(program) {
 				return expression.identifier;
 			case 'call':
 				var $expression = generate(expression.expression);
-				if (precedence[expression.expression.type] > precedence[expression.type])
+				if (precedence[expression.expression.type] >= precedence[expression.type])
 					$expression = `(${$expression})`;
 				var argument = generate(expression.argument);
-				if (precedence[expression.argument.type] >= precedence[expression.type])
+				if (precedence[expression.argument.type] > precedence[expression.type])
 					argument = `(${argument})`;
 				return `${$expression} ${argument}`;
 		}
