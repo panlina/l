@@ -2,6 +2,7 @@ var assert = require('assert');
 var parse = require('../parse');
 var compile = require('../compile');
 var generate = require('../generate');
+var l = require('../l');
 
 describe('parse, generate', function () {
 	it('expression', function () {
@@ -19,6 +20,13 @@ describe('parse, generate', function () {
 it("placeholder", function () {
 	var l = parse("f %x%");
 	assert.equal(generate(l), "f %x%");
+});
+
+it("quasiquote", function () {
+	var x = l`x`;
+	var fx = l`f ${x}`;
+	var fx = l`${fx}`;
+	assert.equal(generate(fx), "f x");
 });
 
 describe('compile', function () {
