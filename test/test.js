@@ -16,6 +16,11 @@ describe('parse, generate', function () {
 	});
 });
 
+it("placeholder", function () {
+	var l = parse("f %x%");
+	assert.equal(generate(l), "f %x%");
+});
+
 describe('compile', function () {
 	it('', function () {
 		var i = require('./f');

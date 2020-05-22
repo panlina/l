@@ -16,6 +16,8 @@ function generate(program) {
 				if (precedence[expression.argument.type] > precedence[expression.type])
 					argument = `(${argument})`;
 				return `${$expression} ${argument}`;
+			case 'placeholder':
+				return `%${expression.name}%`;
 		}
 	}
 	if (program instanceof Array)

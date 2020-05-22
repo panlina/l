@@ -6,6 +6,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	identifier: (_, x) => x.sourceString,
 	ExpressionName: identifier => new Expression.Name(identifier.parse()),
 	ExpressionAtom_parentheses: (open, expression, close) => expression.parse(),
+	ExpressionAtom_placeholder: (open, name, close) => new Expression.Placeholder(name.parse()),
 	ExpressionCall_call: (expression, argument) => new Expression.Call(expression.parse(), argument.parse()),
 	StatementAssign: (left, equal, right, semicolon) => new Statement.Assign(left.parse(), right.parse()),
 	Program_expression: (expression, end) => expression.parse(),

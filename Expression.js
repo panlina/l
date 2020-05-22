@@ -26,7 +26,15 @@ class Call extends Expression {
 	}
 }
 
+class Placeholder extends Expression {
+	constructor(name) {
+		super('placeholder');
+		this.name = name;
+	}
+}
+
 module.exports = Expression;
 module.exports.Literal = Literal;
 module.exports.Name = Name;
 module.exports.Call = Call;
+module.exports.Placeholder = Placeholder;

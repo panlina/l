@@ -8,6 +8,7 @@ l {
 		| ExpressionAtom
 	ExpressionAtom =
 		"(" Expression ")"	-- parentheses
+		| "%" identifier "%"	-- placeholder
 		| ExpressionName
 		| number
 	ExpressionName = identifier
