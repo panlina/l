@@ -9,6 +9,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionAtom_placeholder: (open, name, close) => new Expression.Placeholder(name.parse()),
 	ExpressionCall_call: (expression, argument) => new Expression.Call(expression.parse(), argument.parse()),
 	StatementAssign: (left, equal, right, semicolon) => new Statement.Assign(left.parse(), right.parse()),
+	Statement_placeholder: (open, name, close) => new Statement.Placeholder(name.parse()),
 	Program_expression: (expression, end) => expression.parse(),
 	Program_statement: (statement, end) => statement.children.map(s => s.parse())
 });

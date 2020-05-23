@@ -27,6 +27,8 @@ function generate(program) {
 		switch (statement.type) {
 			case 'assign':
 				return `${generate(statement.left)}=${generate(statement.right)};`;
+			case 'placeholder':
+				return `%${statement.name}%`;
 		}
 	}
 }

@@ -15,5 +15,6 @@ l {
 	identifier = &(letter|"_") (alnum|"_")+
 	number = digit+
 	Statement = StatementAssign
+		| "%" identifier "%"	-- placeholder
 	StatementAssign = ExpressionName "=" Expression ";"
 }

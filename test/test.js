@@ -20,13 +20,18 @@ describe('parse, generate', function () {
 it("placeholder", function () {
 	var l = parse("f %x%");
 	assert.equal(generate(l), "f %x%");
+	var l = parse("x=0;%y%");
+	assert.equal(generate(l), "x=0;%y%");
 });
 
 it("quasiquote", function () {
 	var x = l`x`;
 	var fx = l`f ${x}`;
 	var fx = l`${fx}`;
-	assert.equal(generate(fx), "f x");
+	var y_fx = l`y=${fx};`;
+	var p = l`${y_fx}z=y;`;
+	var p = l`${p}`;
+	assert.equal(generate(p), "y=f x;z=y;");
 });
 
 describe('compile', function () {
