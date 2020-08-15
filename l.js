@@ -2,7 +2,7 @@ var parse = require('./parse');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
 var traverse = require('traverse');
-function sql(strings, ...expressions) {
+function l(strings, ...expressions) {
 	var s = "";
 	for (var i = 0; i < expressions.length; i++)
 		s += strings[i] + `%_${i}%`;
@@ -18,4 +18,4 @@ function sql(strings, ...expressions) {
 	var { $: s } = s;
 	return s;
 }
-module.exports = sql;
+module.exports = l;
