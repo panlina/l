@@ -8,6 +8,24 @@ function compile(program, interpretation) {
 				return interpretation.expression.literal(expression, compile);
 			case 'name':
 				return interpretation.expression.name(expression, compile);
+			case 'object':
+				var $property = expression.property.map(
+					property => ({
+						name: property.name,
+						value: compile(property.value, interpretation)
+					})
+				);
+				return interpretation.expression.object($property);
+			case 'array':
+				var $element = expression.element.map(
+					element => compile(element, interpretation)
+				);
+				return interpretation.expression.array($element);
+			case 'tuple':
+				var $element = expression.element.map(
+					element => compile(element, interpretation)
+				);
+				return interpretation.expression.tuple($element);
 			case 'call':
 				return interpretation.expression.call(expression, compile);
 		}

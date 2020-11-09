@@ -18,6 +18,27 @@ class Name extends Expression {
 	}
 }
 
+class Object extends Expression {
+	constructor(property) {
+		super('object');
+		this.property = property;
+	}
+}
+
+class Array extends Expression {
+	constructor(element) {
+		super('array');
+		this.element = element;
+	}
+}
+
+class Tuple extends Expression {
+	constructor(element) {
+		super('tuple');
+		this.element = element;
+	}
+}
+
 class Call extends Expression {
 	constructor(expression, argument) {
 		super('call');
@@ -36,5 +57,8 @@ class Placeholder extends Expression {
 module.exports = Expression;
 module.exports.Literal = Literal;
 module.exports.Name = Name;
+module.exports.Object = Object;
+module.exports.Array = Array;
+module.exports.Tuple = Tuple;
 module.exports.Call = Call;
 module.exports.Placeholder = Placeholder;

@@ -2,6 +2,22 @@ var i = {
 	expression: {
 		literal: expression => () => expression.value,
 		name: expression => environment => environment[expression.identifier],
+		object: $property =>
+			environment => $property.reduce(
+				(o, p) => Object.assign(
+					o,
+					{ [p.name]: p.value(environment) }
+				),
+				{}
+			),
+		array: $element =>
+			environment => $element.map(
+				e => e(environment)
+			),
+		tuple: $element =>
+			environment => $element.map(
+				e => e(environment)
+			),
 		call: (expression, compile) => (
 			($expression, $argument) => environment => $expression(environment)($argument(environment))
 		)(

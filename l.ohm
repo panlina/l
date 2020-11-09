@@ -6,9 +6,16 @@ l {
 	ExpressionCall =
 		ExpressionAtom ExpressionCall	-- call
 		| ExpressionAtom
+	ExpressionObject = "{" ListOf<ExpressionObjectProperty, ","> "}"
+	ExpressionObjectProperty = identifier ":" Expression
+	ExpressionArray = "[" ListOf<Expression, ","> "]"
+	ExpressionTuple = "{" ListOf<Expression, ","> "}"
 	ExpressionAtom =
 		"(" Expression ")"	-- parentheses
 		| "%" identifier "%"	-- placeholder
+		| ExpressionObject
+		| ExpressionArray
+		| ExpressionTuple
 		| ExpressionName
 		| number
 		| string
