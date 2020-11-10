@@ -18,12 +18,8 @@ var i = {
 			environment => $element.map(
 				e => e(environment)
 			),
-		call: (expression, compile) => (
-			($expression, $argument) => environment => $expression(environment)($argument(environment))
-		)(
-			compile(expression.expression, i),
-			compile(expression.argument, i)
-		)
+		call: ($expression, $argument) =>
+			environment => $expression(environment)($argument(environment))
 	},
 	statement: {
 		'[]': (statement, compile) => (

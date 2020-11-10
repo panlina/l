@@ -27,7 +27,9 @@ function compile(program, interpretation) {
 				);
 				return interpretation.expression.tuple($element);
 			case 'call':
-				return interpretation.expression.call(expression, compile);
+				var $expression = compile(expression.expression, interpretation),
+					$argument = compile(expression.argument, interpretation);
+				return interpretation.expression.call($expression, $argument);
 		}
 	}
 	if (program instanceof Array)
