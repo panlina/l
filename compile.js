@@ -32,13 +32,17 @@ function compile(program, interpretation) {
 				return interpretation.expression.call($expression, $argument);
 		}
 	}
-	if (program instanceof Array)
-		return interpretation.statement['[]'](program, compile);
+	if (program instanceof Array) {
+		var $statement = program.map(statement => compile(statement, interpretation));
+		return interpretation.statement['[]']($statement);
+	}
 	if (program instanceof Statement) {
 		var statement = program;
 		switch (statement.type) {
 			case 'assign':
-				return interpretation.statement.assign(statement, compile);
+				var $left = statement.left.identifier,
+					$right = compile(statement.right, interpretation);
+				return interpretation.statement.assign($left, $right);
 		}
 	}
 }

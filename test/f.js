@@ -22,17 +22,10 @@ var i = {
 			environment => $expression(environment)($argument(environment))
 	},
 	statement: {
-		'[]': (statement, compile) => (
-			$statement => environment => { $statement.forEach(statement => statement(environment)); }
-		)(
-			statement.map(statement => compile(statement, i))
-		),
-		assign: (statement, compile) => (
-			($left, $right) => environment => { environment[$left] = $right(environment); }
-		)(
-			statement.left.identifier,
-			compile(statement.right, i)
-		)
+		'[]': $statement =>
+			environment => { $statement.forEach(statement => statement(environment)); },
+		assign: ($left, $right) =>
+			environment => { environment[$left] = $right(environment); }
 	}
 };
 module.exports = i;
