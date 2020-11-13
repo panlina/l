@@ -39,6 +39,22 @@ class Tuple extends Expression {
 	}
 }
 
+class Property extends Expression {
+	constructor(expression, property) {
+		super('property');
+		this.expression = expression;
+		this.property = property;
+	}
+}
+
+class Element extends Expression {
+	constructor(expression, index) {
+		super('element');
+		this.expression = expression;
+		this.index = index;
+	}
+}
+
 class Call extends Expression {
 	constructor(expression, argument) {
 		super('call');
@@ -60,5 +76,7 @@ module.exports.Name = Name;
 module.exports.Object = Object;
 module.exports.Array = Array;
 module.exports.Tuple = Tuple;
+module.exports.Property = Property;
+module.exports.Element = Element;
 module.exports.Call = Call;
 module.exports.Placeholder = Placeholder;

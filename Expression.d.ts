@@ -30,6 +30,18 @@ export class Tuple extends Expression {
 	element: Expression[];
 }
 
+export class Property extends Expression {
+	constructor(expression: Expression, property: string);
+	expression: Expression;
+	property: string;
+}
+
+export class Element extends Expression {
+	constructor(expression: Expression, index: Expression);
+	expression: Expression;
+	index: Expression;
+}
+
 export class Call extends Expression {
 	constructor(expression: Expression, argument: Expression);
 	expression: Expression;

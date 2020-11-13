@@ -4,7 +4,11 @@ l {
 		| Statement* end	-- statement
 	Expression = ExpressionCall
 	ExpressionCall =
-		ExpressionAtom ExpressionCall	-- call
+		ExpressionMember ExpressionCall	-- call
+		| ExpressionMember
+	ExpressionMember =
+		ExpressionMember "." identifier	-- property
+		| ExpressionMember "@" ExpressionAtom	-- element
 		| ExpressionAtom
 	ExpressionObject = "{" ListOf<ExpressionObjectProperty, ","> "}"
 	ExpressionObjectProperty = identifier ":" Expression

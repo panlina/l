@@ -18,6 +18,10 @@ var i = {
 			environment => $element.map(
 				e => e(environment)
 			),
+		property: ($expression, $property) =>
+			environment => $expression(environment)[$property],
+		element: ($expression, $index) =>
+			environment => $expression(environment)[$index(environment)],
 		call: ($expression, $argument) =>
 			environment => $expression(environment)($argument(environment))
 	},

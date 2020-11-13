@@ -26,6 +26,14 @@ function compile(program, interpretation) {
 					element => compile(element, interpretation)
 				);
 				return interpretation.expression.tuple($element);
+			case 'property':
+				var $expression = compile(expression.expression, interpretation),
+					$property = expression.property;
+				return interpretation.expression.property($expression, $property);
+			case 'element':
+				var $expression = compile(expression.expression, interpretation),
+					$index = compile(expression.index, interpretation);
+				return interpretation.expression.element($expression, $index);
 			case 'call':
 				var $expression = compile(expression.expression, interpretation),
 					$argument = compile(expression.argument, interpretation);

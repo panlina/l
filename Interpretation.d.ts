@@ -6,6 +6,8 @@ interface Interpretation<T> {
 		object: ($property: { name: string, value: T }[]) => T;
 		array: ($element: T[]) => T;
 		tuple: ($element: T[]) => T;
+		property: ($expression: T, $property: string) => T;
+		element: ($expression: T, $index: T) => T;
 		call: ($expression: T, $argument: T) => T;
 	};
 	statement: {
