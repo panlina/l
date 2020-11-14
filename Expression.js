@@ -63,6 +63,15 @@ class Call extends Expression {
 	}
 }
 
+class Conditional extends Expression {
+	constructor(condition, _true, _false) {
+		super('conditional');
+		this.condition = condition;
+		this.true = _true;
+		this.false = _false;
+	}
+}
+
 class Placeholder extends Expression {
 	constructor(name) {
 		super('placeholder');
@@ -79,4 +88,5 @@ module.exports.Tuple = Tuple;
 module.exports.Property = Property;
 module.exports.Element = Element;
 module.exports.Call = Call;
+module.exports.Conditional = Conditional;
 module.exports.Placeholder = Placeholder;

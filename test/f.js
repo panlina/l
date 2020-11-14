@@ -23,7 +23,11 @@ var i = {
 		element: ($expression, $index) =>
 			environment => $expression(environment)[$index(environment)],
 		call: ($expression, $argument) =>
-			environment => $expression(environment)($argument(environment))
+			environment => $expression(environment)($argument(environment)),
+		conditional: ($condition, $true, $false) =>
+			environment => $condition(environment) ?
+				$true(environment) :
+				$false(environment)
 	},
 	statement: {
 		'[]': $statement =>

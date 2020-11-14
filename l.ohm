@@ -2,7 +2,9 @@ l {
 	Program =
 		Expression end	-- expression
 		| Statement* end	-- statement
-	Expression = ExpressionCall
+	Expression = ExpressionConditional
+	ExpressionConditional = ExpressionConditional "?" ExpressionConditional ":" ExpressionConditional	-- conditional
+		| ExpressionCall
 	ExpressionCall =
 		ExpressionMember ExpressionCall	-- call
 		| ExpressionMember

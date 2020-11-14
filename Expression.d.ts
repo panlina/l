@@ -48,6 +48,13 @@ export class Call extends Expression {
 	argument: Expression;
 }
 
+export class Conditional extends Expression {
+	constructor(condition: Expression, _true: Expression, _false: Expression);
+	condition: Expression;
+	true: Expression;
+	false: Expression;
+}
+
 export class Placeholder extends Expression {
 	constructor(name: string);
 	name: string;

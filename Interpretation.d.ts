@@ -9,6 +9,7 @@ interface Interpretation<T> {
 		property: ($expression: T, $property: string) => T;
 		element: ($expression: T, $index: T) => T;
 		call: ($expression: T, $argument: T) => T;
+		conditional: ($condition: T, $true: T, $false: T) => T;
 	};
 	statement: {
 		'[]': ($statement: T[]) => T;

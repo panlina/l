@@ -17,6 +17,11 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionMember_property: (expression, dot, property) => new Expression.Property(expression.parse(), property.parse()),
 	ExpressionMember_element: (expression, at, index) => new Expression.Element(expression.parse(), index.parse()),
 	ExpressionCall_call: (expression, argument) => new Expression.Call(expression.parse(), argument.parse()),
+	ExpressionConditional_conditional: (condition, question, _true, colon, _false) => new Expression.Conditional(
+		condition.parse(),
+		_true.parse(),
+		_false.parse()
+	),
 	StatementAssign: (left, equal, right, semicolon) => new Statement.Assign(left.parse(), right.parse()),
 	Statement_placeholder: (open, name, close) => new Statement.Placeholder(name.parse()),
 	Program_expression: (expression, end) => expression.parse(),

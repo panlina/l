@@ -38,6 +38,11 @@ function compile(program, interpretation) {
 				var $expression = compile(expression.expression, interpretation),
 					$argument = compile(expression.argument, interpretation);
 				return interpretation.expression.call($expression, $argument);
+			case 'conditional':
+				var $condition = compile(expression.condition, interpretation),
+					$true = compile(expression.true, interpretation),
+					$false = compile(expression.false, interpretation);
+				return interpretation.expression.conditional($condition, $true, $false);
 		}
 	}
 	if (program instanceof Array) {
