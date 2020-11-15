@@ -63,6 +63,15 @@ class Call extends Expression {
 	}
 }
 
+class Operation extends Expression {
+	constructor(operator, left, right) {
+		super('operation');
+		this.operator = operator;
+		this.left = left;
+		this.right = right;
+	}
+}
+
 class Conditional extends Expression {
 	constructor(condition, _true, _false) {
 		super('conditional');
@@ -88,5 +97,6 @@ module.exports.Tuple = Tuple;
 module.exports.Property = Property;
 module.exports.Element = Element;
 module.exports.Call = Call;
+module.exports.Operation = Operation;
 module.exports.Conditional = Conditional;
 module.exports.Placeholder = Placeholder;

@@ -17,6 +17,9 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionMember_property: (expression, dot, property) => new Expression.Property(expression.parse(), property.parse()),
 	ExpressionMember_element: (expression, at, index) => new Expression.Element(expression.parse(), index.parse()),
 	ExpressionCall_call: (expression, argument) => new Expression.Call(expression.parse(), argument.parse()),
+	ExpressionAdd_add: binary,
+	ExpressionMultiply_multiply: binary,
+	ExpressionAddUnary_add: unary,
 	ExpressionConditional_conditional: (condition, question, _true, colon, _false) => new Expression.Conditional(
 		condition.parse(),
 		_true.parse(),
@@ -27,6 +30,29 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	Program_expression: (expression, end) => expression.parse(),
 	Program_statement: (statement, end) => statement.children.map(s => s.parse())
 });
+function binary(left, operator, right) {
+	return new Expression.Operation(
+		operator.sourceString,
+		left.parse(),
+		right.parse()
+	);
+}
+function unary(operator, operand) {
+	if (operator.isTerminal())
+		return new Expression.Operation(
+			operator.sourceString,
+			undefined,
+			operand.parse()
+		);
+	else {
+		[operator, operand] = [operand, operator];
+		return new Expression.Operation(
+			operator.sourceString,
+			operand.parse(),
+			undefined
+		);
+	}
+}
 var escape = {
 	'"': '"',
 	'\\': '\\',

@@ -24,6 +24,12 @@ var i = {
 			environment => $expression(environment)[$index(environment)],
 		call: ($expression, $argument) =>
 			environment => $expression(environment)($argument(environment)),
+		operation: ($operator, $left, $right) =>
+			environment => operate(
+				$operator,
+				$left && $left(environment),
+				$right && $right(environment)
+			),
 		conditional: ($condition, $true, $false) =>
 			environment => $condition(environment) ?
 				$true(environment) :
@@ -36,4 +42,16 @@ var i = {
 			environment => { environment[$left] = $right(environment); }
 	}
 };
+function operate(operator, left, right) {
+	switch (operator) {
+		case '*':
+			return left * right;
+		case '/':
+			return left / right;
+		case '+':
+			return left != undefined ? left + right : right;
+		case '-':
+			return left != undefined ? left - right : -right;
+	}
+}
 module.exports = i;

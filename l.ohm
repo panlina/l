@@ -4,6 +4,15 @@ l {
 		| Statement* end	-- statement
 	Expression = ExpressionConditional
 	ExpressionConditional = ExpressionConditional "?" ExpressionConditional ":" ExpressionConditional	-- conditional
+		| ExpressionAdd
+	ExpressionAdd =
+		ExpressionAdd ("+"|"-") ExpressionMultiply	-- add
+		| ExpressionMultiply
+	ExpressionMultiply =
+		ExpressionMultiply ("*"|"/") ExpressionAddUnary	-- multiply
+		| ExpressionAddUnary
+	ExpressionAddUnary =
+		("+"|"-") ExpressionAddUnary	-- add
 		| ExpressionCall
 	ExpressionCall =
 		ExpressionMember ExpressionCall	-- call

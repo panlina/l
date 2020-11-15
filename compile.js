@@ -38,6 +38,11 @@ function compile(program, interpretation) {
 				var $expression = compile(expression.expression, interpretation),
 					$argument = compile(expression.argument, interpretation);
 				return interpretation.expression.call($expression, $argument);
+			case 'operation':
+				var $left = expression.left && compile(expression.left, interpretation),
+					$right = expression.right && compile(expression.right, interpretation),
+					$operator = expression.operator;
+				return interpretation.expression.operation($operator, $left, $right);
 			case 'conditional':
 				var $condition = compile(expression.condition, interpretation),
 					$true = compile(expression.true, interpretation),
