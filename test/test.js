@@ -42,12 +42,12 @@ it("quasiquote", function () {
 describe('compile', function () {
 	it('', function () {
 		var i = require('./f');
-		var l = "a = succ 12; b = succ a;";
+		var l = "a = length \"abc\"; b = a + 1;";
 		var l = parse(l);
 		var f = compile(l, i);
-		var environment = { succ: n => n + 1 };
+		var environment = { succ: n => n + 1, length: s => s.length };
 		f(environment);
-		assert.equal(environment.a, 13);
-		assert.equal(environment.b, 14);
+		assert.equal(environment.a, 3);
+		assert.equal(environment.b, 4);
 	})
 });
