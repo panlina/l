@@ -49,5 +49,5 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.a, 3);
 		assert.equal(environment.b, 4);
-	})
+	});
 });
