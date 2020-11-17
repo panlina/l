@@ -50,4 +50,13 @@ describe('compile', function () {
 		assert.equal(environment.a, 3);
 		assert.equal(environment.b, 4);
 	});
+	it('distance', function () {
+		var i = require('./f');
+		var l = "p = [{x:1,y:0},{x:2,y:2}]; d = sqrt ((p@0.x - p@1.x) * (p@0.x - p@1.x) + (p@0.y - p@1.y) * (p@0.y - p@1.y));";
+		var l = parse(l);
+		var f = compile(l, i);
+		var environment = { sqrt: Math.sqrt };
+		f(environment);
+		assert.equal(environment.d, Math.sqrt(5));
+	});
 });
