@@ -20,6 +20,10 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionAdd_add: binary,
 	ExpressionMultiply_multiply: binary,
 	ExpressionAddUnary_add: unary,
+	ExpressionRelation_relation: binary,
+	ExpressionNot_not: unary,
+	ExpressionAnd_and: binary,
+	ExpressionOr_or: binary,
 	ExpressionConditional_conditional: (condition, question, _true, colon, _false) => new Expression.Conditional(
 		condition.parse(),
 		_true.parse(),

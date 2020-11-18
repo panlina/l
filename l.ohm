@@ -4,6 +4,18 @@ l {
 		| Statement* end	-- statement
 	Expression = ExpressionConditional
 	ExpressionConditional = ExpressionConditional "?" ExpressionConditional ":" ExpressionConditional	-- conditional
+		| ExpressionOr
+	ExpressionOr =
+		ExpressionOr "|" ExpressionAnd	-- or
+		| ExpressionAnd
+	ExpressionAnd =
+		ExpressionAnd "&" ExpressionNot	-- and
+		| ExpressionNot
+	ExpressionNot =
+		"!" ExpressionNot	-- not
+		| ExpressionRelation
+	ExpressionRelation =
+		ExpressionRelation ("<="|"="|">="|"<"|"!="|">") ExpressionAdd	-- relation
 		| ExpressionAdd
 	ExpressionAdd =
 		ExpressionAdd ("+"|"-") ExpressionMultiply	-- add

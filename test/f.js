@@ -52,6 +52,24 @@ function operate(operator, left, right) {
 			return left != undefined ? left + right : right;
 		case '-':
 			return left != undefined ? left - right : -right;
+		case '<=':
+			return left <= right;
+		case '=':
+			return left == right;
+		case '>=':
+			return left >= right;
+		case '<':
+			return left < right;
+		case '!=':
+			return left != right;
+		case '>':
+			return left > right;
+		case '!':
+			return !right;
+		case '&':
+			return left && right;
+		case '|':
+			return left || right;
 	}
 }
 module.exports = i;
