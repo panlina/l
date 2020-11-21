@@ -47,12 +47,12 @@ l {
 		| number
 		| string
 	ExpressionName = identifier
-	identifier = &(letter|"_") (alnum|"_")+
+	identifier = ~("let" ~(alnum|"_")) &(letter|"_") (alnum|"_")+
 	number = digit+
 	string = "\"" char* "\""
 	char = ~("\""|"\\") any	-- literal
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
 	Statement = StatementAssign
 		| "%" identifier "%"	-- placeholder
-	StatementAssign = ExpressionName "=" Expression ";"
+	StatementAssign = "let" ExpressionName "=" Expression ";"
 }

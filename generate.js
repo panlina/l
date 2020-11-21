@@ -88,7 +88,7 @@ function generate(program) {
 		var statement = program;
 		switch (statement.type) {
 			case 'assign':
-				return `${generate(statement.left)}=${generate(statement.right)};`;
+				return `let ${generate(statement.left)}=${generate(statement.right)};`;
 			case 'placeholder':
 				return `%${statement.name}%`;
 		}
