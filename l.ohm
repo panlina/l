@@ -54,5 +54,5 @@ l {
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
 	Statement = StatementAssign
 		| "%" identifier "%"	-- placeholder
-	StatementAssign = "let" ExpressionName "=" Expression ";"
+	StatementAssign = "let" Expression ";"
 }

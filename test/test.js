@@ -59,4 +59,13 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.d, Math.sqrt(5));
 	});
+	it('assign', function () {
+		var i = require('./f');
+		var l = "let p = []; let p@0={x:0,y:0}; let p@0.x=1; let x = p@0.x;";
+		var l = parse(l);
+		var f = compile(l, i);
+		var environment = {};
+		f(environment);
+		assert.equal(environment.x, 1);
+	});
 });

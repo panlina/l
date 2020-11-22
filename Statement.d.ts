@@ -8,8 +8,8 @@ class Statement {
 export = Statement;
 
 export class Assign extends Statement {
-	constructor(left: string, right: Expression);
-	left: string;
+	constructor(left: Expression, right: Expression);
+	left: Expression;
 	right: Expression;
 }
 

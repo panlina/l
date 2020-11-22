@@ -58,8 +58,29 @@ function compile(program, interpretation) {
 		var statement = program;
 		switch (statement.type) {
 			case 'assign':
-				var $left = statement.left.identifier,
-					$right = compile(statement.right, interpretation);
+				switch (statement.left.type) {
+					case 'name':
+						var $left = {
+							type: 'name',
+							identifier: statement.left.identifier
+						};
+						break;
+					case 'element':
+						var $left = {
+							type: 'element',
+							expression: compile(statement.left.expression, interpretation),
+							index: compile(statement.left.index, interpretation)
+						};
+						break;
+					case 'property':
+						var $left = {
+							type: 'property',
+							expression: compile(statement.left.expression, interpretation),
+							property: statement.left.property
+						};
+						break;
+				}
+				var $right = compile(statement.right, interpretation);
 				return interpretation.statement.assign($left, $right);
 		}
 	}

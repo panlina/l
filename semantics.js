@@ -29,7 +29,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 		_true.parse(),
 		_false.parse()
 	),
-	StatementAssign: (let, left, equal, right, semicolon) => new Statement.Assign(left.parse(), right.parse()),
+	StatementAssign: (let, equation, semicolon) => new Statement.Assign(equation.parse().left, equation.parse().right),
 	Statement_placeholder: (open, name, close) => new Statement.Placeholder(name.parse()),
 	Program_expression: (expression, end) => expression.parse(),
 	Program_statement: (statement, end) => statement.children.map(s => s.parse())

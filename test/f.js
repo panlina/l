@@ -38,8 +38,22 @@ var i = {
 	statement: {
 		'[]': $statement =>
 			environment => { $statement.forEach(statement => statement(environment)); },
-		assign: ($left, $right) =>
-			environment => { environment[$left] = $right(environment); }
+		assign: ($left, $right) => {
+			switch ($left.type) {
+				case 'name':
+					return environment => {
+						environment[$left.identifier] = $right(environment);
+					};
+				case 'element':
+					return environment => {
+						$left.expression(environment)[$left.index(environment)] = $right(environment);
+					};
+				case 'property':
+					return environment => {
+						$left.expression(environment)[$left.property] = $right(environment);
+					};
+			}
+		}
 	}
 };
 function operate(operator, left, right) {

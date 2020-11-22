@@ -14,7 +14,15 @@ interface Interpretation<T> {
 	};
 	statement: {
 		'[]': ($statement: T[]) => T;
-		assign: ($left: string, $right: T) => T;
+		assign: (
+			$left:
+				{ type: "name", identifier: string }
+				|
+				{ type: "element", expression: T, index: T }
+				|
+				{ type: "property", expression: T, property: string },
+			$right: T
+		) => T;
 	};
 };
 export = Interpretation;
