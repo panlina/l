@@ -39,6 +39,7 @@ l {
 	ExpressionTuple = "{" ListOf<Expression, ","> "}"
 	ExpressionAtom =
 		"(" Expression ")"	-- parentheses
+		| "(" Statement* ")"	-- statement
 		| "%" identifier "%"	-- placeholder
 		| ExpressionObject
 		| ExpressionArray

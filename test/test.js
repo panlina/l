@@ -82,4 +82,14 @@ describe('compile', function () {
 		f(environment);
 		assert.deepEqual(environment, {});
 	});
+	it('statement expression', function () {
+		var i = require('./f');
+		var l = "a ? (let b = 0; let c = 1;) : (let b = 1; let c = 0;)";
+		var l = parse(l);
+		var f = compile(l, i);
+		var environment = {};
+		f(environment);
+		assert.equal(environment.b, 1);
+		assert.equal(environment.c, 0);
+	});
 });

@@ -13,6 +13,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionArray: (open, element, close) => new Expression.Array(element.asIteration().parse()),
 	ExpressionTuple: (open, element, close) => new Expression.Tuple(element.asIteration().parse()),
 	ExpressionAtom_parentheses: (open, expression, close) => expression.parse(),
+	ExpressionAtom_statement: (open, statement, close) => new Expression.Statement(statement.children.map(s => s.parse())),
 	ExpressionAtom_placeholder: (open, name, close) => new Expression.Placeholder(name.parse()),
 	ExpressionMember_property: (expression, dot, property) => new Expression.Property(expression.parse(), property.parse()),
 	ExpressionMember_element: (expression, at, index) => new Expression.Element(expression.parse(), index.parse()),

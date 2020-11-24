@@ -62,6 +62,11 @@ export class Conditional extends Expression {
 	false: Expression;
 }
 
+export class Statement extends Expression {
+	constructor(statement: Statement[]);
+	statement: Statement[];
+}
+
 export class Placeholder extends Expression {
 	constructor(name: string);
 	name: string;

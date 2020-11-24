@@ -81,6 +81,13 @@ class Conditional extends Expression {
 	}
 }
 
+class Statement extends Expression {
+	constructor(statement) {
+		super('statement');
+		this.statement = statement;
+	}
+}
+
 class Placeholder extends Expression {
 	constructor(name) {
 		super('placeholder');
@@ -99,4 +106,5 @@ module.exports.Element = Element;
 module.exports.Call = Call;
 module.exports.Operation = Operation;
 module.exports.Conditional = Conditional;
+module.exports.Statement = Statement;
 module.exports.Placeholder = Placeholder;

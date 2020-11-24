@@ -48,6 +48,10 @@ function compile(program, interpretation) {
 					$true = compile(expression.true, interpretation),
 					$false = compile(expression.false, interpretation);
 				return interpretation.expression.conditional($condition, $true, $false);
+			case 'statement':
+				var $statement = expression.statement.map(statement => compile(statement, interpretation));
+				$statement = interpretation.statement['[]']($statement);
+				return interpretation.expression.statement($statement);
 		}
 	}
 	if (program instanceof Array) {

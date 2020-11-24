@@ -78,6 +78,9 @@ function generate(program) {
 				if (precedence[expression.false.type] > precedence[expression.type])
 					$false = `(${$false})`;
 				return `${$condition}?${$true}:${$false}`;
+			case 'statement':
+				var $statement = generate(expression.statement);
+				return `(${$statement})`;
 			case 'placeholder':
 				return `%${expression.name}%`;
 		}

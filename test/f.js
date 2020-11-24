@@ -33,7 +33,8 @@ var i = {
 		conditional: ($condition, $true, $false) =>
 			environment => $condition(environment) ?
 				$true(environment) :
-				$false(environment)
+				$false(environment),
+		statement: $statement => environment => { $statement(environment); }
 	},
 	statement: {
 		'[]': $statement =>

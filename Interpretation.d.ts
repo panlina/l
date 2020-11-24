@@ -11,6 +11,7 @@ interface Interpretation<T> {
 		call: ($expression: T, $argument: T) => T;
 		operation: ($operator: string, $left?: T, $right?: T) => T;
 		conditional: ($condition: T, $true: T, $false: T) => T;
+		statement: ($statement: T) => T;
 	};
 	statement: {
 		'[]': ($statement: T[]) => T;
