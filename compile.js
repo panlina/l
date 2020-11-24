@@ -82,6 +82,9 @@ function compile(program, interpretation) {
 				}
 				var $right = compile(statement.right, interpretation);
 				return interpretation.statement.assign($left, $right);
+			case 'expression':
+				var $expression = compile(statement.expression, interpretation);
+				return interpretation.statement.expression($expression);
 		}
 	}
 }

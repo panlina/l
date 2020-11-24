@@ -68,4 +68,18 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.x, 1);
 	});
+	it('expression statement', function () {
+		var i = require('./f');
+		var l = "let a = 1; reset 0;";
+		var l = parse(l);
+		var f = compile(l, i);
+		var environment = {
+			reset: () => {
+				for (var name in environment)
+					delete environment[name];
+			}
+		};
+		f(environment);
+		assert.deepEqual(environment, {});
+	});
 });

@@ -53,7 +53,8 @@ var i = {
 						$left.expression(environment)[$left.property] = $right(environment);
 					};
 			}
-		}
+		},
+		expression: $expression => environment => { $expression(environment); }
 	}
 };
 function operate(operator, left, right) {

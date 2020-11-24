@@ -23,6 +23,7 @@ interface Interpretation<T> {
 				{ type: "property", expression: T, property: string },
 			$right: T
 		) => T;
+		expression: ($expression: T) => T;
 	};
 };
 export = Interpretation;

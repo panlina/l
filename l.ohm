@@ -52,7 +52,8 @@ l {
 	string = "\"" char* "\""
 	char = ~("\""|"\\") any	-- literal
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
-	Statement = StatementAssign
+	Statement = StatementAssign | StatementExpression
 		| "%" identifier "%"	-- placeholder
 	StatementAssign = "let" Expression ";"
+	StatementExpression = Expression ";"
 }

@@ -89,6 +89,9 @@ function generate(program) {
 		switch (statement.type) {
 			case 'assign':
 				return `let ${generate(statement.left)}=${generate(statement.right)};`;
+			case 'expression':
+				var $expression = generate(statement.expression);
+				return `${$expression};`;
 			case 'placeholder':
 				return `%${statement.name}%`;
 		}
