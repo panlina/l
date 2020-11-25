@@ -24,6 +24,7 @@ interface Interpretation<T> {
 				{ type: "property", expression: T, property: string },
 			$right: T
 		) => T;
+		block: ($statement: T) => T;
 		expression: ($expression: T) => T;
 	};
 };

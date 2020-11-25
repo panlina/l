@@ -13,6 +13,11 @@ export class Assign extends Statement {
 	right: Expression;
 }
 
+export class Block extends Statement {
+	constructor(statement: Statement[]);
+	statement: Statement[];
+}
+
 export class Expression extends Statement {
 	constructor(expression: Expression);
 	expression: Expression;

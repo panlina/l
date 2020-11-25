@@ -55,6 +55,7 @@ var i = {
 					};
 			}
 		},
+		block: $statement => environment => { $statement.forEach(statement => statement(environment)); },
 		expression: $expression => environment => { $expression(environment); }
 	}
 };

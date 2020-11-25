@@ -31,6 +31,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 		_false.parse()
 	),
 	StatementAssign: (let, equation, semicolon) => new Statement.Assign(equation.parse().left, equation.parse().right),
+	StatementBlock: (open, statement, close) => new Statement.Block(statement.children.map(s => s.parse())),
 	StatementExpression: (expression, semicolon) => new Statement.Expression(expression.parse()),
 	Statement_placeholder: (open, name, close) => new Statement.Placeholder(name.parse()),
 	Program_expression: (expression, end) => expression.parse(),

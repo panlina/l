@@ -86,6 +86,9 @@ function compile(program, interpretation) {
 				}
 				var $right = compile(statement.right, interpretation);
 				return interpretation.statement.assign($left, $right);
+			case 'block':
+				var $statement = statement.statement.map(statement => compile(statement, interpretation));
+				return interpretation.statement.block($statement);
 			case 'expression':
 				var $expression = compile(statement.expression, interpretation);
 				return interpretation.statement.expression($expression);

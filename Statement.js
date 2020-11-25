@@ -12,6 +12,13 @@ class Assign extends Statement {
 	}
 }
 
+class Block extends Statement {
+	constructor(statement) {
+		super('block');
+		this.statement = statement;
+	}
+}
+
 class Expression extends Statement {
 	constructor(expression) {
 		super('expression');
@@ -28,5 +35,6 @@ class Placeholder extends Statement {
 
 module.exports = Statement;
 module.exports.Assign = Assign;
+module.exports.Block = Block;
 module.exports.Expression = Expression;
 module.exports.Placeholder = Placeholder;
