@@ -45,7 +45,7 @@ describe('compile', function () {
 		var l = "let a = length \"abc\"; let b = a + 1;";
 		var l = parse(l);
 		var f = compile(l, i);
-		var environment = { succ: n => n + 1, length: s => s.length };
+		var environment = { length: s => s.length };
 		f(environment);
 		assert.equal(environment.a, 3);
 		assert.equal(environment.b, 4);
