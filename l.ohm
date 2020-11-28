@@ -48,14 +48,15 @@ l {
 		| number
 		| string
 	ExpressionName = identifier
-	identifier = ~("let" ~(alnum|"_")) &(letter|"_") (alnum|"_")+
+	identifier = ~(("let" | "var") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
 	number = digit+
 	string = "\"" char* "\""
 	char = ~("\""|"\\") any	-- literal
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
-	Statement = StatementAssign | StatementBlock | StatementExpression
+	Statement = StatementAssign | StatementVar | StatementBlock | StatementExpression
 		| "%" identifier "%"	-- placeholder
 	StatementAssign = "let" Expression ";"
+	StatementVar = "var" identifier ";"
 	StatementBlock = "{" Statement* "}"
 	StatementExpression = Expression ";"
 }

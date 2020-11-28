@@ -19,6 +19,13 @@ class Block extends Statement {
 	}
 }
 
+class Var extends Statement {
+	constructor(identifier) {
+		super('var');
+		this.identifier = identifier;
+	}
+}
+
 class Expression extends Statement {
 	constructor(expression) {
 		super('expression');
@@ -36,5 +43,6 @@ class Placeholder extends Statement {
 module.exports = Statement;
 module.exports.Assign = Assign;
 module.exports.Block = Block;
+module.exports.Var = Var;
 module.exports.Expression = Expression;
 module.exports.Placeholder = Placeholder;

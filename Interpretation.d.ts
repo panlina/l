@@ -2,7 +2,7 @@ import Expression from './Expression';
 interface Interpretation<T> {
 	expression: {
 		literal: (expression: Expression.Literal) => T;
-		name: (expression: Expression.Name) => T;
+		name: (expression: Expression.Name, resolution: [null, number]) => T;
 		object: ($property: { name: string, value: T }[]) => T;
 		array: ($element: T[]) => T;
 		tuple: ($element: T[]) => T;
@@ -17,7 +17,7 @@ interface Interpretation<T> {
 		'[]': ($statement: T[]) => T;
 		assign: (
 			$left:
-				{ type: "name", identifier: string }
+				{ type: "name", identifier: string, resolution: [null, number] }
 				|
 				{ type: "element", expression: T, index: T }
 				|

@@ -1,7 +1,14 @@
+var Scope = require("../Scope");
 var i = {
 	expression: {
 		literal: expression => () => expression.value,
-		name: expression => environment => environment[expression.identifier],
+		name: (expression, resolution) => {
+			var [, depth] = resolution;
+			return environment => {
+				var scope = environment.ancestor(depth).scope;
+				return scope.resolve(expression.identifier);
+			};
+		},
 		object: $property =>
 			environment => $property.reduce(
 				(o, p) => Object.assign(
@@ -42,8 +49,10 @@ var i = {
 		assign: ($left, $right) => {
 			switch ($left.type) {
 				case 'name':
+					var [, depth] = $left.resolution;
 					return environment => {
-						environment[$left.identifier] = $right(environment);
+						var scope = environment.ancestor(depth).scope;
+						scope[$left.identifier] = $right(environment);
 					};
 				case 'element':
 					return environment => {
@@ -55,7 +64,10 @@ var i = {
 					};
 			}
 		},
-		block: $statement => environment => { $statement.forEach(statement => statement(environment)); },
+		block: $statement => environment => {
+			var e = environment.push(new Scope({}));
+			$statement.forEach(statement => statement(e));
+		},
 		expression: $expression => environment => { $expression(environment); }
 	}
 };
