@@ -1,6 +1,7 @@
 const { Scope } = require('.');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
+var CompileError = require('./CompileError');
 function compile(program, environment, interpretation) {
 	if (program instanceof Expression) {
 		var expression = program;
@@ -9,6 +10,7 @@ function compile(program, environment, interpretation) {
 				return interpretation.expression.literal(expression, compile);
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
+				if (!resolution) throw new CompileError.UndefinedName(expression);
 				return interpretation.expression.name(expression, resolution);
 			case 'object':
 				var $property = expression.property.map(
@@ -71,6 +73,7 @@ function compile(program, environment, interpretation) {
 							identifier: statement.left.identifier,
 							resolution: environment.resolve(statement.left.identifier)
 						};
+						if (!$left.resolution) throw new CompileError.UndefinedName(statement.left);
 						break;
 					case 'element':
 						var $left = {

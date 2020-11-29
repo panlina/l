@@ -103,4 +103,15 @@ describe('compile', function () {
 		assert.equal(environment.scope.b, 1);
 		assert.equal(environment.scope.c, 0);
 	});
+	describe('error', function () {
+		var CompileError = require('../CompileError');
+		it('undefined name', function () {
+			var i = require('./f');
+			var l = "a";
+			var l = parse(l);
+			assert.throws(() => {
+				var f = compile(l, new Environment(new Scope({})), i);
+			}, CompileError.UndefinedName);
+		});
+	});
 });
