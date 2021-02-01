@@ -27,5 +27,5 @@ interface Interpretation<T> {
 		block: ($statement: T) => T;
 		expression: ($expression: T) => T;
 	};
-};
+}
 export = Interpretation;
