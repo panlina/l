@@ -1,6 +1,6 @@
 import * as Expression from './Expression';
 
-class Statement {
+declare class Statement {
 	constructor(type: string);
 	type: string;
 }

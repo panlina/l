@@ -1,4 +1,4 @@
-class Expression {
+declare class Expression {
 	constructor(type: string);
 	type: string;
 }
