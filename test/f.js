@@ -40,8 +40,7 @@ var i = {
 		conditional: ($condition, $true, $false) =>
 			environment => $condition(environment) ?
 				$true(environment) :
-				$false(environment),
-		statement: $statement => environment => { $statement(environment); }
+				$false(environment)
 	},
 	statement: {
 		'[]': $statement =>
@@ -67,8 +66,7 @@ var i = {
 		block: $statement => environment => {
 			var e = environment.push(new Scope({}));
 			$statement.forEach(statement => statement(e));
-		},
-		expression: $expression => environment => { $expression(environment); }
+		}
 	}
 };
 function operate(operator, left, right) {

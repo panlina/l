@@ -54,8 +54,7 @@ function compile(program, environment, interpretation) {
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
 				var $statement = expression.statement.map(statement => compile(statement, environment, interpretation));
-				$statement = interpretation.statement['[]']($statement);
-				return interpretation.expression.statement($statement);
+				return interpretation.statement['[]']($statement);
 		}
 	}
 	if (program instanceof Array) {
@@ -100,8 +99,7 @@ function compile(program, environment, interpretation) {
 				environment.scope[statement.identifier] = null;
 				return compile(new Statement.Block([]), environment, interpretation);
 			case 'expression':
-				var $expression = compile(statement.expression, environment, interpretation);
-				return interpretation.statement.expression($expression);
+				return compile(statement.expression, environment, interpretation);
 		}
 	}
 }

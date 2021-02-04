@@ -11,7 +11,6 @@ interface Interpretation<T> {
 		call: ($expression: T, $argument: T) => T;
 		operation: ($operator: string, $left?: T, $right?: T) => T;
 		conditional: ($condition: T, $true: T, $false: T) => T;
-		statement: ($statement: T) => T;
 	};
 	statement: {
 		'[]': ($statement: T[]) => T;
@@ -25,7 +24,6 @@ interface Interpretation<T> {
 			$right: T
 		) => T;
 		block: ($statement: T) => T;
-		expression: ($expression: T) => T;
 	};
 }
 export = Interpretation;
