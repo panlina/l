@@ -67,6 +67,10 @@ var i = {
 			var e = environment.push(new Scope({}));
 			$statement.forEach(statement => statement(e));
 		}
+	},
+	concat: ($effect, $return) => environment => {
+		$effect(environment);
+		return $return(environment);
 	}
 };
 function operate(operator, left, right) {

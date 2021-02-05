@@ -25,5 +25,6 @@ interface Interpretation<T> {
 		) => T;
 		block: ($statement: T) => T;
 	};
+	concat: ($effect: T, $return: T) => T;
 }
 export = Interpretation;
