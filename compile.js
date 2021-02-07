@@ -97,7 +97,11 @@ function compile(program, environment, interpretation) {
 			case 'block':
 				var e = environment.push(new Scope({}));
 				var $statement = statement.statement.map(statement => compile(statement, e, interpretation));
-				return interpretation.statement.block($statement);
+				return interpretation.concat(
+					interpretation.statement['[]']($statement),
+					interpretation.expression.literal(new Expression.Literal(undefined)),
+					environment => environment.push(new Scope({}))
+				);
 			case 'var':
 				environment.scope[statement.identifier] = null;
 				return compile(new Statement.Block([]), environment, interpretation);

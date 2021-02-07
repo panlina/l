@@ -62,13 +62,11 @@ var i = {
 						$left.expression(environment)[$left.property] = $right(environment);
 					};
 			}
-		},
-		block: $statement => environment => {
-			var e = environment.push(new Scope({}));
-			$statement.forEach(statement => statement(e));
 		}
 	},
-	concat: ($effect, $return) => environment => {
+	concat: ($effect, $return, $scope) => environment => {
+		if ($scope)
+			var environment = $scope(environment);
 		$effect(environment);
 		return $return(environment);
 	}
