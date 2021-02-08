@@ -53,10 +53,12 @@ function compile(program, environment, interpretation) {
 					$false = compile(expression.false, environment, interpretation);
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
-				var $statement = expression.statement.map(statement => compile(statement, environment, interpretation));
+				var e = environment.push(new Scope({ return: null }));
+				var $statement = expression.statement.map(statement => compile(statement, e, interpretation));
 				return interpretation.concat(
 					interpretation.statement['[]']($statement),
-					interpretation.expression.literal(new Expression.Literal(undefined))
+					compile(new Expression.Name('return'), e, interpretation),
+					environment => environment.push(new Scope({}))
 				);
 		}
 	}

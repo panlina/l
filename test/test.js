@@ -95,13 +95,14 @@ describe('compile', function () {
 	});
 	it('statement expression', function () {
 		var i = require('./f');
-		var l = "var b; var c; a ? (let b = 0; let c = 1;) : (let b = 1; let c = 0;);";
+		var l = "var b; var c; var d; let d = (a ? (let b = 0; let c = 1; let return = 0;) : (let b = 1; let c = 0; let return = 1;));";
 		var l = parse(l);
 		var f = compile(l, new Environment(new Scope({ a: null })), i);
 		var environment = new Environment(new Scope({ a: 0 }));
 		f(environment);
 		assert.equal(environment.scope.b, 1);
 		assert.equal(environment.scope.c, 0);
+		assert.equal(environment.scope.d, 1);
 	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
