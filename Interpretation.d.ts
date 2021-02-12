@@ -15,15 +15,11 @@ interface Interpretation<T> {
 	};
 	statement: {
 		'[]': ($statement: T[]) => T;
-		assign: (
-			$left:
-				{ type: "name", identifier: string, resolution: [null, number] }
-				|
-				{ type: "element", expression: T, index: T }
-				|
-				{ type: "property", expression: T, property: string },
-			$right: T
-		) => T;
+	};
+	assign: {
+		name: ($left: { identifier: string, resolution: [null, number] }, $right: T) => T;
+		element: ($left: { expression: T, index: T }, $right: T) => T;
+		property: ($left: { expression: T, property: string }, $right: T) => T;
 	};
 	concat: ($effect: T, $return: T, $scope?: (environment: Environment) => Environment) => T;
 }

@@ -44,25 +44,24 @@ var i = {
 	},
 	statement: {
 		'[]': $statement =>
-			environment => { $statement.forEach(statement => statement(environment)); },
-		assign: ($left, $right) => {
-			switch ($left.type) {
-				case 'name':
-					var [, depth] = $left.resolution;
-					return environment => {
-						var scope = environment.ancestor(depth).scope;
-						scope[$left.identifier] = $right(environment);
-					};
-				case 'element':
-					return environment => {
-						$left.expression(environment)[$left.index(environment)] = $right(environment);
-					};
-				case 'property':
-					return environment => {
-						$left.expression(environment)[$left.property] = $right(environment);
-					};
+			environment => { $statement.forEach(statement => statement(environment)); }
+	},
+	assign: {
+		name: ($left, $right) => {
+			var [, depth] = $left.resolution;
+			return environment => {
+				var scope = environment.ancestor(depth).scope;
+				scope[$left.identifier] = $right(environment);
+			};
+		},
+		element: ($left, $right) =>
+			environment => {
+				$left.expression(environment)[$left.index(environment)] = $right(environment);
+			},
+		property: ($left, $right) =>
+			environment => {
+				$left.expression(environment)[$left.property] = $right(environment);
 			}
-		}
 	},
 	concat: ($effect, $return, $scope) => environment => {
 		if ($scope)

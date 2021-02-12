@@ -95,7 +95,7 @@ function compile(program, environment, interpretation) {
 						break;
 				}
 				var $right = compile(statement.right, environment, interpretation);
-				return interpretation.statement.assign($left, $right);
+				return interpretation.assign[$left.type]($left, $right);
 			case 'block':
 				var e = environment.push(new Scope({}));
 				var $statement = statement.statement.map(statement => compile(statement, e, interpretation));
