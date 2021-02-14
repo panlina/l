@@ -60,6 +60,10 @@ function compile(program, environment, interpretation) {
 					compile(new Expression.Name('return'), e, interpretation),
 					environment => environment.push(new Scope({}))
 				);
+			case 'function':
+				var e = environment.push(new Scope({ argument: null, return: null }));
+				var $expression = compile(expression.expression, e, interpretation);
+				return interpretation.expression.function($expression);
 		}
 	}
 	if (program instanceof Array) {

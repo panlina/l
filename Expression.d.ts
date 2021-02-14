@@ -67,6 +67,11 @@ export class Statement extends Expression {
 	statement: Statement[];
 }
 
+export class Function extends Expression {
+	constructor(expression: Expression);
+	expression: Expression;
+}
+
 export class Placeholder extends Expression {
 	constructor(name: string);
 	name: string;

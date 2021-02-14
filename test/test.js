@@ -104,6 +104,15 @@ describe('compile', function () {
 		assert.equal(environment.scope.c, 0);
 		assert.equal(environment.scope.d, 1);
 	});
+	it('function expression', function () {
+		var i = require('./f');
+		var l = "var f; let f = (=> (var a; let a = argument; let return = (=> argument + argument + a);)); var g; let g = f 1; var x; let x = g 2;";
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({})), i);
+		var environment = new Environment(new Scope({}));
+		f(environment);
+		assert.equal(environment.scope.x, 5);
+	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
 		it('undefined name', function () {

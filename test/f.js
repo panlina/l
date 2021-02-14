@@ -40,7 +40,14 @@ var i = {
 		conditional: ($condition, $true, $false) =>
 			environment => $condition(environment) ?
 				$true(environment) :
-				$false(environment)
+				$false(environment),
+		function: $expression =>
+			environment =>
+				argument => $expression(
+					environment.push(
+						new Scope({ argument: argument })
+					)
+				)
 	},
 	statement: {
 		'[]': $statement =>

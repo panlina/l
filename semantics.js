@@ -30,6 +30,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 		_true.parse(),
 		_false.parse()
 	),
+	ExpressionFunction_function: (arrow, expression) => new Expression.Function(expression.parse()),
 	StatementAssign: (let, equation, semicolon) => new Statement.Assign(equation.parse().left, equation.parse().right),
 	StatementVar: (_var, identifier, semicolon) => new Statement.Var(identifier.parse()),
 	StatementBlock: (open, statement, close) => new Statement.Block(statement.children.map(s => s.parse())),
