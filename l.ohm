@@ -4,7 +4,7 @@ l {
 		| Statement* end	-- statement
 	Expression = ExpressionFunction
 	ExpressionFunction =
-		"=>" ExpressionConditional	-- function
+		identifier "=>" ExpressionConditional	-- function
 		| ExpressionConditional
 	ExpressionConditional = ExpressionConditional "?" ExpressionConditional ":" ExpressionConditional	-- conditional
 		| ExpressionOr

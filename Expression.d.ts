@@ -68,7 +68,8 @@ export class Statement extends Expression {
 }
 
 export class Function extends Expression {
-	constructor(expression: Expression);
+	constructor(argument: string, expression: Expression);
+	argument: string;
 	expression: Expression;
 }
 

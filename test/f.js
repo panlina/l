@@ -41,11 +41,11 @@ var i = {
 			environment => $condition(environment) ?
 				$true(environment) :
 				$false(environment),
-		function: $expression =>
+		function: ($argument, $expression) =>
 			environment =>
 				argument => $expression(
 					environment.push(
-						new Scope({ argument: argument })
+						new Scope({ [$argument]: argument })
 					)
 				)
 	},

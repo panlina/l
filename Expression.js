@@ -89,8 +89,9 @@ class Statement extends Expression {
 }
 
 class Function extends Expression {
-	constructor(expression) {
+	constructor(argument, expression) {
 		super('function');
+		this.argument = argument;
 		this.expression = expression;
 	}
 }

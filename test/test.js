@@ -106,7 +106,7 @@ describe('compile', function () {
 	});
 	it('function expression', function () {
 		var i = require('./f');
-		var l = "var f; let f = (=> (var a; let a = argument; let return = (=> argument + argument + a);)); var g; let g = f 1; var x; let x = g 2;";
+		var l = "var f; let f = (a => (b => b + b + a)); var g; let g = f 1; var x; let x = g 2;";
 		var l = parse(l);
 		var f = compile(l, new Environment(new Scope({})), i);
 		var environment = new Environment(new Scope({}));

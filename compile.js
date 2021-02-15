@@ -61,9 +61,9 @@ function compile(program, environment, interpretation) {
 					environment => environment.push(new Scope({}))
 				);
 			case 'function':
-				var e = environment.push(new Scope({ argument: null, return: null }));
+				var e = environment.push(new Scope({ [expression.argument]: null, return: null }));
 				var $expression = compile(expression.expression, e, interpretation);
-				return interpretation.expression.function($expression);
+				return interpretation.expression.function(expression.argument, $expression);
 		}
 	}
 	if (program instanceof Array) {
