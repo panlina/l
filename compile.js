@@ -53,8 +53,12 @@ function compile(program, environment, interpretation) {
 					$false = compile(expression.false, environment, interpretation);
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
-				var e = environment.push(new Scope({ return: null }));
-				var $statement = expression.statement.map(statement => compile(statement, e, interpretation));
+				var variable = expression.statement.filter(statement => statement.type == 'var');
+				var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
+				var e = environment.push(new Scope({ ...variable, return: null }));
+				var $statement =
+					expression.statement.filter(statement => statement.type != 'var')
+						.map(statement => compile(statement, e, interpretation));
 				return interpretation.concat(
 					interpretation.statement['[]']($statement),
 					compile(new Expression.Name('return'), e, interpretation),
@@ -67,8 +71,17 @@ function compile(program, environment, interpretation) {
 		}
 	}
 	if (program instanceof Array) {
-		var $statement = program.map(statement => compile(statement, environment, interpretation));
-		return interpretation.statement['[]']($statement);
+		var variable = program.filter(statement => statement.type == 'var');
+		var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
+		var e = environment.push(new Scope(variable));
+		var $statement =
+			program.filter(statement => statement.type != 'var')
+				.map(statement => compile(statement, e, interpretation));
+		return interpretation.concat(
+			interpretation.statement['[]']($statement),
+			interpretation.expression.literal(new Expression.Literal(undefined)),
+			environment => environment.push(new Scope({}))
+		);
 	}
 	if (program instanceof Statement) {
 		var statement = program;
@@ -101,16 +114,17 @@ function compile(program, environment, interpretation) {
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[$left.type]($left, $right);
 			case 'block':
-				var e = environment.push(new Scope({}));
-				var $statement = statement.statement.map(statement => compile(statement, e, interpretation));
+				var variable = statement.statement.filter(statement => statement.type == 'var');
+				var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
+				var e = environment.push(new Scope(variable));
+				var $statement =
+					statement.statement.filter(statement => statement.type != 'var')
+						.map(statement => compile(statement, e, interpretation));
 				return interpretation.concat(
 					interpretation.statement['[]']($statement),
 					interpretation.expression.literal(new Expression.Literal(undefined)),
 					environment => environment.push(new Scope({}))
 				);
-			case 'var':
-				environment.scope[statement.identifier] = null;
-				return compile(new Statement.Block([]), environment, interpretation);
 			case 'expression':
 				return interpretation.concat(
 					compile(statement.expression, environment, interpretation),
