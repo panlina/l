@@ -18,6 +18,11 @@ export class Block extends Statement {
 	statement: Statement[];
 }
 
+export class Var extends Statement {
+	constructor(identifier: string);
+	identifier: string;
+}
+
 export class Expression extends Statement {
 	constructor(expression: Expression);
 	expression: Expression;
