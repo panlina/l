@@ -59,10 +59,11 @@ function compile(program, environment, interpretation) {
 				var $statement =
 					expression.statement.filter(statement => statement.type != 'var')
 						.map(statement => compile(statement, e, interpretation));
-				return interpretation.concat(
-					interpretation.statement['[]']($statement),
-					compile(new Expression.Name('return'), e, interpretation),
-					environment => environment.push(new Scope({}))
+				return interpretation.pushScope(
+					interpretation.concat(
+						interpretation.statement['[]']($statement),
+						compile(new Expression.Name('return'), e, interpretation)
+					)
 				);
 			case 'function':
 				var e = environment.push(new Scope({ [expression.argument]: null, return: null }));
@@ -77,10 +78,11 @@ function compile(program, environment, interpretation) {
 		var $statement =
 			program.filter(statement => statement.type != 'var')
 				.map(statement => compile(statement, e, interpretation));
-		return interpretation.concat(
-			interpretation.statement['[]']($statement),
-			interpretation.expression.literal(new Expression.Literal(undefined)),
-			environment => environment.push(new Scope({}))
+		return interpretation.pushScope(
+			interpretation.concat(
+				interpretation.statement['[]']($statement),
+				interpretation.expression.literal(new Expression.Literal(undefined)),
+			)
 		);
 	}
 	if (program instanceof Statement) {
@@ -120,10 +122,11 @@ function compile(program, environment, interpretation) {
 				var $statement =
 					statement.statement.filter(statement => statement.type != 'var')
 						.map(statement => compile(statement, e, interpretation));
-				return interpretation.concat(
-					interpretation.statement['[]']($statement),
-					interpretation.expression.literal(new Expression.Literal(undefined)),
-					environment => environment.push(new Scope({}))
+				return interpretation.pushScope(
+					interpretation.concat(
+						interpretation.statement['[]']($statement),
+						interpretation.expression.literal(new Expression.Literal(undefined))
+					)
 				);
 			case 'expression':
 				return interpretation.concat(

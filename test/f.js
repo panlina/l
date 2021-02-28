@@ -70,12 +70,11 @@ var i = {
 				$left.expression(environment)[$left.property] = $right(environment);
 			}
 	},
-	concat: ($effect, $return, $scope) => environment => {
-		if ($scope)
-			var environment = $scope(environment);
+	concat: ($effect, $return) => environment => {
 		$effect(environment);
 		return $return(environment);
-	}
+	},
+	pushScope: f => environment => f(environment.push(new Scope({})))
 };
 function operate(operator, left, right) {
 	switch (operator) {

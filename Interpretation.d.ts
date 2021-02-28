@@ -1,5 +1,4 @@
 import Expression from './Expression';
-import Environment from './Environment';
 interface Interpretation<T> {
 	expression: {
 		literal: (expression: Expression.Literal) => T;
@@ -21,6 +20,7 @@ interface Interpretation<T> {
 		element: ($left: { expression: T, index: T }, $right: T) => T;
 		property: ($left: { expression: T, property: string }, $right: T) => T;
 	};
-	concat: ($effect: T, $return: T, $scope?: (environment: Environment) => Environment) => T;
+	concat: ($effect: T, $return: T) => T;
+	pushScope: (f: T) => T;
 }
 export = Interpretation;
