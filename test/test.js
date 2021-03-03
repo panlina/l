@@ -113,6 +113,15 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.scope.return, 5);
 	});
+	it('factorial', function () {
+		var i = require('./f');
+		var l = "var f; let f = (n => n > 1 ? n * f (n - 1) : 1); let return = f 4;";
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({ return: null })), i);
+		var environment = new Environment(new Scope({}));
+		f(environment);
+		assert.equal(environment.scope.return, 24);
+	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
 		it('undefined name', function () {
