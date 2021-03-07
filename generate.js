@@ -81,6 +81,11 @@ function generate(program) {
 			case 'statement':
 				var $statement = generate(expression.statement);
 				return `(${$statement})`;
+			case 'function':
+				var $expression = generate(expression.expression);
+				if (precedence[expression.expression.type] > precedence[expression.type])
+					$expression = `(${$expression})`;
+				return `${expression.argument}=>${$expression}`;
 			case 'placeholder':
 				return `%${expression.name}%`;
 		}
@@ -109,6 +114,7 @@ var precedence = {
 	element: 1,
 	call: 2,
 	operation: 3,
-	conditional: 4
+	conditional: 4,
+	function: 5
 };
 module.exports = generate;
