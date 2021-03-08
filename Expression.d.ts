@@ -63,8 +63,8 @@ export class Conditional extends Expression {
 }
 
 export class Statement extends Expression {
-	constructor(statement: Statement[]);
-	statement: Statement[];
+	constructor(statement: (Statement | string)[]);
+	statement: (Statement | string)[];
 }
 
 export class Function extends Expression {

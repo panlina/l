@@ -1,7 +1,7 @@
 l {
 	Program =
 		Expression end	-- expression
-		| Statement* end	-- statement
+		| Statements end	-- statement
 	Expression = ExpressionFunction
 	ExpressionFunction =
 		identifier "=>" ExpressionConditional	-- function
@@ -42,7 +42,7 @@ l {
 	ExpressionTuple = "{" ListOf<Expression, ","> "}"
 	ExpressionAtom =
 		"(" Expression ")"	-- parentheses
-		| "(" Statement* ")"	-- statement
+		| "(" Statements ")"	-- statement
 		| "%" identifier "%"	-- placeholder
 		| ExpressionObject
 		| ExpressionArray
@@ -56,10 +56,12 @@ l {
 	string = "\"" char* "\""
 	char = ~("\""|"\\") any	-- literal
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
+	Statements = (Statement | Label)*
+	Label = identifier ":"
 	Statement = StatementAssign | StatementVar | StatementBlock | StatementExpression
 		| "%" identifier "%"	-- placeholder
 	StatementAssign = "let" Expression ";"
 	StatementVar = "var" identifier ";"
-	StatementBlock = "{" Statement* "}"
+	StatementBlock = "{" Statements "}"
 	StatementExpression = Expression ";"
 }

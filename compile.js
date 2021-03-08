@@ -53,12 +53,26 @@ function compile(program, environment, interpretation) {
 					$false = compile(expression.false, environment, interpretation);
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
-				var variable = expression.statement.filter(statement => statement.type == 'var');
+				var variable = expression.statement
+					.filter(statement =>
+						typeof statement != 'string'
+						&&
+						statement.type == 'var'
+					);
 				var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
 				var e = environment.push(new Scope({ ...variable, return: null }));
 				var $statement =
-					expression.statement.filter(statement => statement.type != 'var')
-						.map(statement => compile(statement, e, interpretation));
+					expression.statement
+						.filter(statement =>
+							typeof statement == 'string'
+							||
+							statement.type != 'var'
+						)
+						.map(statement =>
+							typeof statement == 'string' ?
+								statement :
+								compile(statement, e, interpretation)
+						);
 				return interpretation.pushScope(
 					interpretation.concat(
 						interpretation.statement['[]']($statement),
@@ -72,12 +86,26 @@ function compile(program, environment, interpretation) {
 		}
 	}
 	if (program instanceof Array) {
-		var variable = program.filter(statement => statement.type == 'var');
+		var variable = program
+			.filter(statement =>
+				typeof statement != 'string'
+				&&
+				statement.type == 'var'
+			);
 		var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
 		var e = environment.push(new Scope(variable));
 		var $statement =
-			program.filter(statement => statement.type != 'var')
-				.map(statement => compile(statement, e, interpretation));
+			program
+				.filter(statement =>
+					typeof statement == 'string'
+					||
+					statement.type != 'var'
+				)
+				.map(statement =>
+					typeof statement == 'string' ?
+						statement :
+						compile(statement, e, interpretation)
+				);
 		return interpretation.pushScope(
 			interpretation.concat(
 				interpretation.statement['[]']($statement),
@@ -116,12 +144,26 @@ function compile(program, environment, interpretation) {
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[$left.type]($left, $right);
 			case 'block':
-				var variable = statement.statement.filter(statement => statement.type == 'var');
+				var variable = statement.statement
+					.filter(statement =>
+						typeof statement != 'string'
+						&&
+						statement.type == 'var'
+					);
 				var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
 				var e = environment.push(new Scope(variable));
 				var $statement =
-					statement.statement.filter(statement => statement.type != 'var')
-						.map(statement => compile(statement, e, interpretation));
+					statement.statement
+						.filter(statement =>
+							typeof statement == 'string'
+							||
+							statement.type != 'var'
+						)
+						.map(statement =>
+							typeof statement == 'string' ?
+								statement :
+								compile(statement, e, interpretation)
+						);
 				return interpretation.pushScope(
 					interpretation.concat(
 						interpretation.statement['[]']($statement),

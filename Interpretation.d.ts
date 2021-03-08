@@ -13,7 +13,7 @@ interface Interpretation<T> {
 		conditional: ($condition: T, $true: T, $false: T) => T;
 	};
 	statement: {
-		'[]': ($statement: T[]) => T;
+		'[]': ($statement: (T | string)[]) => T;
 	};
 	assign: {
 		name: ($left: { identifier: string, resolution: [null, number] }, $right: T) => T;

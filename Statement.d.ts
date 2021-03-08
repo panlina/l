@@ -14,8 +14,8 @@ export class Assign extends Statement {
 }
 
 export class Block extends Statement {
-	constructor(statement: Statement[]);
-	statement: Statement[];
+	constructor(statement: (Statement | string)[]);
+	statement: (Statement | string)[];
 }
 
 export class Var extends Statement {

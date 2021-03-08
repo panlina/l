@@ -50,8 +50,14 @@ var i = {
 				)
 	},
 	statement: {
-		'[]': $statement =>
-			environment => { $statement.forEach(statement => statement(environment)); }
+		'[]': $statement => {
+			$statement = $statement.filter(statement => typeof statement == 'function');
+			return environment => {
+				$statement.forEach(statement => {
+					statement(environment);
+				});
+			};
+		}
 	},
 	assign: {
 		name: ($left, $right) => {

@@ -91,7 +91,12 @@ function generate(program) {
 		}
 	}
 	if (program instanceof Array)
-		return program.map(generate).join('');
+		return program.map(
+			statement =>
+				typeof statement == 'string' ?
+					`${statement}:` :
+					generate(statement)
+		).join('');
 	if (program instanceof Statement) {
 		var statement = program;
 		switch (statement.type) {
