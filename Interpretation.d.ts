@@ -14,6 +14,7 @@ interface Interpretation<T> {
 	};
 	statement: {
 		'[]': ($statement: (T | string)[]) => T;
+		goto: (label: string) => T;
 	};
 	assign: {
 		name: ($left: { identifier: string, resolution: [null, number] }, $right: T) => T;

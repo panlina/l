@@ -104,6 +104,8 @@ function generate(program) {
 				return `let ${generate(statement.left)}=${generate(statement.right)};`;
 			case 'block':
 				return `{${statement.statement.map(generate).join('')};}`;
+			case 'goto':
+				return `goto ${statement.label};`;
 			case 'expression':
 				var $expression = generate(statement.expression);
 				return `${$expression};`;

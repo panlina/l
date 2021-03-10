@@ -23,6 +23,11 @@ export class Var extends Statement {
 	identifier: string;
 }
 
+export class Goto extends Statement {
+	constructor(label: string);
+	label: string;
+}
+
 export class Expression extends Statement {
 	constructor(expression: Expression);
 	expression: Expression;

@@ -13,7 +13,7 @@ describe('parse, generate', function () {
 		assert.equal(generate(syntax), source);
 	});
 	it('statement', function () {
-		var source = "L:let a=12;let b=26;";
+		var source = "L:let a=12;let b=26;goto L;";
 		var syntax = parse(source);
 		assert.equal(generate(syntax), source);
 	});
@@ -44,7 +44,7 @@ it("quasiquote", function () {
 describe('compile', function () {
 	it('', function () {
 		var i = require('./f');
-		var l = "var a; let a = length \"abc\"; var b; let b = a + 1; RETURN: let return = b;";
+		var l = "var a; let a = length \"abc\"; var b; let b = a + 1; goto RETURN; let b = b + 1; RETURN: let return = b;";
 		var l = parse(l);
 		var f = compile(l, new Environment(new Scope({ length: null, return: null })), i);
 		var environment = new Environment(new Scope({ length: s => s.length }));

@@ -51,13 +51,31 @@ var i = {
 	},
 	statement: {
 		'[]': $statement => {
+			var labelDictionary = {};
+			for (var i = 0, j = 0; i < $statement.length; i++) {
+				var statement = $statement[i];
+				if (typeof statement == 'string')
+					labelDictionary[statement] = j;
+				else
+					j++;
+			}
 			$statement = $statement.filter(statement => typeof statement == 'function');
 			return environment => {
-				$statement.forEach(statement => {
-					statement(environment);
-				});
+				for (var i = 0; i < $statement.length;) {
+					var statement = $statement[i];
+					let l;
+					statement(environment, label => { l = label; });
+					if (l != undefined)
+						i = labelDictionary[l];
+					else
+						i++;
+				}
 			};
-		}
+		},
+		goto: label =>
+			(environment, jump) => {
+				jump(label);
+			}
 	},
 	assign: {
 		name: ($left, $right) => {

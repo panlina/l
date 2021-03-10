@@ -170,6 +170,8 @@ function compile(program, environment, interpretation) {
 						interpretation.expression.literal(new Expression.Literal(undefined))
 					)
 				);
+			case 'goto':
+				return interpretation.statement.goto(statement.label);
 			case 'expression':
 				return interpretation.concat(
 					compile(statement.expression, environment, interpretation),

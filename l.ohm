@@ -51,17 +51,18 @@ l {
 		| number
 		| string
 	ExpressionName = identifier
-	identifier = ~(("let" | "var") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
+	identifier = ~(("let" | "var" | "goto") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
 	number = digit+
 	string = "\"" char* "\""
 	char = ~("\""|"\\") any	-- literal
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
 	Statements = (Statement | Label)*
 	Label = identifier ":"
-	Statement = StatementAssign | StatementVar | StatementBlock | StatementExpression
+	Statement = StatementAssign | StatementVar | StatementBlock | StatementGoto | StatementExpression
 		| "%" identifier "%"	-- placeholder
 	StatementAssign = "let" Expression ";"
 	StatementVar = "var" identifier ";"
 	StatementBlock = "{" Statements "}"
+	StatementGoto = "goto" identifier ";"
 	StatementExpression = Expression ";"
 }

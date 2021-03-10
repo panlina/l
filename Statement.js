@@ -26,6 +26,13 @@ class Var extends Statement {
 	}
 }
 
+class Goto extends Statement {
+	constructor(label) {
+		super('goto');
+		this.label = label;
+	}
+}
+
 class Expression extends Statement {
 	constructor(expression) {
 		super('expression');
@@ -44,5 +51,6 @@ module.exports = Statement;
 module.exports.Assign = Assign;
 module.exports.Block = Block;
 module.exports.Var = Var;
+module.exports.Goto = Goto;
 module.exports.Expression = Expression;
 module.exports.Placeholder = Placeholder;

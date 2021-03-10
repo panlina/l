@@ -36,6 +36,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	StatementAssign: (let, equation, semicolon) => new Statement.Assign(equation.parse().left, equation.parse().right),
 	StatementVar: (_var, identifier, semicolon) => new Statement.Var(identifier.parse()),
 	StatementBlock: (open, statement, close) => new Statement.Block(statement.parse()),
+	StatementGoto: (goto, label, semicolon) => new Statement.Goto(label.parse()),
 	StatementExpression: (expression, semicolon) => new Statement.Expression(expression.parse()),
 	Statement_placeholder: (open, name, close) => new Statement.Placeholder(name.parse()),
 	Program_expression: (expression, end) => expression.parse(),
