@@ -102,6 +102,8 @@ function generate(program) {
 		switch (statement.type) {
 			case 'assign':
 				return `let ${generate(statement.left)}=${generate(statement.right)};`;
+			case 'var':
+				return `var ${statement.identifier};`;
 			case 'block':
 				return `{${statement.statement.map(generate).join('')};}`;
 			case 'goto':

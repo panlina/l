@@ -13,7 +13,7 @@ describe('parse, generate', function () {
 		assert.equal(generate(syntax), source);
 	});
 	it('statement', function () {
-		var source = "L:let a=12;let b=26;goto L;";
+		var source = "L:var a;let a=12;var b;let b=26;goto L;";
 		var syntax = parse(source);
 		assert.equal(generate(syntax), source);
 	});
