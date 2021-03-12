@@ -12,17 +12,17 @@ class Assign extends Statement {
 	}
 }
 
-class Block extends Statement {
-	constructor(statement) {
-		super('block');
-		this.statement = statement;
-	}
-}
-
 class Var extends Statement {
 	constructor(identifier) {
 		super('var');
 		this.identifier = identifier;
+	}
+}
+
+class Block extends Statement {
+	constructor(statement) {
+		super('block');
+		this.statement = statement;
 	}
 }
 
@@ -49,8 +49,8 @@ class Placeholder extends Statement {
 
 module.exports = Statement;
 module.exports.Assign = Assign;
-module.exports.Block = Block;
 module.exports.Var = Var;
+module.exports.Block = Block;
 module.exports.Goto = Goto;
 module.exports.Expression = Expression;
 module.exports.Placeholder = Placeholder;

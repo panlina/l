@@ -13,14 +13,14 @@ export class Assign extends Statement {
 	right: Expression;
 }
 
-export class Block extends Statement {
-	constructor(statement: (Statement | string)[]);
-	statement: (Statement | string)[];
-}
-
 export class Var extends Statement {
 	constructor(identifier: string);
 	identifier: string;
+}
+
+export class Block extends Statement {
+	constructor(statement: (Statement | string)[]);
+	statement: (Statement | string)[];
 }
 
 export class Goto extends Statement {
