@@ -105,7 +105,7 @@ function generate(program) {
 			case 'var':
 				return `var ${statement.identifier};`;
 			case 'block':
-				return `{${statement.statement.map(generate).join('')};}`;
+				return `{${statement.statement.map(generate).join('')}}`;
 			case 'goto':
 				return `goto ${statement.label};`;
 			case 'expression':
