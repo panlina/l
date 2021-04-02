@@ -65,7 +65,12 @@ var i = {
 					var statement = $statement[i];
 					let l;
 					try { statement(environment); }
-					catch (label) { l = label; }
+					catch (label) {
+						if (label in labelDictionary)
+							l = label;
+						else
+							throw label;
+					}
 					if (l != undefined)
 						i = labelDictionary[l];
 					else
