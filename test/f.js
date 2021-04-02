@@ -64,7 +64,8 @@ var i = {
 				for (var i = 0; i < $statement.length;) {
 					var statement = $statement[i];
 					let l;
-					statement(environment, label => { l = label; });
+					try { statement(environment); }
+					catch (label) { l = label; }
 					if (l != undefined)
 						i = labelDictionary[l];
 					else
@@ -73,8 +74,8 @@ var i = {
 			};
 		},
 		goto: label =>
-			(environment, jump) => {
-				jump(label);
+			environment => {
+				throw label;
 			}
 	},
 	assign: {
