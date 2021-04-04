@@ -137,6 +137,25 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.scope.return, 4);
 	});
+	it('sum', function () {
+		var i = require('./f');
+		var l = `
+			var s;
+			let s = 0;
+			var n;
+			let n = 1;
+			while n <= 10 do {
+				let s = s + n;
+				let n = n + 1;
+			}
+			let return = s;
+		`;
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({ return: null })), i);
+		var environment = new Environment(new Scope({}));
+		f(environment);
+		assert.equal(environment.scope.return, 55);
+	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
 		it('undefined name', function () {
