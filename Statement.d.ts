@@ -33,6 +33,12 @@ export class Expression extends Statement {
 	expression: Expression;
 }
 
+export class While extends Statement {
+	constructor(condition: Expression, statement: Statement);
+	condition: Expression;
+	statement: Statement;
+}
+
 export class Placeholder extends Expression {
 	constructor(name: string);
 	name: string;

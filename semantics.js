@@ -38,6 +38,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	StatementBlock: (open, statement, close) => new Statement.Block(statement.parse()),
 	StatementGoto: (goto, label, semicolon) => new Statement.Goto(label.parse()),
 	StatementExpression: (expression, semicolon) => new Statement.Expression(expression.parse()),
+	StatementWhile: (_while, condition, _do, statement) => new Statement.While(condition.parse(), statement.parse()),
 	Statement_placeholder: (open, name, close) => new Statement.Placeholder(name.parse()),
 	Program_expression: (expression, end) => expression.parse(),
 	Program_statement: (statement, end) => statement.parse()

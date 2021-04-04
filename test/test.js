@@ -122,6 +122,21 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.scope.return, 24);
 	});
+	it('while', function () {
+		var i = require('./f');
+		var l = `
+			var n;
+			let n = 10;
+			while n > 4 do
+				let n = n - 1;
+			let return = n;
+		`;
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({ return: null })), i);
+		var environment = new Environment(new Scope({}));
+		f(environment);
+		assert.equal(environment.scope.return, 4);
+	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
 		it('undefined name', function () {

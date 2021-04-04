@@ -40,6 +40,14 @@ class Expression extends Statement {
 	}
 }
 
+class While extends Statement {
+	constructor(condition, statement) {
+		super('while');
+		this.condition = condition;
+		this.statement = statement;
+	}
+}
+
 class Placeholder extends Statement {
 	constructor(name) {
 		super('placeholder');
@@ -53,4 +61,5 @@ module.exports.Var = Var;
 module.exports.Block = Block;
 module.exports.Goto = Goto;
 module.exports.Expression = Expression;
+module.exports.While = While;
 module.exports.Placeholder = Placeholder;

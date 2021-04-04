@@ -177,6 +177,20 @@ function compile(program, environment, interpretation) {
 					compile(statement.expression, environment, interpretation),
 					interpretation.expression.literal(new Expression.Literal(undefined))
 				);
+			case 'while':
+				return compile([
+					'',
+					new Statement.Expression(
+						new Expression.Conditional(
+							statement.condition,
+							new Expression.Statement([
+								statement.statement,
+								new Statement.Goto('')
+							]),
+							new Expression.Statement([])
+						)
+					)
+				], environment, interpretation);
 		}
 	}
 }
