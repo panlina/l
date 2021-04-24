@@ -11,6 +11,8 @@ function compile(program, environment, interpretation) {
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) throw new CompileError.UndefinedName(expression);
+				var [type, depth] = resolution;
+				if (type != 'variable') throw new CompileError.UndefinedName(expression);
 				return interpretation.expression.name(expression, resolution);
 			case 'object':
 				var $property = expression.property.map(
@@ -53,14 +55,19 @@ function compile(program, environment, interpretation) {
 					$false = compile(expression.false, environment, interpretation);
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
-				var variable = expression.statement
+				var name = expression.statement
 					.filter(statement =>
-						typeof statement != 'string'
-						&&
+						typeof statement == 'string'
+						||
 						statement.type == 'var'
 					);
-				var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
-				var e = environment.push(new Scope({ ...variable, return: null }));
+				var name = name.reduce(
+					(name, v) => (
+						name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
+						name
+					), {}
+				);
+				var e = environment.push(new Scope({ ...name, return: 'variable' }));
 				var $statement =
 					expression.statement
 						.filter(statement =>
@@ -80,20 +87,25 @@ function compile(program, environment, interpretation) {
 					)
 				);
 			case 'function':
-				var e = environment.push(new Scope({ [expression.argument]: null, return: null }));
+				var e = environment.push(new Scope({ [expression.argument]: 'variable', return: 'variable' }));
 				var $expression = compile(expression.expression, e, interpretation);
 				return interpretation.expression.function(expression.argument, $expression);
 		}
 	}
 	if (program instanceof Array) {
-		var variable = program
+		var name = program
 			.filter(statement =>
-				typeof statement != 'string'
-				&&
+				typeof statement == 'string'
+				||
 				statement.type == 'var'
 			);
-		var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
-		var e = environment.push(new Scope(variable));
+		var name = name.reduce(
+			(name, v) => (
+				name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
+				name
+			), {}
+		);
+		var e = environment.push(new Scope(name));
 		var $statement =
 			program
 				.filter(statement =>
@@ -144,14 +156,19 @@ function compile(program, environment, interpretation) {
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[$left.type]($left, $right);
 			case 'block':
-				var variable = statement.statement
+				var name = statement.statement
 					.filter(statement =>
-						typeof statement != 'string'
-						&&
+						typeof statement == 'string'
+						||
 						statement.type == 'var'
 					);
-				var variable = variable.reduce((variable, v) => (variable[v.identifier] = null, variable), {});
-				var e = environment.push(new Scope(variable));
+				var name = name.reduce(
+					(name, v) => (
+						name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
+						name
+					), {}
+				);
+				var e = environment.push(new Scope(name));
 				var $statement =
 					statement.statement
 						.filter(statement =>
@@ -171,6 +188,10 @@ function compile(program, environment, interpretation) {
 					)
 				);
 			case 'goto':
+				var resolution = environment.resolve(statement.label);
+				if (!resolution) throw new CompileError.UndefinedLabel(statement);
+				var [type, depth] = resolution;
+				if (type != 'label') throw new CompileError.UndefinedLabel(statement);
 				return interpretation.statement.goto(statement.label);
 			case 'expression':
 				return interpretation.concat(
