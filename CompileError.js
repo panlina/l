@@ -1,12 +1,12 @@
 class CompileError extends Error {
-	constructor(expression) {
+	constructor(program) {
 		super();
-		this.expression = expression;
+		this.program = program;
 	}
 }
 class UndefinedName extends CompileError {
 	constructor(expression) { super(expression); }
-	get message() { return `'${this.expression.identifier}' is not defined.`; }
+	get message() { return `'${this.program.identifier}' is not defined.`; }
 }
 CompileError.UndefinedName = UndefinedName;
 module.exports = CompileError;
