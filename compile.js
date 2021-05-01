@@ -55,34 +55,10 @@ function compile(program, environment, interpretation) {
 					$false = compile(expression.false, environment, interpretation);
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
-				var name = expression.statement
-					.filter(statement =>
-						typeof statement == 'string'
-						||
-						statement.type == 'var'
-					);
-				var name = name.reduce(
-					(name, v) => (
-						name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
-						name
-					), {}
-				);
-				var e = environment.push(new Scope({ ...name, return: 'variable' }));
-				var $statement =
-					expression.statement
-						.filter(statement =>
-							typeof statement == 'string'
-							||
-							statement.type != 'var'
-						)
-						.map(statement =>
-							typeof statement == 'string' ?
-								statement :
-								compile(statement, e, interpretation)
-						);
+				var e = environment.push(new Scope({ return: 'variable' }));
 				return interpretation.pushScope(
 					interpretation.concat(
-						interpretation.statement['[]']($statement),
+						compileStatements(expression.statement, e),
 						compile(new Expression.Name('return'), e, interpretation)
 					)
 				);
@@ -92,39 +68,11 @@ function compile(program, environment, interpretation) {
 				return interpretation.expression.function(expression.argument, $expression);
 		}
 	}
-	if (program instanceof Array) {
-		var name = program
-			.filter(statement =>
-				typeof statement == 'string'
-				||
-				statement.type == 'var'
-			);
-		var name = name.reduce(
-			(name, v) => (
-				name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
-				name
-			), {}
+	if (program instanceof Array)
+		return interpretation.concat(
+			compileStatements(program, environment),
+			interpretation.expression.literal(new Expression.Literal(undefined))
 		);
-		var e = environment.push(new Scope(name));
-		var $statement =
-			program
-				.filter(statement =>
-					typeof statement == 'string'
-					||
-					statement.type != 'var'
-				)
-				.map(statement =>
-					typeof statement == 'string' ?
-						statement :
-						compile(statement, e, interpretation)
-				);
-		return interpretation.pushScope(
-			interpretation.concat(
-				interpretation.statement['[]']($statement),
-				interpretation.expression.literal(new Expression.Literal(undefined)),
-			)
-		);
-	}
 	if (program instanceof Statement) {
 		var statement = program;
 		switch (statement.type) {
@@ -156,36 +104,9 @@ function compile(program, environment, interpretation) {
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[$left.type]($left, $right);
 			case 'block':
-				var name = statement.statement
-					.filter(statement =>
-						typeof statement == 'string'
-						||
-						statement.type == 'var'
-					);
-				var name = name.reduce(
-					(name, v) => (
-						name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
-						name
-					), {}
-				);
-				var e = environment.push(new Scope(name));
-				var $statement =
-					statement.statement
-						.filter(statement =>
-							typeof statement == 'string'
-							||
-							statement.type != 'var'
-						)
-						.map(statement =>
-							typeof statement == 'string' ?
-								statement :
-								compile(statement, e, interpretation)
-						);
-				return interpretation.pushScope(
-					interpretation.concat(
-						interpretation.statement['[]']($statement),
-						interpretation.expression.literal(new Expression.Literal(undefined))
-					)
+				return interpretation.concat(
+					compileStatements(statement.statement, environment),
+					interpretation.expression.literal(new Expression.Literal(undefined))
 				);
 			case 'goto':
 				var resolution = environment.resolve(statement.label);
@@ -213,6 +134,34 @@ function compile(program, environment, interpretation) {
 					)
 				], environment, interpretation);
 		}
+	}
+	function compileStatements(program, environment) {
+		var name = program
+			.filter(statement =>
+				typeof statement == 'string'
+				||
+				statement.type == 'var'
+			);
+		var name = name.reduce(
+			(name, v) => (
+				name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
+				name
+			), {}
+		);
+		var e = environment.push(new Scope(name));
+		var $statement =
+			program
+				.filter(statement =>
+					typeof statement == 'string'
+					||
+					statement.type != 'var'
+				)
+				.map(statement =>
+					typeof statement == 'string' ?
+						statement :
+						compile(statement, e, interpretation)
+				);
+		return interpretation.pushScope(interpretation.statement['[]']($statement));
 	}
 }
 module.exports = compile;
