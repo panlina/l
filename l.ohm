@@ -51,14 +51,14 @@ l {
 		| number
 		| string
 	ExpressionName = identifier
-	identifier = ~(("let" | "var" | "goto" | "while" | "do") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
+	identifier = ~(("let" | "var" | "goto" | "while" | "do" | "break") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
 	number = digit+
 	string = "\"" char* "\""
 	char = ~("\""|"\\") any	-- literal
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
 	Statements = (Statement | Label)*
 	Label = identifier ":"
-	Statement = StatementAssign | StatementVar | StatementBlock | StatementGoto | StatementExpression | StatementWhile
+	Statement = StatementAssign | StatementVar | StatementBlock | StatementGoto | StatementExpression | StatementWhile | StatementBreak
 		| "%" identifier "%"	-- placeholder
 	StatementAssign = "let" Expression ";"
 	StatementVar = "var" identifier ";"
@@ -66,4 +66,5 @@ l {
 	StatementGoto = "goto" identifier ";"
 	StatementExpression = Expression ";"
 	StatementWhile = "while" Expression "do" Statement
+	StatementBreak = "break" ";"
 }

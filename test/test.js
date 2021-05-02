@@ -137,6 +137,23 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.scope.return, 4);
 	});
+	it('break', function () {
+		var i = require('./f');
+		var l = `
+			var n;
+			let n = 10;
+			while 1 do {
+				n = 4 ? (break;) : 0;
+				let n = n - 1;
+			}
+			let return = n;
+		`;
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
+		var environment = new Environment(new Scope({}));
+		f(environment);
+		assert.equal(environment.scope.return, 4);
+	});
 	it('sum', function () {
 		var i = require('./f');
 		var l = `
@@ -173,6 +190,14 @@ describe('compile', function () {
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
 			}, CompileError.UndefinedLabel);
+		});
+		it('break outside while', function () {
+			var i = require('./f');
+			var l = "break;";
+			var l = parse(l);
+			assert.throws(() => {
+				var f = compile(l, new Environment(new Scope({})), i);
+			}, CompileError.BreakOutsideWhile);
 		});
 	});
 });

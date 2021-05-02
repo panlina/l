@@ -39,6 +39,10 @@ export class While extends Statement {
 	statement: Statement;
 }
 
+export class Break extends Statement {
+	constructor();
+}
+
 export class Placeholder extends Expression {
 	constructor(name: string);
 	name: string;

@@ -113,6 +113,8 @@ function generate(program) {
 				return `${$expression};`;
 			case 'while':
 				return `while ${generate(statement.condition)} do ${generate(statement.statement)}`;
+			case 'break':
+				return "break;";
 			case 'placeholder':
 				return `%${statement.name}%`;
 		}

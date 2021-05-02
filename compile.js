@@ -121,18 +121,25 @@ function compile(program, environment, interpretation) {
 				);
 			case 'while':
 				return compile([
-					'',
+					'while:before',
 					new Statement.Expression(
 						new Expression.Conditional(
 							statement.condition,
 							new Expression.Statement([
 								statement.statement,
-								new Statement.Goto('')
+								new Statement.Goto('while:before')
 							]),
 							new Expression.Statement([])
 						)
-					)
+					),
+					'while:after'
 				], environment, interpretation);
+			case 'break':
+				var resolution = environment.resolve("while:after");
+				if (!resolution) throw new CompileError.BreakOutsideWhile(statement);
+				var [type, depth] = resolution;
+				if (type != 'label') throw new CompileError.BreakOutsideWhile(statement);
+				return interpretation.statement.goto("while:after");
 		}
 	}
 	function compileStatements(program, environment) {

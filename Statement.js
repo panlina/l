@@ -48,6 +48,12 @@ class While extends Statement {
 	}
 }
 
+class Break extends Statement {
+	constructor() {
+		super('break');
+	}
+}
+
 class Placeholder extends Statement {
 	constructor(name) {
 		super('placeholder');
@@ -62,4 +68,5 @@ module.exports.Block = Block;
 module.exports.Goto = Goto;
 module.exports.Expression = Expression;
 module.exports.While = While;
+module.exports.Break = Break;
 module.exports.Placeholder = Placeholder;
