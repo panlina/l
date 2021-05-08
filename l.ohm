@@ -48,12 +48,14 @@ l {
 		| ExpressionArray
 		| ExpressionTuple
 		| ExpressionName
+		| null
 		| false
 		| true
 		| number
 		| string
 	ExpressionName = identifier
-	identifier = ~(("let" | "var" | "goto" | "while" | "do" | "break" | "false" | "true") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
+	identifier = ~(("let" | "var" | "goto" | "while" | "do" | "break" | "null" | "false" | "true") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
+	null = "null"
 	false = "false"
 	true = "true"
 	number = digit+

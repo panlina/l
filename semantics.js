@@ -2,6 +2,7 @@ var grammar = require('./grammar');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
 var semantics = grammar.createSemantics().addOperation('parse', {
+	null: _null => new Expression.Literal(null),
 	false: _false => new Expression.Literal(false),
 	true: _true => new Expression.Literal(true),
 	number: x => new Expression.Literal(+x.sourceString),
