@@ -58,7 +58,14 @@ l {
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
 	Statements = (Statement | Label)*
 	Label = identifier ":"
-	Statement = StatementAssign | StatementVar | StatementBlock | StatementGoto | StatementExpression | StatementWhile | StatementBreak
+	Statement =
+		StatementAssign
+		| StatementVar
+		| StatementBlock
+		| StatementGoto
+		| StatementExpression
+		| StatementWhile
+		| StatementBreak
 		| "%" identifier "%"	-- placeholder
 	StatementAssign = "let" Expression ";"
 	StatementVar = "var" identifier ";"
