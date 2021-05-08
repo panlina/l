@@ -142,7 +142,7 @@ describe('compile', function () {
 		var l = `
 			var n;
 			let n = 10;
-			while 1 do {
+			while true do {
 				n = 4 ? (break;) : 0;
 				let n = n - 1;
 			}
