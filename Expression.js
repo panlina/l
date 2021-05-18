@@ -11,6 +11,33 @@ class Literal extends Expression {
 	}
 }
 
+class Null extends Expression {
+	constructor() {
+		super('null');
+	}
+}
+
+class Boolean extends Expression {
+	constructor(value) {
+		super('boolean');
+		this.value = value;
+	}
+}
+
+class Number extends Expression {
+	constructor(value) {
+		super('number');
+		this.value = value;
+	}
+}
+
+class String extends Expression {
+	constructor(value) {
+		super('string');
+		this.value = value;
+	}
+}
+
 class Name extends Expression {
 	constructor(identifier) {
 		super('name');
@@ -105,6 +132,10 @@ class Placeholder extends Expression {
 
 module.exports = Expression;
 module.exports.Literal = Literal;
+module.exports.Null = Null;
+module.exports.Boolean = Boolean;
+module.exports.Number = Number;
+module.exports.String = String;
 module.exports.Name = Name;
 module.exports.Object = Object;
 module.exports.Array = Array;

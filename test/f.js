@@ -2,6 +2,10 @@ var Scope = require("../Scope");
 var i = {
 	expression: {
 		literal: expression => () => expression.value,
+		null: expression => () => expression.value,
+		boolean: expression => () => expression.value,
+		number: expression => () => expression.value,
+		string: expression => () => expression.value,
 		name: (expression, resolution) => {
 			var [, depth] = resolution;
 			return environment => {

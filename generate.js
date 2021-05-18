@@ -6,6 +6,14 @@ function generate(program) {
 		switch (expression.type) {
 			case 'literal':
 				return JSON.stringify(expression.value);
+			case 'null':
+				return JSON.stringify(expression.value);
+			case 'boolean':
+				return JSON.stringify(expression.value);
+			case 'number':
+				return JSON.stringify(expression.value);
+			case 'string':
+				return JSON.stringify(expression.value);
 			case 'name':
 				return expression.identifier;
 			case 'object':
@@ -122,6 +130,10 @@ function generate(program) {
 }
 var precedence = {
 	literal: 0,
+	null: 0,
+	boolean: 0,
+	number: 0,
+	string: 0,
 	name: 0,
 	property: 1,
 	element: 1,

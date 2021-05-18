@@ -2,6 +2,10 @@ import Expression from './Expression';
 interface Interpretation<T> {
 	expression: {
 		literal: (expression: Expression.Literal) => T;
+		null: (expression: Expression.Null) => T;
+		boolean: (expression: Expression.Boolean) => T;
+		number: (expression: Expression.Number) => T;
+		string: (expression: Expression.String) => T;
 		name: (expression: Expression.Name, resolution: [null, number]) => T;
 		object: ($property: { name: string, value: T }[]) => T;
 		array: ($element: T[]) => T;

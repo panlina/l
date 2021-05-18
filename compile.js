@@ -8,6 +8,14 @@ function compile(program, environment, interpretation) {
 		switch (expression.type) {
 			case 'literal':
 				return interpretation.expression.literal(expression, compile);
+			case 'null':
+				return interpretation.expression.null(expression, compile);
+			case 'boolean':
+				return interpretation.expression.boolean(expression, compile);
+			case 'number':
+				return interpretation.expression.number(expression, compile);
+			case 'string':
+				return interpretation.expression.string(expression, compile);
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) throw new CompileError.UndefinedName(expression);

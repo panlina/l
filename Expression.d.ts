@@ -10,6 +10,25 @@ export class Literal extends Expression {
 	value;
 }
 
+export class Null extends Expression {
+	constructor();
+}
+
+export class Boolean extends Expression {
+	constructor(value: boolean);
+	value: boolean;
+}
+
+export class Number extends Expression {
+	constructor(value: number);
+	value: number;
+}
+
+export class String extends Expression {
+	constructor(value: string);
+	value: string;
+}
+
 export class Name extends Expression {
 	constructor(identifier: string);
 	identifier: string;
