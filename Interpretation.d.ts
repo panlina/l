@@ -1,7 +1,7 @@
 import Expression from './Expression';
 interface Interpretation<T> {
 	expression: {
-		literal: (expression: Expression.Literal) => T;
+		undefined: (expression: Expression.Undefined) => T;
 		null: (expression: Expression.Null) => T;
 		boolean: (expression: Expression.Boolean) => T;
 		number: (expression: Expression.Number) => T;

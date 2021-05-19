@@ -1,7 +1,7 @@
 var Scope = require("../Scope");
 var i = {
 	expression: {
-		literal: expression => () => expression.value,
+		undefined: expression => () => undefined,
 		null: expression => () => expression.value,
 		boolean: expression => () => expression.value,
 		number: expression => () => expression.value,

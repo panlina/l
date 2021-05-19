@@ -4,10 +4,9 @@ class Expression {
 	}
 }
 
-class Literal extends Expression {
-	constructor(value) {
-		super('literal');
-		this.value = value;
+class Undefined extends Expression {
+	constructor() {
+		super('undefined');
 	}
 }
 
@@ -131,7 +130,7 @@ class Placeholder extends Expression {
 }
 
 module.exports = Expression;
-module.exports.Literal = Literal;
+module.exports.Undefined = Undefined;
 module.exports.Null = Null;
 module.exports.Boolean = Boolean;
 module.exports.Number = Number;

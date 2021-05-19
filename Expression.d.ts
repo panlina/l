@@ -5,9 +5,8 @@ declare class Expression {
 
 export = Expression;
 
-export class Literal extends Expression {
-	constructor(value);
-	value;
+export class Undefined extends Expression {
+	constructor();
 }
 
 export class Null extends Expression {

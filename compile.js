@@ -6,8 +6,8 @@ function compile(program, environment, interpretation) {
 	if (program instanceof Expression) {
 		var expression = program;
 		switch (expression.type) {
-			case 'literal':
-				return interpretation.expression.literal(expression, compile);
+			case 'undefined':
+				return interpretation.expression.undefined(expression, compile);
 			case 'null':
 				return interpretation.expression.null(expression, compile);
 			case 'boolean':
@@ -79,7 +79,7 @@ function compile(program, environment, interpretation) {
 	if (program instanceof Array)
 		return interpretation.concat(
 			compileStatements(program, environment),
-			interpretation.expression.literal(new Expression.Literal(undefined))
+			interpretation.expression.undefined(new Expression.Undefined())
 		);
 	if (program instanceof Statement) {
 		var statement = program;
@@ -114,7 +114,7 @@ function compile(program, environment, interpretation) {
 			case 'block':
 				return interpretation.concat(
 					compileStatements(statement.statement, environment),
-					interpretation.expression.literal(new Expression.Literal(undefined))
+					interpretation.expression.undefined(new Expression.Undefined())
 				);
 			case 'goto':
 				var resolution = environment.resolve(statement.label);
@@ -125,7 +125,7 @@ function compile(program, environment, interpretation) {
 			case 'expression':
 				return interpretation.concat(
 					compile(statement.expression, environment, interpretation),
-					interpretation.expression.literal(new Expression.Literal(undefined))
+					interpretation.expression.undefined(new Expression.Undefined())
 				);
 			case 'while':
 				return compile([
