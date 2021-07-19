@@ -1,4 +1,5 @@
 var Scope = require("../Scope");
+var Statement = require("../Statement");
 var i = {
 	expression: {
 		undefined: expression => () => undefined,
@@ -58,7 +59,7 @@ var i = {
 			var labelDictionary = {};
 			for (var i = 0, j = 0; i < $statement.length; i++) {
 				var statement = $statement[i];
-				if (typeof statement == 'string')
+				if (Statement.isLabel(statement))
 					labelDictionary[statement] = j;
 				else
 					j++;

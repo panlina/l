@@ -153,13 +153,13 @@ function compile(program, environment, interpretation) {
 	function compileStatements(program, environment) {
 		var name = program
 			.filter(statement =>
-				typeof statement == 'string'
+				Statement.isLabel(statement)
 				||
 				statement.type == 'var'
 			);
 		var name = name.reduce(
 			(name, v) => (
-				name[typeof v == 'string' ? v : v.identifier] = typeof v == 'string' ? 'label' : 'variable',
+				name[Statement.isLabel(v) ? v : v.identifier] = Statement.isLabel(v) ? 'label' : 'variable',
 				name
 			), {}
 		);
@@ -167,12 +167,12 @@ function compile(program, environment, interpretation) {
 		var $statement =
 			program
 				.filter(statement =>
-					typeof statement == 'string'
+					Statement.isLabel(statement)
 					||
 					statement.type != 'var'
 				)
 				.map(statement =>
-					typeof statement == 'string' ?
+					Statement.isLabel(statement) ?
 						statement :
 						compile(statement, e, interpretation)
 				);

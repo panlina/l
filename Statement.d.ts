@@ -18,14 +18,16 @@ export class Var extends Statement {
 	identifier: string;
 }
 
+export type Label = string;
+
 export class Block extends Statement {
-	constructor(statement: (Statement | string)[]);
-	statement: (Statement | string)[];
+	constructor(statement: (Statement | Label)[]);
+	statement: (Statement | Label)[];
 }
 
 export class Goto extends Statement {
-	constructor(label: string);
-	label: string;
+	constructor(label: Label);
+	label: Label;
 }
 
 export class Expression extends Statement {

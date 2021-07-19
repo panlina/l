@@ -101,7 +101,7 @@ function generate(program) {
 	if (program instanceof Array)
 		return program.map(
 			statement =>
-				typeof statement == 'string' ?
+				Statement.isLabel(statement) ?
 					`${statement}:` :
 					generate(statement)
 		).join('');

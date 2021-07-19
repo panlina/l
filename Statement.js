@@ -61,6 +61,10 @@ class Placeholder extends Statement {
 	}
 }
 
+function isLabel(statement) {
+	return typeof statement == 'string';
+}
+
 module.exports = Statement;
 module.exports.Assign = Assign;
 module.exports.Var = Var;
@@ -70,3 +74,4 @@ module.exports.Expression = Expression;
 module.exports.While = While;
 module.exports.Break = Break;
 module.exports.Placeholder = Placeholder;
+module.exports.isLabel = isLabel;

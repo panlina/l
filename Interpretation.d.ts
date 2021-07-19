@@ -1,4 +1,5 @@
 import Expression from './Expression';
+import { Label } from './Statement';
 interface Interpretation<T> {
 	expression: {
 		undefined: (expression: Expression.Undefined) => T;
@@ -17,8 +18,8 @@ interface Interpretation<T> {
 		conditional: ($condition: T, $true: T, $false: T) => T;
 	};
 	statement: {
-		'[]': ($statement: (T | string)[]) => T;
-		goto: (label: string) => T;
+		'[]': ($statement: (T | Label)[]) => T;
+		goto: (label: Label) => T;
 	};
 	assign: {
 		name: ($left: { identifier: string, resolution: [null, number] }, $right: T) => T;
