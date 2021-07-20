@@ -122,6 +122,19 @@ describe('compile', function () {
 		f(environment);
 		assert.equal(environment.scope.return, 24);
 	});
+	it('y combinator', function () {
+		var i = require('./f');
+		var l = `
+			var y; let y = (f => (x => x x) (x => f (y => (x x) y)));
+			var f; let f = y (f => (n => n > 1 ? n * f (n - 1) : 1));
+			let return = f 4;
+		`;
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
+		var environment = new Environment(new Scope({}));
+		f(environment);
+		assert.equal(environment.scope.return, 24);
+	});
 	it('while', function () {
 		var i = require('./f');
 		var l = `
