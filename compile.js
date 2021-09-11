@@ -2,6 +2,8 @@ const { Scope } = require('.');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
 var CompileError = require('./CompileError');
+var i = 0;
+function I() { return i++; }
 function compile(program, environment, interpretation) {
 	if (program instanceof Expression) {
 		var expression = program;
@@ -107,6 +109,26 @@ function compile(program, environment, interpretation) {
 							expression: compile(statement.left.expression, environment, interpretation),
 							property: statement.left.property
 						};
+						break;
+					case 'array':
+					case 'tuple':
+						var i = I();
+						return compileStatements(
+							[
+								new Statement.Var(`.t${i}`),
+								new Statement.Assign(new Expression.Name(`.t${i}`), statement.right),
+								...statement.left.element.map(
+									(e, j) => new Statement.Assign(
+										e,
+										new Expression.Element(
+											new Expression.Name(`.t${i}`),
+											new Expression.Number(j)
+										)
+									)
+								)
+							],
+							environment
+						);
 						break;
 				}
 				var $right = compile(statement.right, environment, interpretation);
