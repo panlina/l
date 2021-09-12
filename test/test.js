@@ -80,6 +80,17 @@ describe('compile', function () {
 		assert.equal(environment.scope.b, 1);
 		assert.equal(environment.scope.c, 2);
 	});
+	it('object destructuring assign', function () {
+		var i = require('./f');
+		var l = "let d = { a: 0, bc: { b: 1, c: 2 }}; let { a: a@0, bc: { b: b, c: c }} = d;";
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
+		var environment = new Environment(new Scope({ a: [] }));
+		f(environment);
+		assert.equal(environment.scope.a[0], 0);
+		assert.equal(environment.scope.b, 1);
+		assert.equal(environment.scope.c, 2);
+	});
 	it('scope', function () {
 		var i = require('./f');
 		var l = "var a; let a = 0; { var a; let a = 1; } let return = a;";

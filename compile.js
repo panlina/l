@@ -130,6 +130,25 @@ function compile(program, environment, interpretation) {
 							environment
 						);
 						break;
+					case 'object':
+						var i = I();
+						return compileStatements(
+							[
+								new Statement.Var(`.t${i}`),
+								new Statement.Assign(new Expression.Name(`.t${i}`), statement.right),
+								...statement.left.property.map(
+									p => new Statement.Assign(
+										p.value,
+										new Expression.Property(
+											new Expression.Name(`.t${i}`),
+											p.name
+										)
+									)
+								)
+							],
+							environment
+						);
+						break;
 				}
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[$left.type]($left, $right);
