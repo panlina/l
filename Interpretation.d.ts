@@ -16,7 +16,7 @@ interface Interpretation<T> {
 		call: ($expression: T, $argument: T) => T;
 		operation: ($operator: string, $left?: T, $right?: T) => T;
 		conditional: ($condition: T, $true: T, $false: T) => T;
-		function: ($argument: string, $expression: T) => T;
+		function: ($argument: Expression.Name, $expression: T) => T;
 	};
 	statement: {
 		'[]': ($statement: (T | Label)[]) => T;

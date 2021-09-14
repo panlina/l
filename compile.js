@@ -73,7 +73,7 @@ function compile(program, environment, interpretation) {
 					)
 				);
 			case 'function':
-				var e = environment.push(new Scope({ [expression.argument]: 'variable', return: 'variable' }));
+				var e = environment.push(new Scope({ [expression.argument.identifier]: 'variable', return: 'variable' }));
 				var $expression = compile(expression.expression, e, interpretation);
 				return interpretation.expression.function(expression.argument, $expression);
 		}

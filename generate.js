@@ -91,7 +91,8 @@ function generate(program) {
 				var $expression = generate(expression.expression);
 				if (precedence[expression.expression.type] > precedence[expression.type])
 					$expression = `(${$expression})`;
-				return `${expression.argument}=>${$expression}`;
+				var $argument = generate(expression.argument);
+				return `${$argument}=>${$expression}`;
 			case 'placeholder':
 				return `%${expression.name}%`;
 		}

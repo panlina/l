@@ -86,8 +86,8 @@ export class Statement extends Expression {
 }
 
 export class Function extends Expression {
-	constructor(argument: string, expression: Expression);
-	argument: string;
+	constructor(argument: Expression.Name, expression: Expression);
+	argument: Expression.Name;
 	expression: Expression;
 }
 

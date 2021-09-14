@@ -50,7 +50,7 @@ var i = {
 			environment =>
 				argument => $expression(
 					environment.push(
-						new Scope({ [$argument]: argument })
+						new Scope({ [$argument.identifier]: argument })
 					)
 				)
 	},
