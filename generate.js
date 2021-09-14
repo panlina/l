@@ -37,13 +37,13 @@ function generate(program) {
 				var $expression = generate(expression.expression);
 				if (precedence[expression.expression.type] >= precedence[expression.type])
 					$expression = `(${$expression})`;
-				var argument = generate(expression.argument);
+				var $argument = generate(expression.argument);
 				if (precedence[expression.argument.type] > precedence[expression.type])
-					argument = `(${argument})`;
-				return `${$expression} ${argument}`;
+					$argument = `(${$argument})`;
+				return `${$expression} ${$argument}`;
 			case 'operation':
 				if (expression.left) {
-					var left = generate(expression.left);
+					var $left = generate(expression.left);
 					if (
 						precedence[expression.left.type] > precedence[expression.type]
 						||
@@ -51,10 +51,10 @@ function generate(program) {
 						&&
 						operatorPrecedence(expression.left) > operatorPrecedence(expression)
 					)
-						left = `(${left})`;
+						$left = `(${$left})`;
 				}
 				if (expression.right) {
-					var right = generate(expression.right);
+					var $right = generate(expression.right);
 					if (
 						precedence[expression.right.type] > precedence[expression.type]
 						||
@@ -62,10 +62,10 @@ function generate(program) {
 						&&
 						operatorPrecedence(expression.right) >= operatorPrecedence(expression)
 					)
-						right = `(${right})`;
+						$right = `(${$right})`;
 				}
-				var operator = expression.operator;
-				return `${left || ''}${operator}${right || ''}`;
+				var $operator = expression.operator;
+				return `${$left || ''}${$operator}${$right || ''}`;
 				function operatorPrecedence(expression) {
 					return require('./operator').resolve(
 						expression.operator,
