@@ -73,9 +73,10 @@ function compile(program, environment, interpretation) {
 					)
 				);
 			case 'function':
-				var e = environment.push(new Scope({ [expression.argument.identifier]: 'variable', return: 'variable' }));
+				var e = environment.push(new Scope({ argument: 'variable', [expression.argument.identifier]: 'variable', return: 'variable' }));
 				var $expression = compile(expression.expression, e, interpretation);
-				return interpretation.expression.function(expression.argument, $expression);
+				var $bind = compile(new Statement.Assign(expression.argument, new Expression.Name('argument')), e, interpretation);
+				return interpretation.expression.function($bind, $expression);
 		}
 	}
 	if (program instanceof Array)

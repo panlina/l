@@ -46,11 +46,14 @@ var i = {
 			environment => $condition(environment) ?
 				$true(environment) :
 				$false(environment),
-		function: ($argument, $expression) =>
+		function: ($bind, $expression) =>
 			environment =>
-				argument => $expression(
+				argument => i.concat(
+					$bind,
+					$expression
+				)(
 					environment.push(
-						new Scope({ [$argument.identifier]: argument })
+						new Scope({ argument: argument })
 					)
 				)
 	},
