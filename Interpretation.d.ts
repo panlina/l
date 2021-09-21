@@ -16,7 +16,6 @@ interface Interpretation<T> {
 		call: ($expression: T, $argument: T) => T;
 		operation: ($operator: string, $left?: T, $right?: T) => T;
 		conditional: ($condition: T, $true: T, $false: T) => T;
-		function: ($bind: T, $expression: T) => T;
 	};
 	statement: {
 		'[]': ($statement: (T | Label)[]) => T;
@@ -29,5 +28,6 @@ interface Interpretation<T> {
 	};
 	concat: ($effect: T, $return: T) => T;
 	pushScope: (f: T) => T;
+	pushScopeArgument: (f: T) => T;
 }
 export = Interpretation;

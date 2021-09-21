@@ -45,17 +45,7 @@ var i = {
 		conditional: ($condition, $true, $false) =>
 			environment => $condition(environment) ?
 				$true(environment) :
-				$false(environment),
-		function: ($bind, $expression) =>
-			environment =>
-				argument => i.concat(
-					$bind,
-					$expression
-				)(
-					environment.push(
-						new Scope({ argument: argument })
-					)
-				)
+				$false(environment)
 	},
 	statement: {
 		'[]': $statement => {
@@ -112,7 +102,8 @@ var i = {
 		$effect(environment);
 		return $return(environment);
 	},
-	pushScope: f => environment => f(environment.push(new Scope({})))
+	pushScope: f => environment => f(environment.push(new Scope({}))),
+	pushScopeArgument: f => environment => argument => f(environment.push(new Scope({ argument: argument })))
 };
 function operate(operator, left, right) {
 	switch (operator) {

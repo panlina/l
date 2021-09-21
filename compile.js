@@ -76,7 +76,7 @@ function compile(program, environment, interpretation) {
 				var e = environment.push(new Scope({ argument: 'variable', [expression.argument.identifier]: 'variable', return: 'variable' }));
 				var $expression = compile(expression.expression, e, interpretation);
 				var $bind = compile(new Statement.Assign(expression.argument, new Expression.Name('argument')), e, interpretation);
-				return interpretation.expression.function($bind, $expression);
+				return interpretation.pushScopeArgument(interpretation.concat($bind, $expression));
 		}
 	}
 	if (program instanceof Array)
