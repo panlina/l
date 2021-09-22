@@ -91,6 +91,15 @@ describe('compile', function () {
 		assert.equal(environment.scope.b, 1);
 		assert.equal(environment.scope.c, 2);
 	});
+	it('function argument destructuring', function () {
+		var i = require('./f');
+		var l = "var f; let f = ([a, b] => a + b); let return = f [1, 2];";
+		var l = parse(l);
+		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
+		var environment = new Environment(new Scope({}));
+		f(environment);
+		assert.equal(environment.scope.return, 3);
+	});
 	it('scope', function () {
 		var i = require('./f');
 		var l = "var a; let a = 0; { var a; let a = 1; } let return = a;";

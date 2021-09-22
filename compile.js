@@ -73,10 +73,18 @@ function compile(program, environment, interpretation) {
 					)
 				);
 			case 'function':
-				var e = environment.push(new Scope({ argument: 'variable', [expression.argument.identifier]: 'variable', return: 'variable' }));
+				var e = environment.push(new Scope({ argument: 'variable', return: 'variable' }));
+				for (var n of name(expression.argument))
+					e.scope[n.identifier] = 'variable';
 				var $expression = compile(expression.expression, e, interpretation);
 				var $bind = compile(new Statement.Assign(expression.argument, new Expression.Name('argument')), e, interpretation);
 				return interpretation.pushScopeArgument(interpretation.concat($bind, $expression));
+				function name(expression) {
+					switch (expression.type) {
+						case 'name': return [expression];
+						case 'array': case 'tuple': return expression.element.map(name).flat();
+					}
+				}
 		}
 	}
 	if (program instanceof Array)
