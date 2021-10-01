@@ -16,7 +16,12 @@ class BreakOutsideWhile extends CompileError {
 	constructor(statement) { super(statement); }
 	get message() { return `break must be inside while.`; }
 }
+class InvalidAssignment extends CompileError {
+	constructor(statement) { super(statement); }
+	get message() { return `cannot assign to ${this.program.left.type} expression.`; }
+}
 CompileError.UndefinedName = UndefinedName;
 CompileError.UndefinedLabel = UndefinedLabel;
 CompileError.BreakOutsideWhile = BreakOutsideWhile;
+CompileError.InvalidAssignment = InvalidAssignment;
 module.exports = CompileError;

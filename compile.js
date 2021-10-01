@@ -158,6 +158,8 @@ function compile(program, environment, interpretation) {
 							environment
 						);
 						break;
+					default:
+						throw new CompileError.InvalidAssignment(statement);
 				}
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[$left.type]($left, $right);
