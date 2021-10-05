@@ -2,9 +2,6 @@ var grammar = require('./grammar');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
 var semantics = grammar.createSemantics().addOperation('parse', {
-	null: _null => new Expression.Null(),
-	false: _false => new Expression.Boolean(false),
-	true: _true => new Expression.Boolean(true),
 	number: x => new Expression.Number(+x.sourceString),
 	string: (open, x, close) => new Expression.String(x.children.map(char => char.parse()).join('')),
 	char_literal: x => x.sourceString,

@@ -8,3 +8,4 @@ export * as Interpretation from './Interpretation';
 export * as parse from './parse';
 export * as compile from './compile';
 export * as generate from './generate';
+export * as global from './global';

@@ -4,10 +4,6 @@ function generate(program) {
 	if (program instanceof Expression) {
 		var expression = program;
 		switch (expression.type) {
-			case 'null':
-				return JSON.stringify(expression.value);
-			case 'boolean':
-				return JSON.stringify(expression.value);
 			case 'number':
 				return JSON.stringify(expression.value);
 			case 'string':
@@ -128,8 +124,6 @@ function generate(program) {
 	}
 }
 var precedence = {
-	null: 0,
-	boolean: 0,
 	number: 0,
 	string: 0,
 	name: 0,

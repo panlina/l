@@ -5,6 +5,7 @@ var generate = require('../generate');
 var l = require('../l');
 var Environment = require('../Environment');
 var Scope = require('../Scope');
+var global = require('../global');
 
 describe('parse, generate', function () {
 	it('expression', function () {
@@ -46,8 +47,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "var a; let a = length \"abc\"; var b; let b = a + 1; goto RETURN; let b = b + 1; RETURN: let return = b;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ length: 'variable', return: 'variable' })), i);
-		var environment = new Environment(new Scope({ length: s => s.length }));
+		var f = compile(l, global.push(new Scope({ length: 'variable', return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({ length: s => s.length }));
 		f(environment);
 		assert.equal(environment.scope.return, 4);
 	});
@@ -55,8 +56,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "var p; let p = [{x:1,y:0},{x:2,y:2}]; var d; let d = sqrt ((p@0.x - p@1.x) * (p@0.x - p@1.x) + (p@0.y - p@1.y) * (p@0.y - p@1.y)); let return = d;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ sqrt: 'variable', return: 'variable' })), i);
-		var environment = new Environment(new Scope({ sqrt: Math.sqrt }));
+		var f = compile(l, global.push(new Scope({ sqrt: 'variable', return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({ sqrt: Math.sqrt }));
 		f(environment);
 		assert.equal(environment.scope.return, Math.sqrt(5));
 	});
@@ -64,8 +65,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "var p; let p = []; let p@0={x:0,y:0}; let p@0.x=1; var x; let x = p@0.x; let return = x;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 1);
 	});
@@ -73,8 +74,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "let d = [0, {1, 2}]; let [a@0, {b, c}] = d;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
-		var environment = new Environment(new Scope({ a: [] }));
+		var f = compile(l, global.push(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({ a: [] }));
 		f(environment);
 		assert.equal(environment.scope.a[0], 0);
 		assert.equal(environment.scope.b, 1);
@@ -84,8 +85,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "let d = { a: 0, bc: { b: 1, c: 2 }}; let { a: a@0, bc: { b: b, c: c }} = d;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
-		var environment = new Environment(new Scope({ a: [] }));
+		var f = compile(l, global.push(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({ a: [] }));
 		f(environment);
 		assert.equal(environment.scope.a[0], 0);
 		assert.equal(environment.scope.b, 1);
@@ -95,8 +96,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "var f; let f = ([a, b] => a + b); let return = f [1, 2];";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 3);
 	});
@@ -104,8 +105,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "var a; let a = 0; { var a; let a = 1; } let return = a;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 0);
 	});
@@ -113,8 +114,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "reset 0;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', reset: 'variable' })), i);
-		var environment = new Environment(new Scope({
+		var f = compile(l, global.push(new Scope({ a: 'variable', reset: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({
 			a: 1,
 			reset: () => {
 				for (var name in environment.scope)
@@ -128,8 +129,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "let d = (a ? (let b = 0; let c = 1; let return = 0;) : (let b = 1; let c = 0; let return = 1;));";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
-		var environment = new Environment(new Scope({ a: 0 }));
+		var f = compile(l, global.push(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({ a: 0 }));
 		f(environment);
 		assert.equal(environment.scope.b, 1);
 		assert.equal(environment.scope.c, 0);
@@ -139,8 +140,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "var f; let f = (a => (b => b + b + a)); var g; let g = f 1; let return = g 2;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 5);
 	});
@@ -148,8 +149,8 @@ describe('compile', function () {
 		var i = require('./f');
 		var l = "var f; let f = (n => n > 1 ? n * f (n - 1) : 1); let return = f 4;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 24);
 	});
@@ -161,8 +162,8 @@ describe('compile', function () {
 			let return = f 4;
 		`;
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 24);
 	});
@@ -176,8 +177,8 @@ describe('compile', function () {
 			let return = n;
 		`;
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 4);
 	});
@@ -193,8 +194,8 @@ describe('compile', function () {
 			let return = n;
 		`;
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 4);
 	});
@@ -212,8 +213,8 @@ describe('compile', function () {
 			let return = s;
 		`;
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ return: 'variable' })), i);
-		var environment = new Environment(new Scope({}));
+		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
+		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
 		assert.equal(environment.scope.return, 55);
 	});
