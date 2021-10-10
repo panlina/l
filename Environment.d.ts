@@ -1,7 +1,7 @@
 import * as Scope from './Scope';
 
 export = class Environment<T> {
-	constructor(scope: Environment['scope'], parent: Environment['parent']);
+	constructor(scope: Environment<T>['scope'], parent: Environment<T>['parent']);
 	scope: Scope<T>;
 	parent: Environment<T> | undefined;
 	resolve(name: string): [T, number] | undefined;
