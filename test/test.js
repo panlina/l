@@ -94,12 +94,12 @@ describe('compile', function () {
 	});
 	it('function argument destructuring', function () {
 		var i = require('./f');
-		var l = "var f; let f = ([a, b] => a + b); let return = f [1, 2];";
+		var l = "var f; let f = ([a, { b: b, c: c }] => a + b * c); let return = f [1, { b: 2, c: 3 }];";
 		var l = parse(l);
 		var f = compile(l, global.push(new Scope({ return: 'variable' })), i);
 		var environment = require('./f.global').push(new Scope({}));
 		f(environment);
-		assert.equal(environment.scope.return, 3);
+		assert.equal(environment.scope.return, 7);
 	});
 	it('scope', function () {
 		var i = require('./f');
