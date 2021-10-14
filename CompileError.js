@@ -20,8 +20,13 @@ class InvalidAssignment extends CompileError {
 	constructor(statement) { super(statement); }
 	get message() { return `cannot assign to ${this.program.left.type} expression.`; }
 }
+class InvalidFunctionParameter extends CompileError {
+	constructor(expression) { super(expression); }
+	get message() { return `function parameter is invalid.`; }
+}
 CompileError.UndefinedName = UndefinedName;
 CompileError.UndefinedLabel = UndefinedLabel;
 CompileError.BreakOutsideWhile = BreakOutsideWhile;
 CompileError.InvalidAssignment = InvalidAssignment;
+CompileError.InvalidFunctionParameter = InvalidFunctionParameter;
 module.exports = CompileError;

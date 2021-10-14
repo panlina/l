@@ -252,5 +252,13 @@ describe('compile', function () {
 				var f = compile(l, new Environment(new Scope({})), i);
 			}, CompileError.InvalidAssignment);
 		});
+		it('invalid function parameter', function () {
+			var i = require('./f');
+			var l = "f x => x";
+			var l = parse(l);
+			assert.throws(() => {
+				var f = compile(l, new Environment(new Scope({})), i);
+			}, CompileError.InvalidFunctionParameter);
+		});
 	});
 });
