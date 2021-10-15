@@ -8,4 +8,3 @@ export * as Statement from './Statement';
 export * as Scope from './Scope';
 export * as Environment from './Environment';
 export * as Interpretation from './Interpretation';
-export * as global from './global';
