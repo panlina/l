@@ -19,7 +19,7 @@ describe('parse, generate', function () {
 		assert.equal(generate(syntax), source);
 	});
 	it("precedence", function () {
-		var source = "x=>!f [0,1]@1+1|1&0?1:0";
+		var source = "x=>!f [0,1]@1+1|1&0?#true:#false";
 		var syntax = parse(source);
 		assert.equal(generate(syntax), source);
 	});
@@ -187,7 +187,7 @@ describe('compile', function () {
 		var l = `
 			var n;
 			let n = 10;
-			while true do {
+			while #true do {
 				n = 4 ? (break;) : 0;
 				let n = n - 1;
 			}
