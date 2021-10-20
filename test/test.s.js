@@ -8,10 +8,10 @@ var Scope = require('../Scope');
 describe('compile.s', function () {
 	it('', function () {
 		var i = require('./s');
-		var l = "#undefined";
+		var l = "{ a: #null, b: [#false, {123, \"abc\"}] }";
 		var l = parse(l);
 		var s = compile(l, new Environment(new Scope({})), i);
-		var v = eval(g(s).code);
-		assert.equal(v, undefined);
+		var v = eval(`(${g(s).code})`);
+		assert.deepEqual(v, { a: null, b: [false, [123, "abc"]] });
 	});
 });
