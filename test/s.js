@@ -6,7 +6,18 @@ var i = {
 		boolean: expression => t.booleanLiteral(expression.value),
 		number: expression => t.numericLiteral(expression.value),
 		string: expression => t.stringLiteral(expression.value),
-		name: expression => t.identifier(expression.identifier)
+		name: expression => t.identifier(expression.identifier),
+		object: $property =>
+			t.objectExpression(
+				$property.map(
+					p => t.objectProperty(
+						t.stringLiteral(p.name),
+						p.value
+					)
+				)
+			),
+		array: $element => t.arrayExpression($element),
+		tuple: $element => t.arrayExpression($element)
 	}
 };
 module.exports = i;
