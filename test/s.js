@@ -5,7 +5,8 @@ var i = {
 		null: expression => t.nullLiteral(),
 		boolean: expression => t.booleanLiteral(expression.value),
 		number: expression => t.numericLiteral(expression.value),
-		string: expression => t.stringLiteral(expression.value)
+		string: expression => t.stringLiteral(expression.value),
+		name: expression => t.identifier(expression.identifier)
 	}
 };
 module.exports = i;
