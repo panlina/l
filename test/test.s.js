@@ -30,4 +30,12 @@ describe('compile.s', function () {
 		var v = eval(g(s).code);
 		assert.equal(v, 3);
 	});
+	it('conditional', function () {
+		var i = require('./s');
+		var l = "#true ? 1 : 0";
+		var l = parse(l);
+		var s = compile(l, new Environment(new Scope({})), i);
+		var v = eval(g(s).code);
+		assert.equal(v, 1);
+	});
 });

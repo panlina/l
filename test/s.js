@@ -24,7 +24,9 @@ var i = {
 			t.memberExpression($expression, $index, true),
 		call: ($expression, $argument) =>
 			t.callExpression($expression, [$argument]),
-		operation: operate
+		operation: operate,
+		conditional: ($condition, $true, $false) =>
+			t.conditionalExpression($condition, $true, $false)
 	}
 };
 function operate(operator, left, right) {
