@@ -21,7 +21,40 @@ var i = {
 		property: ($expression, $property) =>
 			t.memberExpression($expression, t.identifier($property)),
 		element: ($expression, $index) =>
-			t.memberExpression($expression, $index, true)
+			t.memberExpression($expression, $index, true),
+		call: ($expression, $argument) =>
+			t.callExpression($expression, [$argument]),
+		operation: operate
 	}
 };
+function operate(operator, left, right) {
+	switch (operator) {
+		case '*':
+			return t.binaryExpression('*', left, right);
+		case '/':
+			return t.binaryExpression('/', left, right);
+		case '+':
+			return left != undefined ? t.binaryExpression('+', left, right) : right;
+		case '-':
+			return left != undefined ? t.binaryExpression('-', left, right) : t.unaryExpression('-', right);
+		case '<=':
+			return t.binaryExpression('<=', left, right);
+		case '=':
+			return t.binaryExpression('==', left, right);
+		case '>=':
+			return t.binaryExpression('>=', left, right);
+		case '<':
+			return t.binaryExpression('<', left, right);
+		case '!=':
+			return t.binaryExpression('!=', left, right);
+		case '>':
+			return t.binaryExpression('>', left, right);
+		case '!':
+			return t.unaryExpression('!', right);
+		case '&':
+			return t.binaryExpression('&&', left, right);
+		case '|':
+			return t.binaryExpression('||', left, right);
+	}
+}
 module.exports = i;

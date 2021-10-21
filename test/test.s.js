@@ -22,4 +22,12 @@ describe('compile.s', function () {
 		var v = eval(g(s).code);
 		assert.equal(v, 1);
 	});
+	it('call, operation', function () {
+		var i = require('./s');
+		var l = "parseInt \"1\" + parseInt \"2\"";
+		var l = parse(l);
+		var s = compile(l, new Environment(new Scope({ parseInt: 'variable' })), i);
+		var v = eval(g(s).code);
+		assert.equal(v, 3);
+	});
 });
