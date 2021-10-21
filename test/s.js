@@ -17,7 +17,11 @@ var i = {
 				)
 			),
 		array: $element => t.arrayExpression($element),
-		tuple: $element => t.arrayExpression($element)
+		tuple: $element => t.arrayExpression($element),
+		property: ($expression, $property) =>
+			t.memberExpression($expression, t.identifier($property)),
+		element: ($expression, $index) =>
+			t.memberExpression($expression, $index, true)
 	}
 };
 module.exports = i;

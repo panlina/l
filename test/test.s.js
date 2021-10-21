@@ -14,4 +14,12 @@ describe('compile.s', function () {
 		var v = eval(`(${g(s).code})`);
 		assert.deepEqual(v, { a: null, b: [false, [123, "abc"]] });
 	});
+	it('property, element', function () {
+		var i = require('./s');
+		var l = "[0, { a: 1 }]@1.a";
+		var l = parse(l);
+		var s = compile(l, new Environment(new Scope({})), i);
+		var v = eval(g(s).code);
+		assert.equal(v, 1);
+	});
 });
