@@ -27,6 +27,26 @@ var i = {
 		operation: operate,
 		conditional: ($condition, $true, $false) =>
 			t.conditionalExpression($condition, $true, $false)
+	},
+	assign: {
+		name: ($left, $right) => t.expressionStatement(
+			t.assignmentExpression('=',
+				t.identifier($left.identifier),
+				$right
+			)
+		),
+		element: ($left, $right) => t.expressionStatement(
+			t.assignmentExpression('=',
+				t.memberExpression($left.expression, $left.index, true),
+				$right
+			)
+		),
+		property: ($left, $right) => t.expressionStatement(
+			t.assignmentExpression('=',
+				t.memberExpression($left.expression, t.identifier($left.property)),
+				$right
+			)
+		)
 	}
 };
 function operate(operator, left, right) {

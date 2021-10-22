@@ -38,4 +38,27 @@ describe('compile.s', function () {
 		var v = eval(g(s).code);
 		assert.equal(v, 1);
 	});
+	describe('assign', function () {
+		it('name', function () {
+			var i = require('./s');
+			var l = "let a = 1;";
+			var l = parse(l, 'Statement');
+			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
+			assert.equal(g(s).code, "a = 1;");
+		});
+		it('element', function () {
+			var i = require('./s');
+			var l = "let a@1 = 1;";
+			var l = parse(l, 'Statement');
+			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
+			assert.equal(g(s).code, "a[1] = 1;");
+		});
+		it('property', function () {
+			var i = require('./s');
+			var l = "let a.b = 1;";
+			var l = parse(l, 'Statement');
+			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
+			assert.equal(g(s).code, "a.b = 1;");
+		});
+	});
 });
