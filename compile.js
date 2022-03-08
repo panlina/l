@@ -9,15 +9,15 @@ function compile(program, environment, interpretation) {
 		var expression = program;
 		switch (expression.type) {
 			case 'undefined':
-				return interpretation.expression.undefined(expression, compile);
+				return interpretation.expression.undefined(expression);
 			case 'null':
-				return interpretation.expression.null(expression, compile);
+				return interpretation.expression.null(expression);
 			case 'boolean':
-				return interpretation.expression.boolean(expression, compile);
+				return interpretation.expression.boolean(expression);
 			case 'number':
-				return interpretation.expression.number(expression, compile);
+				return interpretation.expression.number(expression);
 			case 'string':
-				return interpretation.expression.string(expression, compile);
+				return interpretation.expression.string(expression);
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) throw new CompileError.UndefinedName(expression);
