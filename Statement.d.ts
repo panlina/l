@@ -49,3 +49,5 @@ export class Placeholder extends Expression {
 	constructor(name: string);
 	name: string;
 }
+
+export function isLabel(statement: Statement | Label): statement is Label;
