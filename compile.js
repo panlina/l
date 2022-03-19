@@ -204,8 +204,8 @@ function compile(program, environment, interpretation) {
 				return interpretation.statement.goto("while:after");
 		}
 	}
-	function compileStatements(program, environment) {
-		var name = program
+	function compileStatements(statement, environment) {
+		var name = statement
 			.filter(statement =>
 				Statement.isLabel(statement)
 				||
@@ -219,7 +219,7 @@ function compile(program, environment, interpretation) {
 		);
 		var e = environment.push(new Scope(name));
 		var $statement =
-			program
+			statement
 				.filter(statement =>
 					Statement.isLabel(statement)
 					||
