@@ -220,13 +220,8 @@ function compile(program, environment, interpretation) {
 		var e = environment.push(new Scope(name));
 		var $statement =
 			statement
-				.filter(statement =>
-					Statement.isLabel(statement)
-					||
-					statement.type != 'var'
-				)
 				.map(statement =>
-					Statement.isLabel(statement) ?
+					Statement.isLabel(statement) || statement.type == 'var' ?
 						statement :
 						compile(statement, e, interpretation)
 				);

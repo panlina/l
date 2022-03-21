@@ -1,4 +1,5 @@
 import Expression from './Expression';
+import Statement from './Statement';
 import { Label } from './Statement';
 interface Interpretation<T> {
 	expression: {
@@ -18,7 +19,7 @@ interface Interpretation<T> {
 		conditional: ($condition: T, $true: T, $false: T) => T;
 	};
 	statement: {
-		'[]': ($statement: (T | Label)[]) => T;
+		'[]': ($statement: (T | Statement.Var | Label)[]) => T;
 		goto: (label: Label) => T;
 	};
 	assign: {

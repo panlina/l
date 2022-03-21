@@ -54,6 +54,7 @@ var i = {
 				var statement = $statement[i];
 				if (Statement.isLabel(statement))
 					labelDictionary[statement] = j;
+				else if (statement.type == 'var');
 				else
 					j++;
 			}
