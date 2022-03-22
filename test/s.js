@@ -28,27 +28,65 @@ var i = {
 		conditional: ($condition, $true, $false) =>
 			t.conditionalExpression($condition, $true, $false)
 	},
+	statement: {
+		'[]': $statement =>
+			iife(
+				$statement.map(
+					$statement =>
+						$statement.type == 'var' ?
+							t.variableDeclaration("var", [t.variableDeclarator(t.identifier($statement.identifier))]) :
+							t.expressionStatement($statement)
+				)
+			)
+	},
 	assign: {
-		name: ($left, $right) => t.expressionStatement(
-			t.assignmentExpression('=',
-				t.identifier($left.identifier),
-				$right
+		name: ($left, $right) => iife([
+			t.expressionStatement(
+				t.assignmentExpression('=',
+					t.identifier($left.identifier),
+					$right
+				)
 			)
+		]),
+		element: ($left, $right) => iife([
+			t.expressionStatement(
+				t.assignmentExpression('=',
+					t.memberExpression($left.expression, $left.index, true),
+					$right
+				)
+			)
+		]),
+		property: ($left, $right) => iife([
+			t.expressionStatement(
+				t.assignmentExpression('=',
+					t.memberExpression($left.expression, t.identifier($left.property)),
+					$right
+				)
+			)
+		])
+	},
+	concat: ($effect, $return) =>
+		t.callExpression(
+			t.parenthesizedExpression(
+				t.functionExpression(t.identifier(''), [], t.blockStatement([
+					t.expressionStatement($effect),
+					t.returnStatement($return)
+				]))
+			),
+			[]
 		),
-		element: ($left, $right) => t.expressionStatement(
-			t.assignmentExpression('=',
-				t.memberExpression($left.expression, $left.index, true),
-				$right
-			)
-		),
-		property: ($left, $right) => t.expressionStatement(
-			t.assignmentExpression('=',
-				t.memberExpression($left.expression, t.identifier($left.property)),
-				$right
-			)
-		)
-	}
+	pushScope: $expression => $expression
 };
+function iife(statement) {
+	return t.callExpression(
+		t.parenthesizedExpression(
+			t.functionExpression(t.identifier(''), [], t.blockStatement(
+				statement
+			))
+		),
+		[]
+	);
+}
 function operate(operator, left, right) {
 	switch (operator) {
 		case '*':

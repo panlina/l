@@ -44,21 +44,30 @@ describe('compile.s', function () {
 			var l = "let a = 1;";
 			var l = parse(l, 'Statement');
 			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-			assert.equal(g(s).code, "a = 1;");
+			assert.equal(g(s).code, "(function () {\n  a = 1;\n})()");
 		});
 		it('element', function () {
 			var i = require('./s');
 			var l = "let a@1 = 1;";
 			var l = parse(l, 'Statement');
 			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-			assert.equal(g(s).code, "a[1] = 1;");
+			assert.equal(g(s).code, "(function () {\n  a[1] = 1;\n})()");
 		});
 		it('property', function () {
 			var i = require('./s');
 			var l = "let a.b = 1;";
 			var l = parse(l, 'Statement');
 			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-			assert.equal(g(s).code, "a.b = 1;");
+			assert.equal(g(s).code, "(function () {\n  a.b = 1;\n})()");
 		});
+	});
+	it('program', function () {
+		var i = require('./s');
+		var l = "let a = 1;";
+		var l = parse(l);
+		var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
+		var a = 0;
+		eval(g(s).code);
+		assert.equal(a, 1);
 	});
 });
