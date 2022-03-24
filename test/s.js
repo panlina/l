@@ -75,7 +75,11 @@ var i = {
 			),
 			[]
 		),
-	pushScope: $expression => $expression
+	pushScope: $expression => $expression,
+	pushScopeArgument: $expression =>
+		t.functionExpression(t.identifier(''), [t.identifier('argument')], t.blockStatement([
+			t.returnStatement($expression)
+		]))
 };
 function iife(statement) {
 	return t.callExpression(

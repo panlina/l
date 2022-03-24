@@ -39,6 +39,14 @@ describe('compile.s', function () {
 		var v = vm.runInContext(`(${g(s).code})`, vm.createContext());
 		assert.equal(v, 1);
 	});
+	it('function', function () {
+		var i = require('./s');
+		var l = "n => n + 1";
+		var l = parse(l);
+		var s = compile(l, new Environment(new Scope({})), i);
+		var v = vm.runInContext(`(${g(s).code})`, vm.createContext());
+		assert.deepEqual(v(0), 1);
+	});
 	describe('assign', function () {
 		it('name', function () {
 			var i = require('./s');
