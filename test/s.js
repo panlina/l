@@ -116,9 +116,9 @@ function operate(operator, left, right) {
 		case '!':
 			return t.unaryExpression('!', right);
 		case '&':
-			return t.binaryExpression('&&', left, right);
+			return t.logicalExpression('&&', left, right);
 		case '|':
-			return t.binaryExpression('||', left, right);
+			return t.logicalExpression('||', left, right);
 	}
 }
 module.exports = i;
