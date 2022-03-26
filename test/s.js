@@ -6,7 +6,7 @@ var i = {
 		boolean: expression => t.booleanLiteral(expression.value),
 		number: expression => t.numericLiteral(expression.value),
 		string: expression => t.stringLiteral(expression.value),
-		name: expression => t.identifier(expression.identifier),
+		name: expression => t.identifier(escapeIdentifier(expression.identifier)),
 		object: $property =>
 			t.objectExpression(
 				$property.map(
@@ -34,7 +34,7 @@ var i = {
 				$statement.map(
 					$statement =>
 						$statement.type == 'var' ?
-							t.variableDeclaration("var", [t.variableDeclarator(t.identifier($statement.identifier))]) :
+							t.variableDeclaration("var", [t.variableDeclarator(t.identifier(escapeIdentifier($statement.identifier)))]) :
 							t.expressionStatement($statement)
 				)
 			)
@@ -43,7 +43,7 @@ var i = {
 		name: ($left, $right) => iife([
 			t.expressionStatement(
 				t.assignmentExpression('=',
-					t.identifier($left.identifier),
+					t.identifier(escapeIdentifier($left.identifier)),
 					$right
 				)
 			)
@@ -90,6 +90,9 @@ function iife(statement) {
 		),
 		[]
 	);
+}
+function escapeIdentifier(identifier) {
+	return identifier == 'return' ? '$$return' : identifier;
 }
 function operate(operator, left, right) {
 	switch (operator) {
