@@ -48,7 +48,7 @@ var i = {
 				$false(environment)
 	},
 	statement: {
-		'[]': $statement => {
+		'[]': ($statement, $expression) => {
 			var labelDictionary = {};
 			for (var i = 0, j = 0; i < $statement.length; i++) {
 				var statement = $statement[i];
@@ -60,6 +60,7 @@ var i = {
 			}
 			$statement = $statement.filter(statement => typeof statement == 'function');
 			return environment => {
+				environment = environment.push(new Scope({}));
 				for (var i = 0; i < $statement.length;) {
 					var statement = $statement[i];
 					let l;
@@ -75,6 +76,7 @@ var i = {
 					else
 						i++;
 				}
+				return $expression(environment);
 			};
 		},
 		goto: label =>
@@ -99,12 +101,7 @@ var i = {
 				$left.expression(environment)[$left.property] = $right(environment);
 			}
 	},
-	concat: ($effect, $return) => environment => {
-		$effect(environment);
-		return $return(environment);
-	},
-	pushScope: f => environment => f(environment.push(new Scope({}))),
-	pushScopeArgument: f => environment => argument => f(environment.push(new Scope({ argument: argument })))
+	abstract: f => environment => argument => f(environment.push(new Scope({ argument: argument })))
 };
 function operate(operator, left, right) {
 	switch (operator) {

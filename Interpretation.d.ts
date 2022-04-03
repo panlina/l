@@ -19,7 +19,7 @@ interface Interpretation<T> {
 		conditional: ($condition: T, $true: T, $false: T) => T;
 	};
 	statement: {
-		'[]': ($statement: (T | Statement.Var | Label)[]) => T;
+		'[]': ($statement: (T | Statement.Var | Label)[], $expression: T) => T;
 		goto: (label: Label) => T;
 	};
 	assign: {
@@ -27,8 +27,6 @@ interface Interpretation<T> {
 		element: ($left: { expression: T, index: T }, $right: T) => T;
 		property: ($left: { expression: T, property: string }, $right: T) => T;
 	};
-	concat: ($effect: T, $return: T) => T;
-	pushScope: (f: T) => T;
-	pushScopeArgument: (f: T) => T;
+	abstract: (f: T) => T;
 }
 export = Interpretation;

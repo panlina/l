@@ -29,15 +29,16 @@ var i = {
 			t.conditionalExpression($condition, $true, $false)
 	},
 	statement: {
-		'[]': $statement =>
-			iife(
-				$statement.map(
+		'[]': ($statement, $expression) =>
+			iife([
+				...$statement.map(
 					$statement =>
 						$statement.type == 'var' ?
 							t.variableDeclaration("var", [t.variableDeclarator(t.identifier(escapeIdentifier($statement.identifier)))]) :
 							t.expressionStatement($statement)
-				)
-			)
+				),
+				t.returnStatement($expression)
+			])
 	},
 	assign: {
 		name: ($left, $right) => iife([
@@ -65,21 +66,10 @@ var i = {
 			)
 		])
 	},
-	concat: ($effect, $return) =>
-		t.callExpression(
-			t.parenthesizedExpression(
-				t.functionExpression(t.identifier(''), [], t.blockStatement([
-					t.expressionStatement($effect),
-					t.returnStatement($return)
-				]))
-			),
-			[]
-		),
-	pushScope: $expression => $expression,
-	pushScopeArgument: $expression =>
-		t.functionExpression(t.identifier(''), [t.identifier('argument')], t.blockStatement([
-			t.returnStatement($expression)
-		]))
+	abstract: $expression => (
+		$expression.callee.expression.params.push(t.identifier('argument')),
+		$expression.callee.expression
+	)
 };
 function iife(statement) {
 	return t.callExpression(

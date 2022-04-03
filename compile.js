@@ -65,20 +65,23 @@ function compile(program, environment, interpretation) {
 					$false = compile(expression.false, environment, interpretation);
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
-				var e = environment.push(new Scope({ return: 'variable' }));
-				return interpretation.pushScope(
-					interpretation.concat(
-						compileStatements(expression.statement, e),
-						compile(new Expression.Name('return'), e, interpretation)
-					)
+				return compileStatements(
+					[new Statement.Var('return'), ...expression.statement],
+					new Expression.Name('return'),
+					environment
 				);
 			case 'function':
-				var e = environment.push(new Scope({ argument: 'variable', return: 'variable' }));
-				for (var n of name(expression.argument))
-					e.scope[n.identifier] = 'variable';
-				var $expression = compile(expression.expression, e, interpretation);
-				var $bind = compile(new Statement.Assign(expression.argument, new Expression.Name('argument')), e, interpretation);
-				return interpretation.pushScopeArgument(interpretation.concat($bind, $expression));
+				return interpretation.abstract(
+					compileStatements(
+						[
+							new Statement.Var('return'),
+							...name(expression.argument).map(n => new Statement.Var(n.identifier)),
+							new Statement.Assign(expression.argument, new Expression.Name('argument'))
+						],
+						expression.expression,
+						environment.push(new Scope({ argument: 'variable' }))
+					)
+				);
 				function name(expression) {
 					switch (expression.type) {
 						case 'name': return [expression];
@@ -90,9 +93,10 @@ function compile(program, environment, interpretation) {
 		}
 	}
 	if (program instanceof Array)
-		return interpretation.concat(
-			compileStatements(program, environment),
-			interpretation.expression.undefined(new Expression.Undefined())
+		return compileStatements(
+			program,
+			new Expression.Undefined(),
+			environment
 		);
 	if (program instanceof Statement) {
 		var statement = program;
@@ -138,6 +142,7 @@ function compile(program, environment, interpretation) {
 									)
 								)
 							],
+							new Expression.Undefined(),
 							environment
 						);
 						break;
@@ -157,6 +162,7 @@ function compile(program, environment, interpretation) {
 									)
 								)
 							],
+							new Expression.Undefined(),
 							environment
 						);
 						break;
@@ -166,9 +172,10 @@ function compile(program, environment, interpretation) {
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[$left.type]($left, $right);
 			case 'block':
-				return interpretation.concat(
-					compileStatements(statement.statement, environment),
-					interpretation.expression.undefined(new Expression.Undefined())
+				return compileStatements(
+					statement.statement,
+					new Expression.Undefined(),
+					environment
 				);
 			case 'goto':
 				var resolution = environment.resolve(statement.label);
@@ -177,9 +184,10 @@ function compile(program, environment, interpretation) {
 				if (type != 'label') throw new CompileError.UndefinedLabel(statement);
 				return interpretation.statement.goto(statement.label);
 			case 'expression':
-				return interpretation.concat(
-					compile(statement.expression, environment, interpretation),
-					interpretation.expression.undefined(new Expression.Undefined())
+				return compileStatements(
+					[statement.expression],
+					new Expression.Undefined(),
+					environment
 				);
 			case 'while':
 				return compile([
@@ -204,7 +212,7 @@ function compile(program, environment, interpretation) {
 				return interpretation.statement.goto("while:after");
 		}
 	}
-	function compileStatements(statement, environment) {
+	function compileStatements(statement, expression, environment) {
 		var name = statement
 			.filter(statement =>
 				Statement.isLabel(statement)
@@ -225,7 +233,8 @@ function compile(program, environment, interpretation) {
 						statement :
 						compile(statement, e, interpretation)
 				);
-		return interpretation.pushScope(interpretation.statement['[]']($statement));
+		var $expression = compile(expression, e, interpretation);
+		return interpretation.statement['[]']($statement, $expression);
 	}
 }
 module.exports = compile;
