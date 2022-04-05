@@ -79,6 +79,16 @@ describe('compile.s', function () {
 			assert.deepEqual(context, { a: { b: 1 } });
 		});
 	});
+	it('goto', function () {
+		var i = require('./s');
+		var l = "goto L; let a = a + 1; L: let a = a + 2;";
+		var l = parse(l);
+		var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
+		var context = { a: 0 };
+		vm.createContext(context);
+		vm.runInContext(g(s).code, context);
+		assert.deepEqual(context, { a: 2 });
+	});
 	it('program', function () {
 		var i = require('./s');
 		var l = "let a = 1; var b; let b = a + 1; let a = b;";

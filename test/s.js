@@ -1,4 +1,5 @@
 var t = require("@babel/types");
+var Statement = require("../Statement");
 var i = {
 	expression: {
 		undefined: expression => t.unaryExpression("void", t.numericLiteral(0)),
@@ -29,16 +30,74 @@ var i = {
 			t.conditionalExpression($condition, $true, $false)
 	},
 	statement: {
-		'[]': ($statement, $expression) =>
-			iife([
+		'[]': ($statement, $expression) => {
+			var labels = $statement.filter(Statement.isLabel);
+			var $statement = [
 				...$statement.map(
 					$statement =>
-						$statement.type == 'var' ?
-							t.variableDeclaration("var", [t.variableDeclarator(t.identifier(escapeIdentifier($statement.identifier)))]) :
-							t.expressionStatement($statement)
+						Statement.isLabel($statement) ? $statement :
+							$statement.type == 'var' ?
+								t.variableDeclaration("var", [t.variableDeclarator(t.identifier(escapeIdentifier($statement.identifier)))]) :
+								t.expressionStatement($statement)
 				),
 				t.returnStatement($expression)
-			])
+			];
+			if (labels.length) {
+				var $case = [];
+				for (var i = -1; i < $statement.length;) {
+					var label =
+						i < 0 ?
+							t.unaryExpression("void", t.numericLiteral(0)) :
+							t.stringLiteral($statement[i]);
+					i++;
+					var consequent = [];
+					while (i < $statement.length && !Statement.isLabel($statement[i]))
+						consequent.push($statement[i++]);
+					$case.push(t.switchCase(label, consequent));
+				}
+			}
+			if (labels.length)
+				$statement = [
+					t.forStatement(undefined, undefined, undefined, t.blockStatement([
+						t.variableDeclaration("var", [t.variableDeclarator(t.identifier('label'))]),
+						t.tryStatement(
+							t.blockStatement([
+								t.switchStatement(
+									t.identifier('label'),
+									$case
+								),
+								t.breakStatement()
+							]),
+							t.catchClause(
+								t.identifier('l'),
+								t.blockStatement([
+									t.ifStatement(
+										t.callExpression(
+											t.memberExpression(
+												t.arrayExpression(
+													labels.map(label => t.stringLiteral(label))
+												),
+												t.identifier('includes')
+											),
+											[t.identifier('l')]
+										),
+										t.expressionStatement(
+											t.assignmentExpression('=',
+												t.identifier('label'),
+												t.identifier('l')
+											)
+										)
+									)
+								])
+							)
+						)
+					]))
+				];
+			return iife($statement);
+		},
+		goto: label => iife([
+			t.throwStatement(t.stringLiteral(label))
+		])
 	},
 	assign: {
 		name: ($left, $right) => iife([
