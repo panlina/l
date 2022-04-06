@@ -94,8 +94,8 @@ function compile(program, environment, interpretation) {
 	}
 	if (program instanceof Array)
 		return compileStatements(
-			program,
-			new Expression.Undefined(),
+			[new Statement.Var('return'), ...program],
+			new Expression.Name('return'),
 			environment
 		);
 	if (program instanceof Statement) {
