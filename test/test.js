@@ -71,9 +71,9 @@ describe('compile', function () {
 	});
 	it('array/tuple destructuring assign', function () {
 		var i = require('./f');
-		var l = "let d = [0, {1, 2}]; let [a@0, {b, c}] = d;";
+		var l = "var d; let d = [0, {1, 2}]; let [a@0, {b, c}] = d;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
+		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable' })), i);
 		var environment = new Environment(new Scope({ a: [] }));
 		f(environment);
 		assert.equal(environment.scope.a[0], 0);
@@ -82,9 +82,9 @@ describe('compile', function () {
 	});
 	it('object destructuring assign', function () {
 		var i = require('./f');
-		var l = "let d = { a: 0, bc: { b: 1, c: 2 }}; let { a: a@0, bc: { b: b, c: c }} = d;";
+		var l = "var d; let d = { a: 0, bc: { b: 1, c: 2 }}; let { a: a@0, bc: { b: b, c: c }} = d;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
+		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable' })), i);
 		var environment = new Environment(new Scope({ a: [] }));
 		f(environment);
 		assert.equal(environment.scope.a[0], 0);
