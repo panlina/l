@@ -111,18 +111,12 @@ describe('compile', function () {
 	});
 	it('expression statement', function () {
 		var i = require('./f');
-		var l = "reset 0;";
+		var l = "var reset; let reset = (_ => (let a = 0;)); reset 0;";
 		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', reset: 'variable' })), i);
-		var environment = new Environment(new Scope({
-			a: 1,
-			reset: () => {
-				for (var name in environment.scope)
-					delete environment.scope[name];
-			}
-		}));
+		var f = compile(l, new Environment(new Scope({ a: 'variable' })), i);
+		var environment = new Environment(new Scope({ a: 1 }));
 		f(environment);
-		assert.deepEqual(environment.scope, {});
+		assert.equal(environment.scope.a, 0);
 	});
 	it('statement expression', function () {
 		var i = require('./f');
