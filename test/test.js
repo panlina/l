@@ -41,6 +41,19 @@ it("quasiquote", function () {
 	assert.equal(generate(p), "let y=f x;let z=y;");
 });
 
+function test($case) {
+	var i = require('./f');
+	var l = $case.program;
+	var l = parse(l);
+	var f = compile(l, new Environment(new Scope(require('lodash.mapvalues')($case.environment, () => 'variable'))), i);
+	var environment = new Environment(new Scope($case.environment));
+	var v = f(environment);
+	if ('return' in $case)
+		assert.deepEqual(v, $case.return);
+	if ('effect' in $case)
+		assert.deepEqual(environment.scope, $case.effect);
+}
+
 describe('compile', function () {
 	it('', function () {
 		var i = require('./f');
@@ -52,164 +65,46 @@ describe('compile', function () {
 		assert.equal(v, 4);
 	});
 	it('distance', function () {
-		var i = require('./f');
-		var l = "var p; let p = [{x:1,y:0},{x:2,y:2}]; var d; let d = sqrt ((p@0.x - p@1.x) * (p@0.x - p@1.x) + (p@0.y - p@1.y) * (p@0.y - p@1.y)); let return = d;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ sqrt: 'variable' })), i);
-		var environment = new Environment(new Scope({ sqrt: Math.sqrt }));
-		var v = f(environment);
-		assert.equal(v, Math.sqrt(5));
+		test(require('./case/distance'));
 	});
 	it('assign', function () {
-		var i = require('./f');
-		var l = "var p; let p = []; let p@0={x:0,y:0}; let p@0.x=1; var x; let x = p@0.x; let return = x;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 1);
+		test(require('./case/assign'));
 	});
-	it('array/tuple destructuring assign', function () {
-		var i = require('./f');
-		var l = "var d; let d = [0, {1, 2}]; let [a@0, {b, c}] = d;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable' })), i);
-		var environment = new Environment(new Scope({ a: [] }));
-		f(environment);
-		assert.equal(environment.scope.a[0], 0);
-		assert.equal(environment.scope.b, 1);
-		assert.equal(environment.scope.c, 2);
+	it('array, tuple destructuring assign', function () {
+		test(require('./case/array, tuple destructuring assign'));
 	});
 	it('object destructuring assign', function () {
-		var i = require('./f');
-		var l = "var d; let d = { a: 0, bc: { b: 1, c: 2 }}; let { a: a@0, bc: { b: b, c: c }} = d;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable' })), i);
-		var environment = new Environment(new Scope({ a: [] }));
-		f(environment);
-		assert.equal(environment.scope.a[0], 0);
-		assert.equal(environment.scope.b, 1);
-		assert.equal(environment.scope.c, 2);
+		test(require('./case/object destructuring assign'));
 	});
 	it('function argument destructuring', function () {
-		var i = require('./f');
-		var l = "var f; let f = ([a, { b: b, c: c }] => a + b * c); let return = f [1, { b: 2, c: 3 }];";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 7);
+		test(require('./case/function argument destructuring'));
 	});
 	it('scope', function () {
-		var i = require('./f');
-		var l = "var a; let a = 0; { var a; let a = 1; } let return = a;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 0);
+		test(require('./case/scope'));
 	});
 	it('expression statement', function () {
-		var i = require('./f');
-		var l = "var reset; let reset = (_ => (let a = 0;)); reset 0;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-		var environment = new Environment(new Scope({ a: 1 }));
-		f(environment);
-		assert.equal(environment.scope.a, 0);
+		test(require('./case/expression statement'));
 	});
 	it('statement expression', function () {
-		var i = require('./f');
-		var l = "let d = (a ? (let b = 0; let c = 1; let return = 0;) : (let b = 1; let c = 0; let return = 1;));";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({ a: 'variable', b: 'variable', c: 'variable', d: 'variable' })), i);
-		var environment = new Environment(new Scope({ a: 0 }));
-		f(environment);
-		assert.equal(environment.scope.b, 1);
-		assert.equal(environment.scope.c, 0);
-		assert.equal(environment.scope.d, 1);
+		test(require('./case/statement expression'));
 	});
 	it('function expression', function () {
-		var i = require('./f');
-		var l = "var f; let f = (a => (b => b + b + a)); var g; let g = f 1; let return = g 2;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 5);
+		test(require('./case/function expression'));
 	});
 	it('factorial', function () {
-		var i = require('./f');
-		var l = "var f; let f = (n => n > 1 ? n * f (n - 1) : 1); let return = f 4;";
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 24);
+		test(require('./case/factorial'));
 	});
 	it('y combinator', function () {
-		var i = require('./f');
-		var l = `
-			var y; let y = (f => (x => x x) (x => f (y => (x x) y)));
-			var f; let f = y (f => (n => n > 1 ? n * f (n - 1) : 1));
-			let return = f 4;
-		`;
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 24);
+		test(require('./case/y combinator'));
 	});
 	it('while', function () {
-		var i = require('./f');
-		var l = `
-			var n;
-			let n = 10;
-			while n > 4 do
-				let n = n - 1;
-			let return = n;
-		`;
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 4);
+		test(require('./case/while'));
 	});
 	it('break', function () {
-		var i = require('./f');
-		var l = `
-			var n;
-			let n = 10;
-			while #true do {
-				n = 4 ? (break;) : 0;
-				let n = n - 1;
-			}
-			let return = n;
-		`;
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 4);
+		test(require('./case/break'));
 	});
 	it('sum', function () {
-		var i = require('./f');
-		var l = `
-			var s;
-			let s = 0;
-			var n;
-			let n = 1;
-			while n <= 10 do {
-				let s = s + n;
-				let n = n + 1;
-			}
-			let return = s;
-		`;
-		var l = parse(l);
-		var f = compile(l, new Environment(new Scope({})), i);
-		var environment = new Environment(new Scope({}));
-		var v = f(environment);
-		assert.equal(v, 55);
+		test(require('./case/sum'));
 	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
