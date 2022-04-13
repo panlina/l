@@ -6,38 +6,32 @@ var compile = require('../compile');
 var Environment = require('../Environment');
 var Scope = require('../Scope');
 
+function test($case) {
+	var i = require('./s');
+	var l = $case.program;
+	var l = parse(l);
+	var s = compile(l, new Environment(new Scope(require('lodash.mapvalues')($case.environment, () => 'variable'))), i);
+	var context = $case.environment;
+	vm.createContext(context);
+	var v = vm.runInContext(`(${g(s).code})`, context);
+	if ('return' in $case)
+		assert.deepEqual(v, $case.return);
+	if ('effect' in $case)
+		assert.deepEqual(context, $case.effect);
+}
+
 describe('compile.s', function () {
 	it('', function () {
-		var i = require('./s');
-		var l = "{ a: #null, b: [#false, {123, \"abc\"}] }";
-		var l = parse(l);
-		var s = compile(l, new Environment(new Scope({})), i);
-		var v = vm.runInContext(`(${g(s).code})`, vm.createContext());
-		assert.deepEqual(v, { a: null, b: [false, [123, "abc"]] });
+		test(require('./case/value'));
 	});
 	it('property, element', function () {
-		var i = require('./s');
-		var l = "[0, { a: 1 }]@1.a";
-		var l = parse(l);
-		var s = compile(l, new Environment(new Scope({})), i);
-		var v = vm.runInContext(`(${g(s).code})`, vm.createContext());
-		assert.equal(v, 1);
+		test(require('./case/property, element'));
 	});
 	it('call, operation', function () {
-		var i = require('./s');
-		var l = "parseInt \"1\" + parseInt \"2\"";
-		var l = parse(l);
-		var s = compile(l, new Environment(new Scope({ parseInt: 'variable' })), i);
-		var v = vm.runInContext(`(${g(s).code})`, vm.createContext());
-		assert.equal(v, 3);
+		test(require('./case/call, operation'));
 	});
 	it('conditional', function () {
-		var i = require('./s');
-		var l = "#true ? 1 : 0";
-		var l = parse(l);
-		var s = compile(l, new Environment(new Scope({})), i);
-		var v = vm.runInContext(`(${g(s).code})`, vm.createContext());
-		assert.equal(v, 1);
+		test(require('./case/conditional'));
 	});
 	it('function', function () {
 		var i = require('./s');
@@ -49,54 +43,19 @@ describe('compile.s', function () {
 	});
 	describe('assign', function () {
 		it('name', function () {
-			var i = require('./s');
-			var l = "let a = 1;";
-			var l = parse(l, 'Statement');
-			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-			var context = { a: 0 };
-			vm.createContext(context);
-			vm.runInContext(g(s).code, context);
-			assert.deepEqual(context, { a: 1 });
+			test(require('./case/assign/name'));
 		});
 		it('element', function () {
-			var i = require('./s');
-			var l = "let a@1 = 1;";
-			var l = parse(l, 'Statement');
-			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-			var context = { a: [, 0] };
-			vm.createContext(context);
-			vm.runInContext(g(s).code, context);
-			assert.deepEqual(context, { a: [, 1] });
+			test(require('./case/assign/element'));
 		});
 		it('property', function () {
-			var i = require('./s');
-			var l = "let a.b = 1;";
-			var l = parse(l, 'Statement');
-			var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-			var context = { a: { b: 0 } };
-			vm.createContext(context);
-			vm.runInContext(g(s).code, context);
-			assert.deepEqual(context, { a: { b: 1 } });
+			test(require('./case/assign/property'));
 		});
 	});
 	it('goto', function () {
-		var i = require('./s');
-		var l = "goto L; let a = a + 1; L: let a = a + 2;";
-		var l = parse(l);
-		var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-		var context = { a: 0 };
-		vm.createContext(context);
-		vm.runInContext(g(s).code, context);
-		assert.deepEqual(context, { a: 2 });
+		test(require('./case/goto'));
 	});
 	it('program', function () {
-		var i = require('./s');
-		var l = "let a = 1; var b; let b = a + 1; let a = b;";
-		var l = parse(l);
-		var s = compile(l, new Environment(new Scope({ a: 'variable' })), i);
-		var context = { a: 0 };
-		vm.createContext(context);
-		vm.runInContext(g(s).code, context);
-		assert.deepEqual(context, { a: 2 });
+		test(require('./case/program'));
 	});
 });
