@@ -58,4 +58,19 @@ describe('compile.s', function () {
 	it('program', function () {
 		test(require('./case/program'));
 	});
+	it('factorial', function () {
+		test(require('./case/factorial'));
+	});
+	it('y combinator', function () {
+		test(require('./case/y combinator'));
+	});
+	it('while', function () {
+		test(require('./case/while'));
+	});
+	it('break', function () {
+		test(require('./case/break'));
+	});
+	it('sum', function () {
+		test(require('./case/sum'));
+	});
 });
