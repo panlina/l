@@ -79,6 +79,9 @@ describe('compile', function () {
 	it('string', function () {
 		test(require('./case/string'));
 	});
+	it('name', function () {
+		test(require('./case/name'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
