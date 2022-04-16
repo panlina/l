@@ -64,6 +64,21 @@ describe('compile', function () {
 		var v = f(environment);
 		assert.equal(v, 4);
 	});
+	it('undefined', function () {
+		test(require('./case/undefined'));
+	});
+	it('null', function () {
+		test(require('./case/null'));
+	});
+	it('boolean', function () {
+		test(require('./case/boolean'));
+	});
+	it('number', function () {
+		test(require('./case/number'));
+	});
+	it('string', function () {
+		test(require('./case/string'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
