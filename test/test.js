@@ -97,6 +97,12 @@ describe('compile', function () {
 	it('element', function () {
 		test(require('./case/element'));
 	});
+	it('call', function () {
+		test(require('./case/call'));
+	});
+	it('operation', function () {
+		test(require('./case/operation'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
