@@ -82,6 +82,15 @@ describe('compile', function () {
 	it('name', function () {
 		test(require('./case/name'));
 	});
+	it('object', function () {
+		test(require('./case/object'));
+	});
+	it('array', function () {
+		test(require('./case/array'));
+	});
+	it('tuple', function () {
+		test(require('./case/tuple'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
