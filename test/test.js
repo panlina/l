@@ -91,6 +91,12 @@ describe('compile', function () {
 	it('tuple', function () {
 		test(require('./case/tuple'));
 	});
+	it('property', function () {
+		test(require('./case/property'));
+	});
+	it('element', function () {
+		test(require('./case/element'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
