@@ -103,6 +103,9 @@ describe('compile', function () {
 	it('operation', function () {
 		test(require('./case/operation'));
 	});
+	it('conditional', function () {
+		test(require('./case/conditional'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
