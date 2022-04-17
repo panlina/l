@@ -106,6 +106,9 @@ describe('compile', function () {
 	it('conditional', function () {
 		test(require('./case/conditional'));
 	});
+	it('statement expression', function () {
+		test(require('./case/statement expression'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
@@ -126,9 +129,6 @@ describe('compile', function () {
 	});
 	it('expression statement', function () {
 		test(require('./case/expression statement'));
-	});
-	it('statement expression', function () {
-		test(require('./case/statement expression'));
 	});
 	it('function expression', function () {
 		test(require('./case/function expression'));
