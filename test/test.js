@@ -109,6 +109,12 @@ describe('compile', function () {
 	it('statement expression', function () {
 		test(require('./case/statement expression'));
 	});
+	it('function', function () {
+		test(require('./case/function'));
+	});
+	it('higher order function', function () {
+		test(require('./case/higher order function'));
+	});
 	it('distance', function () {
 		test(require('./case/distance'));
 	});
@@ -129,9 +135,6 @@ describe('compile', function () {
 	});
 	it('expression statement', function () {
 		test(require('./case/expression statement'));
-	});
-	it('function expression', function () {
-		test(require('./case/function expression'));
 	});
 	it('factorial', function () {
 		test(require('./case/factorial'));
