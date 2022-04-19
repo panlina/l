@@ -133,20 +133,37 @@ describe('compile', function () {
 	it('scope', function () {
 		test(require('./case/scope'));
 	});
+	describe('assign', function () {
+		it('name', function () {
+			test(require('./case/assign/name'));
+		});
+		it('element', function () {
+			test(require('./case/assign/element'));
+		});
+		it('property', function () {
+			test(require('./case/assign/property'));
+		});
+	});
+	it('block', function () {
+		test(require('./case/block'));
+	});
+	it('goto', function () {
+		test(require('./case/goto'));
+	});
 	it('expression statement', function () {
 		test(require('./case/expression statement'));
-	});
-	it('factorial', function () {
-		test(require('./case/factorial'));
-	});
-	it('y combinator', function () {
-		test(require('./case/y combinator'));
 	});
 	it('while', function () {
 		test(require('./case/while'));
 	});
 	it('break', function () {
 		test(require('./case/break'));
+	});
+	it('factorial', function () {
+		test(require('./case/factorial'));
+	});
+	it('y combinator', function () {
+		test(require('./case/y combinator'));
 	});
 	it('sum', function () {
 		test(require('./case/sum'));
