@@ -115,24 +115,6 @@ describe('compile', function () {
 	it('higher order function', function () {
 		test(require('./case/higher order function'));
 	});
-	it('distance', function () {
-		test(require('./case/distance'));
-	});
-	it('assign', function () {
-		test(require('./case/assign'));
-	});
-	it('array, tuple destructuring assign', function () {
-		test(require('./case/array, tuple destructuring assign'));
-	});
-	it('object destructuring assign', function () {
-		test(require('./case/object destructuring assign'));
-	});
-	it('function argument destructuring', function () {
-		test(require('./case/function argument destructuring'));
-	});
-	it('scope', function () {
-		test(require('./case/scope'));
-	});
 	describe('assign', function () {
 		it('name', function () {
 			test(require('./case/assign/name'));
@@ -143,6 +125,15 @@ describe('compile', function () {
 		it('property', function () {
 			test(require('./case/assign/property'));
 		});
+	});
+	it('array, tuple destructuring assign', function () {
+		test(require('./case/array, tuple destructuring assign'));
+	});
+	it('object destructuring assign', function () {
+		test(require('./case/object destructuring assign'));
+	});
+	it('function argument destructuring', function () {
+		test(require('./case/function argument destructuring'));
 	});
 	it('block', function () {
 		test(require('./case/block'));
@@ -159,6 +150,9 @@ describe('compile', function () {
 	it('break', function () {
 		test(require('./case/break'));
 	});
+	it('distance', function () {
+		test(require('./case/distance'));
+	});
 	it('factorial', function () {
 		test(require('./case/factorial'));
 	});
@@ -167,6 +161,9 @@ describe('compile', function () {
 	});
 	it('sum', function () {
 		test(require('./case/sum'));
+	});
+	it('scope', function () {
+		test(require('./case/scope'));
 	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
