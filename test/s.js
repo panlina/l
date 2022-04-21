@@ -141,6 +141,8 @@ function iife(statement) {
 	);
 }
 function escapeIdentifier(identifier) {
+	if (identifier.startsWith('.'))
+		return identifier.replace('.', '$$$$');
 	return identifier == 'return' ? '$$return' : identifier;
 }
 function operate(operator, left, right) {
