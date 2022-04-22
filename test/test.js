@@ -126,11 +126,19 @@ describe('compile', function () {
 			test(require('./case/assign/property'));
 		});
 	});
-	it('array, tuple destructuring assign', function () {
-		test(require('./case/array, tuple destructuring assign'));
-	});
-	it('object destructuring assign', function () {
-		test(require('./case/object destructuring assign'));
+	describe('destructuring assign', function () {
+		it('array', function () {
+			test(require('./case/destructuring assign/array'));
+		});
+		it('tuple', function () {
+			test(require('./case/destructuring assign/tuple'));
+		});
+		it('object', function () {
+			test(require('./case/destructuring assign/object'));
+		});
+		it('object nested', function () {
+			test(require('./case/destructuring assign/object nested'));
+		});
 	});
 	it('function argument destructuring', function () {
 		test(require('./case/function argument destructuring'));
