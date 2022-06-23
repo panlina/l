@@ -1,3 +1,5 @@
+import { Label } from './Statement';
+
 declare class Expression {
 	constructor(type: string);
 	type: string;
@@ -81,8 +83,8 @@ export class Conditional extends Expression {
 }
 
 export class Statement extends Expression {
-	constructor(statement: (Statement | string)[]);
-	statement: (Statement | string)[];
+	constructor(statement: (Statement | Label)[]);
+	statement: (Statement | Label)[];
 }
 
 export class Function extends Expression {
