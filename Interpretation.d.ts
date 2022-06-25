@@ -8,7 +8,7 @@ interface Interpretation<T> {
 		boolean: (expression: Expression.Boolean) => T;
 		number: (expression: Expression.Number) => T;
 		string: (expression: Expression.String) => T;
-		name: (expression: Expression.Name, resolution: [null, number]) => T;
+		name: (expression: Expression.Name, resolution: ['variable', number]) => T;
 		object: ($property: { name: string, value: T }[]) => T;
 		array: ($element: T[]) => T;
 		tuple: ($element: T[]) => T;
