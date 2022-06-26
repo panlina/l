@@ -8,7 +8,7 @@ var Scope = require('../Scope');
 
 describe('parse, generate', function () {
 	it('expression', function () {
-		var source = "pred succ 12";
+		var source = "pred (L:succ 12)";
 		var syntax = parse(source);
 		assert.equal(generate(syntax), source);
 	});

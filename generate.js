@@ -3,6 +3,8 @@ var Statement = require('./Statement');
 function generate(program) {
 	if (program instanceof Expression) {
 		var expression = program;
+		if (expression.label)
+			return `(${expression.label}:${generate(expression.__proto__)})`;
 		switch (expression.type) {
 			case 'undefined':
 				return `#${undefined}`;

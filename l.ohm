@@ -2,7 +2,10 @@ l {
 	Program =
 		Expression end	-- expression
 		| Statements end	-- statement
-	Expression = ExpressionFunction
+	Expression = ExpressionLabeled
+	ExpressionLabeled =
+		Label ExpressionFunction	-- labeled
+		| ExpressionFunction
 	ExpressionFunction =
 		Expression "=>" ExpressionConditional	-- function
 		| ExpressionConditional

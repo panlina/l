@@ -35,6 +35,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 		_false.parse()
 	),
 	ExpressionFunction_function: (argument, arrow, expression) => new Expression.Function(argument.parse(), expression.parse()),
+	ExpressionLabeled_labeled: (label, expression) => Object.create(expression.parse(), { label: { value: label.parse() } }),
 	Statements: statement => statement.children.map(s => s.parse()),
 	Label: (identifier, colon) => identifier.parse(),
 	StatementAssign: (let, equation, semicolon) => new Statement.Assign(equation.parse().left, equation.parse().right),
