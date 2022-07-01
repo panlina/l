@@ -110,6 +110,8 @@ function compile(program, environment, interpretation) {
 							resolution: environment.resolve(statement.left.identifier)
 						};
 						if (!$left.resolution) throw new CompileError.UndefinedName(statement.left);
+						var [type, depth] = $left.resolution;
+						if (type != 'variable') throw new CompileError.UndefinedName(statement.left);
 						break;
 					case 'element':
 						var $left = {
