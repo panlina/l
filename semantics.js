@@ -49,6 +49,54 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	Program_expression: (expression, end) => expression.parse(),
 	Program_statement: (statement, end) => statement.parse()
 });
+var isSyntax = {
+	undefined: true,
+	null: true,
+	false: true,
+	true: true,
+	number: true,
+	string: true,
+	char_literal: false,
+	char_escaped: false,
+	identifier: false,
+	ExpressionName: true,
+	ExpressionObjectProperty: false,
+	ExpressionObject: true,
+	ExpressionArray: true,
+	ExpressionTuple: true,
+	ExpressionAtom_parentheses: false,
+	ExpressionAtom_statement: true,
+	ExpressionAtom_placeholder: true,
+	ExpressionMember_property: true,
+	ExpressionMember_element: true,
+	ExpressionCall_call: true,
+	ExpressionAdd_add: true,
+	ExpressionMultiply_multiply: true,
+	ExpressionAddUnary_add: true,
+	ExpressionRelation_relation: true,
+	ExpressionNot_not: true,
+	ExpressionAnd_and: true,
+	ExpressionOr_or: true,
+	ExpressionConditional_conditional: true,
+	ExpressionFunction_function: true,
+	ExpressionLabeled_labeled: false,
+	Statements: false,
+	Label: false,
+	StatementAssign: true,
+	StatementVar: true,
+	StatementBlock: true,
+	StatementGoto: true,
+	StatementExpression: true,
+	StatementWhile: true,
+	StatementBreak: true,
+	Statement_placeholder: true,
+	Program_expression: false,
+	Program_statement: false
+};
+var actionDict = semantics._getSemantics().operations.parse.actionDict;
+for (var name in actionDict)
+	if (isSyntax[name])
+		actionDict[name].$isSyntax = true;
 function binary(left, operator, right) {
 	return new Expression.Operation(
 		operator.sourceString,

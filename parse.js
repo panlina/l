@@ -1,3 +1,4 @@
+require('./Operation.execute');
 var grammar = require('./grammar');
 var semantics = require('./semantics');
 var ParseError = require('./ParseError');
