@@ -1,5 +1,6 @@
 exports = module.exports = require('./l');
 exports.parse = require('./parse');
+exports.programAt = require('./programAt');
 exports.compile = require('./compile');
 exports.generate = require('./generate');
 exports.Expression = require('./Expression');

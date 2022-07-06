@@ -1,6 +1,7 @@
 import * as l from './l';
 export = l;
 export * as parse from './parse';
+export * as programAt from './programAt';
 export * as compile from './compile';
 export * as generate from './generate';
 export * as Expression from './Expression';

@@ -41,6 +41,17 @@ it("quasiquote", function () {
 	assert.equal(generate(p), "let y=f x;let z=y;");
 });
 
+var programAt = require('../programAt');
+describe('programAt', function () {
+	it('', function () {
+		var source = "let b = { a: 123 };";
+		var syntax = parse(source);
+		var p = programAt(syntax, 13);
+		assert.equal(p.nodeWrapper.source.startIdx, 13);
+		assert.equal(p.nodeWrapper.source.endIdx, 16);
+	});
+});
+
 function test($case) {
 	var i = require('./f');
 	var l = $case.program;
