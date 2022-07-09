@@ -1,4 +1,4 @@
-const { Scope } = require('.');
+var Scope = require('./Scope');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
 var CompileError = require('./CompileError');
