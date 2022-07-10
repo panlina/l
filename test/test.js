@@ -228,3 +228,31 @@ describe('compile', function () {
 		});
 	});
 });
+
+var analyze = require('../analyze');
+describe('analyze', function () {
+	it('', function () {
+		var b = l`b`;
+		var program = l`var a;{var b;let [${b}]=a;}`;
+		analyze(program, new Environment(new Scope({})));
+		assert.deepEqual(b.environment, new Environment(
+			new Scope({ b: 'variable' }),
+			new Environment(
+				new Scope({ a: 'variable', return: 'variable' }),
+				new Environment(new Scope({}))
+			)
+		));
+	});
+	it('function', function () {
+		var [statement] = l`let b=a;`;
+		var program = l`[a]=>(var b;${statement})`;
+		analyze(program, new Environment(new Scope({})));
+		assert.deepEqual(statement.environment, new Environment(
+			new Scope({ b: 'variable', return: 'variable' }),
+			new Environment(
+				new Scope({ a: 'variable', return: 'variable' }),
+				new Environment(new Scope({}))
+			)
+		));
+	});
+});
