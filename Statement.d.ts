@@ -14,8 +14,8 @@ export class Assign extends Statement {
 }
 
 export class Var extends Statement {
-	constructor(identifier: string);
-	identifier: string;
+	constructor(name: Expression.Name);
+	name: Expression.Name;
 }
 
 export type Label = string;

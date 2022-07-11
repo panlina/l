@@ -37,7 +37,7 @@ var i = {
 					$statement =>
 						Statement.isLabel($statement) ? $statement :
 							$statement.type == 'var' ?
-								t.variableDeclaration("var", [t.variableDeclarator(t.identifier(escapeIdentifier($statement.identifier)))]) :
+								t.variableDeclaration("var", [t.variableDeclarator(t.identifier(escapeIdentifier($statement.name.identifier)))]) :
 								t.expressionStatement($statement)
 				),
 				t.returnStatement($expression)

@@ -13,9 +13,9 @@ class Assign extends Statement {
 }
 
 class Var extends Statement {
-	constructor(identifier) {
+	constructor(name) {
 		super('var');
-		this.identifier = identifier;
+		this.name = name;
 	}
 }
 

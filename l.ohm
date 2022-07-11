@@ -79,7 +79,7 @@ l {
 		| StatementBreak
 		| "%" identifier "%"	-- placeholder
 	StatementAssign = "let" Expression ";"
-	StatementVar = "var" identifier ";"
+	StatementVar = "var" ExpressionName ";"
 	StatementBlock = "{" Statements "}"
 	StatementGoto = "goto" identifier ";"
 	StatementExpression = Expression ";"

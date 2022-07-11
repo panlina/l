@@ -114,7 +114,7 @@ function generate(program) {
 			case 'assign':
 				return `let ${generate(statement.left)}=${generate(statement.right)};`;
 			case 'var':
-				return `var ${statement.identifier};`;
+				return `var ${statement.name.identifier};`;
 			case 'block':
 				return `{${statement.statement.map(generate).join('')}}`;
 			case 'goto':

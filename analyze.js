@@ -51,7 +51,7 @@ function analyze(program, environment) {
 				break;
 			case 'statement':
 				analyzeStatements(
-					[new Statement.Var('return'), ...expression.statement],
+					[new Statement.Var(new Expression.Name('return')), ...expression.statement],
 					new Expression.Name('return'),
 					environment
 				);
@@ -59,8 +59,8 @@ function analyze(program, environment) {
 			case 'function':
 				analyzeStatements(
 					[
-						new Statement.Var('return'),
-						...name(expression.argument).map(n => new Statement.Var(n.identifier))
+						new Statement.Var(new Expression.Name('return')),
+						...name(expression.argument).map(n => new Statement.Var(n))
 					],
 					expression.expression,
 					environment
@@ -78,7 +78,7 @@ function analyze(program, environment) {
 	}
 	if (program instanceof Array)
 		analyzeStatements(
-			[new Statement.Var('return'), ...program],
+			[new Statement.Var(new Expression.Name('return')), ...program],
 			new Expression.Name('return'),
 			environment
 		);
@@ -118,7 +118,7 @@ function analyze(program, environment) {
 			);
 		var name = name.reduce(
 			(name, v) => (
-				name[Statement.isLabel(v) ? v : v.identifier] = Statement.isLabel(v) ? 'label' : 'variable',
+				name[Statement.isLabel(v) ? v : v.name.identifier] = Statement.isLabel(v) ? 'label' : 'variable',
 				name
 			), {}
 		);

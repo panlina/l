@@ -66,7 +66,7 @@ function compile(program, environment, interpretation) {
 				return interpretation.expression.conditional($condition, $true, $false);
 			case 'statement':
 				return compileStatements(
-					[new Statement.Var('return'), ...expression.statement],
+					[new Statement.Var(new Expression.Name('return')), ...expression.statement],
 					new Expression.Name('return'),
 					environment
 				);
@@ -74,8 +74,8 @@ function compile(program, environment, interpretation) {
 				return interpretation.abstract(
 					compileStatements(
 						[
-							new Statement.Var('return'),
-							...name(expression.argument).map(n => new Statement.Var(n.identifier)),
+							new Statement.Var(new Expression.Name('return')),
+							...name(expression.argument).map(n => new Statement.Var(n)),
 							new Statement.Assign(expression.argument, new Expression.Name('argument'))
 						],
 						expression.expression,
@@ -94,7 +94,7 @@ function compile(program, environment, interpretation) {
 	}
 	if (program instanceof Array)
 		return compileStatements(
-			[new Statement.Var('return'), ...program],
+			[new Statement.Var(new Expression.Name('return')), ...program],
 			new Expression.Name('return'),
 			environment
 		);
@@ -132,7 +132,7 @@ function compile(program, environment, interpretation) {
 						var i = I();
 						return compileStatements(
 							[
-								new Statement.Var(`.t${i}`),
+								new Statement.Var(new Expression.Name(`.t${i}`)),
 								new Statement.Assign(new Expression.Name(`.t${i}`), statement.right),
 								...statement.left.element.map(
 									(e, j) => new Statement.Assign(
@@ -152,7 +152,7 @@ function compile(program, environment, interpretation) {
 						var i = I();
 						return compileStatements(
 							[
-								new Statement.Var(`.t${i}`),
+								new Statement.Var(new Expression.Name(`.t${i}`)),
 								new Statement.Assign(new Expression.Name(`.t${i}`), statement.right),
 								...statement.left.property.map(
 									p => new Statement.Assign(
@@ -223,7 +223,7 @@ function compile(program, environment, interpretation) {
 			);
 		var name = name.reduce(
 			(name, v) => (
-				name[Statement.isLabel(v) ? v : v.identifier] = Statement.isLabel(v) ? 'label' : 'variable',
+				name[Statement.isLabel(v) ? v : v.name.identifier] = Statement.isLabel(v) ? 'label' : 'variable',
 				name
 			), {}
 		);
