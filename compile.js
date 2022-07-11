@@ -106,7 +106,7 @@ function compile(program, environment, interpretation) {
 					case 'name':
 						var $left = {
 							type: 'name',
-							identifier: statement.left.identifier,
+							expression: statement.left,
 							resolution: environment.resolve(statement.left.identifier)
 						};
 						if (!$left.resolution) throw new CompileError.UndefinedName(statement.left);

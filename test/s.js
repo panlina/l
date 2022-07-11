@@ -103,7 +103,7 @@ var i = {
 		name: ($left, $right) => iife([
 			t.expressionStatement(
 				t.assignmentExpression('=',
-					t.identifier(escapeIdentifier($left.identifier)),
+					t.identifier(escapeIdentifier($left.expression.identifier)),
 					$right
 				)
 			)

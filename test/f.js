@@ -89,7 +89,7 @@ var i = {
 			var [, depth] = $left.resolution;
 			return environment => {
 				var scope = environment.ancestor(depth).scope;
-				scope[$left.identifier] = $right(environment);
+				scope[$left.expression.identifier] = $right(environment);
 			};
 		},
 		element: ($left, $right) =>
