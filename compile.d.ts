@@ -1,7 +1,7 @@
-import * as Expression from './Expression';
-import * as Statement from './Statement';
-import * as Environment from './Environment';
-import * as Interpretation from './Interpretation';
+import Expression = require('./Expression');
+import Statement = require('./Statement');
+import Environment = require('./Environment');
+import Interpretation = require('./Interpretation');
 declare function compile<T>(
 	program: Expression | Statement[],
 	environment: Environment<'variable' | 'label'>,

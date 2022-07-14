@@ -1,4 +1,4 @@
-import * as Scope from './Scope';
+import Scope = require('./Scope');
 
 declare class Environment<T> {
 	constructor(scope: Environment<T>['scope'], parent: Environment<T>['parent']);

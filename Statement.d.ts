@@ -1,4 +1,4 @@
-import * as Expression from './Expression';
+import Expression = require('./Expression');
 
 declare class Statement {
 	constructor(type: string);
