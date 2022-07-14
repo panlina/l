@@ -1,6 +1,6 @@
 import * as Scope from './Scope';
 
-export = class Environment<T> {
+declare class Environment<T> {
 	constructor(scope: Environment<T>['scope'], parent: Environment<T>['parent']);
 	scope: Scope<T>;
 	parent: Environment<T> | undefined;
@@ -8,3 +8,5 @@ export = class Environment<T> {
 	ancestor(depth: number): Environment<T>;
 	push(scope: Scope<T>): Environment<T>;
 }
+
+export = Environment;
