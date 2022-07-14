@@ -1,12 +1,26 @@
 import l = require('./l');
 export = l;
-import parse = require('./parse'); export { parse };
-import programAt = require('./programAt'); export { programAt };
-import compile = require('./compile'); export { compile };
-import analyze = require('./analyze'); export { analyze };
-import generate = require('./generate'); export { generate };
-import Expression = require('./Expression'); export { Expression };
-import Statement = require('./Statement'); export { Statement };
-import Scope = require('./Scope'); export { Scope };
-import Environment = require('./Environment'); export { Environment };
-import Interpretation = require('./Interpretation'); export { Interpretation };
+import parse = require('./parse');
+import programAt = require('./programAt');
+import compile = require('./compile');
+import analyze = require('./analyze');
+import generate = require('./generate');
+import Expression = require('./Expression');
+import Statement = require('./Statement');
+import Scope = require('./Scope');
+import Environment = require('./Environment');
+import Interpretation = require('./Interpretation');
+declare namespace l {
+	export {
+		parse,
+		programAt,
+		compile,
+		analyze,
+		generate,
+		Expression,
+		Statement,
+		Scope,
+		Environment,
+		Interpretation
+	}
+}
