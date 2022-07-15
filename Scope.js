@@ -1,6 +1,6 @@
 class Scope {
-	constructor(variable) {
-		Object.assign(this, variable);
+	constructor(name) {
+		Object.assign(this, name);
 	}
 	resolve(name) {
 		if (name in this)
