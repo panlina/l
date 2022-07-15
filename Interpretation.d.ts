@@ -1,5 +1,5 @@
-import Expression from './Expression';
-import Statement from './Statement';
+import Expression = require('./Expression');
+import Statement = require('./Statement');
 import { Label } from './Statement';
 interface Interpretation<T> {
 	expression: {
