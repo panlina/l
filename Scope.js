@@ -1,10 +1,10 @@
 class Scope {
 	constructor(name) {
-		Object.assign(this, name);
+		this.name = name;
 	}
 	resolve(name) {
-		if (name in this)
-			return this[name];
+		if (name in this.name)
+			return this.name[name];
 	}
 }
 module.exports = Scope;

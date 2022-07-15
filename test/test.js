@@ -57,12 +57,12 @@ function test($case) {
 	var l = $case.program;
 	var l = parse(l);
 	var f = compile(l, new Environment(new Scope(require('lodash.mapvalues')($case.environment, () => 'variable'))), i);
-	var environment = new Environment(new Scope($case.environment));
+	var environment = new Environment(new Scope({ ...$case.environment }));
 	var v = f(environment);
 	if ('return' in $case)
 		assert.deepEqual(v, $case.return);
 	if ('effect' in $case)
-		assert.deepEqual(environment.scope, $case.effect);
+		assert.deepEqual(environment.scope, new Scope($case.effect));
 }
 
 describe('compile', function () {

@@ -11,7 +11,7 @@ function test($case) {
 	var l = $case.program;
 	var l = parse(l);
 	var s = compile(l, new Environment(new Scope(require('lodash.mapvalues')($case.environment, () => 'variable'))), i);
-	var context = $case.environment;
+	var context = { ...$case.environment };
 	vm.createContext(context);
 	var v = vm.runInContext(`(${g(s).code})`, context);
 	if ('return' in $case)
