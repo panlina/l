@@ -1,9 +1,8 @@
-import Expression = require('./Expression');
-import Statement = require('./Statement');
+import Program = require('./Program');
 import Environment = require('./Environment');
 import Interpretation = require('./Interpretation');
 declare function compile<T>(
-	program: Expression | Statement[],
+	program: Program,
 	environment: Environment<'variable' | 'label'>,
 	interpretation: Interpretation<T>
 ): T;

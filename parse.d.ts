@@ -1,4 +1,3 @@
-import Expression = require('./Expression');
-import Statement = require('./Statement');
-declare function parse(text: string, startRule?: string): Expression | Statement[];
+import Program = require('./Program');
+declare function parse(text: string, startRule?: string): Program;
 export = parse;
