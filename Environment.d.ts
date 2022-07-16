@@ -1,7 +1,7 @@
 import Scope = require('./Scope');
 
 declare class Environment<T> {
-	constructor(scope: Environment<T>['scope'], parent: Environment<T>['parent']);
+	constructor(scope: Scope<T>, parent: Environment<T> | undefined);
 	scope: Scope<T>;
 	parent: Environment<T> | undefined;
 	resolve(name: string): [T, number] | undefined;
