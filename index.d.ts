@@ -11,6 +11,7 @@ import Program = require('./Program');
 import Scope = require('./Scope');
 import Environment = require('./Environment');
 import Interpretation = require('./Interpretation');
+import ParseError = require('./ParseError');
 declare namespace l {
 	export {
 		parse,
@@ -23,6 +24,7 @@ declare namespace l {
 		Program,
 		Scope,
 		Environment,
-		Interpretation
+		Interpretation,
+		ParseError
 	}
 }
