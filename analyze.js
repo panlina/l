@@ -65,11 +65,11 @@ function analyze(program, environment) {
 					expression.expression,
 					environment
 				);
-				function name(expression) {
-					switch (expression.type) {
-						case 'name': return [expression];
-						case 'array': case 'tuple': return expression.element.map(name).flat();
-						case 'object': return expression.property.map(p => name(p.value)).flat();
+				function name(argument) {
+					switch (argument.type) {
+						case 'name': return [argument];
+						case 'array': case 'tuple': return argument.element.map(name).flat();
+						case 'object': return argument.property.map(p => name(p.value)).flat();
 						default: throw new CompileError.InvalidFunctionParameter(expression);
 					}
 				}
