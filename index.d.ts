@@ -12,6 +12,7 @@ import Scope = require('./Scope');
 import Environment = require('./Environment');
 import Interpretation = require('./Interpretation');
 import ParseError = require('./ParseError');
+import CompileError = require('./CompileError');
 import Annotated = require('./Annotated');
 declare namespace l {
 	export {
@@ -27,6 +28,7 @@ declare namespace l {
 		Environment,
 		Interpretation,
 		ParseError,
+		CompileError,
 		Annotated
 	}
 }
