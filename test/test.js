@@ -255,4 +255,32 @@ describe('analyze', function () {
 			)
 		));
 	});
+	describe('error', function () {
+		var CompileError = require('../CompileError');
+		it('undefined name', function () {
+			var l = "a";
+			var l = parse(l);
+			analyze(l, new Environment(new Scope({})));
+			assert(l.error instanceof CompileError.UndefinedName);
+		});
+		it('undefined label', function () {
+			var l = "goto L;";
+			var l = parse(l);
+			analyze(l, new Environment(new Scope({})));
+			assert(l[0].error instanceof CompileError.UndefinedLabel);
+		});
+		// TODO: break outside while
+		it('invalid assignment', function () {
+			var l = "var a; let a + 1 = 0;";
+			var l = parse(l);
+			analyze(l, new Environment(new Scope({})));
+			assert(l[1].error instanceof CompileError.InvalidAssignment);
+		});
+		it('invalid function parameter', function () {
+			var l = "f x => x";
+			var l = parse(l);
+			analyze(l, new Environment(new Scope({})));
+			assert(l.error instanceof CompileError.InvalidFunctionParameter);
+		});
+	});
 });

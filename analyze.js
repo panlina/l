@@ -12,7 +12,12 @@ function analyze(program, environment) {
 			case 'boolean':
 			case 'number':
 			case 'string':
+				break;
 			case 'name':
+				var resolution = environment.resolve(expression.identifier);
+				if (!resolution) { error = new CompileError.UndefinedName(expression); break; }
+				var [type, depth] = resolution;
+				if (type != 'variable') error = new CompileError.UndefinedName(expression);
 				break;
 			case 'object':
 				expression.property.forEach(
@@ -70,7 +75,7 @@ function analyze(program, environment) {
 						case 'name': return [argument];
 						case 'array': case 'tuple': return argument.element.map(name).flat();
 						case 'object': return argument.property.map(p => name(p.value)).flat();
-						default: throw new CompileError.InvalidFunctionParameter(expression);
+						default: error = new CompileError.InvalidFunctionParameter(expression); return [];
 					}
 				}
 				break;
@@ -86,6 +91,8 @@ function analyze(program, environment) {
 		var statement = program;
 		switch (statement.type) {
 			case 'assign':
+				if (!(statement.left.type in { name: 0, element: 0, property: 0, array: 0, tuple: 0, object: 0 }))
+					error = new CompileError.InvalidAssignment(statement);
 				analyze(statement.left, environment);
 				analyze(statement.right, environment);
 				break;
@@ -97,6 +104,10 @@ function analyze(program, environment) {
 				);
 				break;
 			case 'goto':
+				var resolution = environment.resolve(statement.label);
+				if (!resolution) { error = new CompileError.UndefinedLabel(statement); break; }
+				var [type, depth] = resolution;
+				if (type != 'label') error = new CompileError.UndefinedLabel(statement);
 				break;
 			case 'expression':
 				analyze(statement.expression, environment);
@@ -106,9 +117,12 @@ function analyze(program, environment) {
 				analyze(statement.statement, environment);
 				break;
 			case 'break':
+				// TODO: break outside while
 				break;
 		}
 	}
+	var error;
+	if (error) Object.defineProperty(program, 'error', { value: error });
 	function analyzeStatements(statement, expression, environment) {
 		var name = statement
 			.filter(statement =>
