@@ -7,7 +7,7 @@ import CompileError = require('./CompileError');
 type Annotated<T extends Expression | Statement> = T & {
 	environment: Environment<'variable' | 'label'>;
 	error: CompileError;
-	nodeWrapper: Node;
+	node: Node;
 }
 
 export = Annotated;

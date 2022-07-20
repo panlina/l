@@ -1,11 +1,11 @@
 function programAt(program, position) {
 	switch (typeof program) {
 		case 'object':
-			if ('nodeWrapper' in program)
+			if ('node' in program)
 				if (
-					program.nodeWrapper.source.startIdx <= position
+					program.node.source.startIdx <= position
 					&&
-					program.nodeWrapper.source.endIdx >= position
+					program.node.source.endIdx >= position
 				)
 					var p = program;
 			for (var key in program) {

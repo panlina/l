@@ -47,8 +47,8 @@ describe('programAt', function () {
 		var source = "let b = { a: 123 };";
 		var syntax = parse(source);
 		var p = programAt(syntax, 13);
-		assert.equal(p.nodeWrapper.source.startIdx, 13);
-		assert.equal(p.nodeWrapper.source.endIdx, 16);
+		assert.equal(p.node.source.startIdx, 13);
+		assert.equal(p.node.source.endIdx, 16);
 	});
 });
 

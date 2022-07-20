@@ -11,6 +11,6 @@ Operation.prototype.execute = (execute => function (semantics, nodeWrapper) {
 	let actionFn = this.actionDict[ctorName];
 	var result = execute.apply(this, arguments);
 	if (actionFn?.$isSyntax)
-		Object.defineProperty(result, 'nodeWrapper', { value: nodeWrapper })
+		Object.defineProperty(result, 'node', { value: nodeWrapper })
 	return result;
 })(Operation.prototype.execute);
