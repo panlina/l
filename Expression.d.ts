@@ -89,8 +89,8 @@ declare namespace Expression {
 	}
 
 	export class Function extends Expression {
-		constructor(argument: Expression.Name, expression: Expression);
-		argument: Expression.Name;
+		constructor(argument: Expression, expression: Expression);
+		argument: Expression;
 		expression: Expression;
 	}
 
