@@ -1,8 +1,7 @@
 import Expression = require('./Expression');
 import Statement = require('./Statement');
-import Program = require('./Program');
 declare class CompileError extends Error {
-	constructor(program: Program);
+	constructor(program: Expression | Statement);
 }
 declare namespace CompileError {
 	export class UndefinedName extends CompileError {
