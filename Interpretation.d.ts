@@ -20,7 +20,7 @@ interface Interpretation<T> {
 	};
 	statement: {
 		'[]': ($statement: (T | Statement.Var | Label)[], $expression: T) => T;
-		goto: (label: Label) => T;
+		goto: (label: Expression.Name) => T;
 	};
 	assign: {
 		name: ($left: { expression: Expression.Name, resolution: ['variable', number] }, $right: T) => T;

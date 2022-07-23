@@ -96,7 +96,7 @@ var i = {
 			return iife($statement);
 		},
 		goto: label => iife([
-			t.throwStatement(t.stringLiteral(label))
+			t.throwStatement(t.stringLiteral(label.identifier))
 		])
 	},
 	assign: {

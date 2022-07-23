@@ -81,7 +81,7 @@ l {
 	StatementAssign = "let" Expression ";"
 	StatementVar = "var" ExpressionName ";"
 	StatementBlock = "{" Statements "}"
-	StatementGoto = "goto" identifier ";"
+	StatementGoto = "goto" ExpressionName ";"
 	StatementExpression = Expression ";"
 	StatementWhile = "while" Expression "do" Statement
 	StatementBreak = "break" ";"

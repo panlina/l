@@ -180,7 +180,7 @@ function compile(program, environment, interpretation) {
 					environment
 				);
 			case 'goto':
-				var resolution = environment.resolve(statement.label);
+				var resolution = environment.resolve(statement.label.identifier);
 				if (!resolution) throw new CompileError.UndefinedLabel(statement);
 				var [type, depth] = resolution;
 				if (type != 'label') throw new CompileError.UndefinedLabel(statement);
@@ -199,7 +199,7 @@ function compile(program, environment, interpretation) {
 							statement.condition,
 							new Expression.Statement([
 								statement.statement,
-								new Statement.Goto('while:before')
+								new Statement.Goto(new Expression.Name('while:before'))
 							]),
 							new Expression.Statement([])
 						)
@@ -211,7 +211,7 @@ function compile(program, environment, interpretation) {
 				if (!resolution) throw new CompileError.BreakOutsideWhile(statement);
 				var [type, depth] = resolution;
 				if (type != 'label') throw new CompileError.BreakOutsideWhile(statement);
-				return interpretation.statement.goto("while:after");
+				return interpretation.statement.goto(new Expression.Name("while:after"));
 		}
 	}
 	function compileStatements(statement, expression, environment) {

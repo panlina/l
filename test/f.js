@@ -81,7 +81,7 @@ var i = {
 		},
 		goto: label =>
 			environment => {
-				throw label;
+				throw label.identifier;
 			}
 	},
 	assign: {

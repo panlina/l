@@ -27,8 +27,8 @@ declare namespace Statement {
 	}
 
 	export class Goto extends Statement {
-		constructor(label: Label);
-		label: Label;
+		constructor(label: Expression.Name);
+		label: Expression.Name;
 	}
 
 	export class Expression extends Statement {

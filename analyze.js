@@ -104,7 +104,7 @@ function analyze(program, environment) {
 				);
 				break;
 			case 'goto':
-				var resolution = environment.resolve(statement.label);
+				var resolution = environment.resolve(statement.label.identifier);
 				if (!resolution) { error = new CompileError.UndefinedLabel(statement); break; }
 				var [type, depth] = resolution;
 				if (type != 'label') error = new CompileError.UndefinedLabel(statement);
