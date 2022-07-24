@@ -267,7 +267,7 @@ describe('analyze', function () {
 			var l = "goto L;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[0].error instanceof CompileError.UndefinedLabel);
+			assert(l[0].label.error instanceof CompileError.UndefinedLabel);
 		});
 		// TODO: break outside while
 		it('invalid assignment', function () {

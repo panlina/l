@@ -8,7 +8,7 @@ declare namespace CompileError {
 		constructor(expression: Expression);
 	}
 	export class UndefinedLabel extends CompileError {
-		constructor(statement: Statement);
+		constructor(label: Expression.Name);
 	}
 	export class BreakOutsideWhile extends CompileError {
 		constructor(statement: Statement);

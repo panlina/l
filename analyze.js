@@ -105,9 +105,9 @@ function analyze(program, environment) {
 				break;
 			case 'goto':
 				var resolution = environment.resolve(statement.label.identifier);
-				if (!resolution) { error = new CompileError.UndefinedLabel(statement); break; }
+				if (!resolution) { error = new CompileError.UndefinedLabel(statement.label); break; }
 				var [type, depth] = resolution;
-				if (type != 'label') error = new CompileError.UndefinedLabel(statement);
+				if (type != 'label') error = new CompileError.UndefinedLabel(statement.label);
 				break;
 			case 'expression':
 				analyze(statement.expression, environment);
@@ -122,7 +122,7 @@ function analyze(program, environment) {
 		}
 	}
 	var error;
-	if (error) Object.defineProperty(program, 'error', { value: error });
+	if (error) Object.defineProperty(error.program, 'error', { value: error });
 	function analyzeStatements(statement, expression, environment) {
 		var name = statement
 			.filter(statement =>

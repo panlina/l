@@ -9,8 +9,8 @@ class UndefinedName extends CompileError {
 	get message() { return `'${this.program.identifier}' is not defined.`; }
 }
 class UndefinedLabel extends CompileError {
-	constructor(statement) { super(statement); }
-	get message() { return `'${this.program.label.identifier}' is not defined.`; }
+	constructor(label) { super(label); }
+	get message() { return `'${this.program.identifier}' is not defined.`; }
 }
 class BreakOutsideWhile extends CompileError {
 	constructor(statement) { super(statement); }
