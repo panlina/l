@@ -255,6 +255,15 @@ describe('analyze', function () {
 			)
 		));
 	});
+	it('label', function () {
+		var program = l`L: goto L;`;
+		var [label, goto] = program;
+		analyze(program, new Environment(new Scope({})));
+		assert.deepEqual(goto.label.environment, new Environment(
+			new Scope({ L: 'label',return: 'variable' }),
+			new Environment(new Scope({}))
+		));
+	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
 		it('undefined name', function () {

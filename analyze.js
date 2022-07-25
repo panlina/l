@@ -104,6 +104,8 @@ function analyze(program, environment) {
 				);
 				break;
 			case 'goto':
+				// TODO: This duplicates implementation of analyze. A refactor is needed to remove it.
+				Object.defineProperty(statement.label, 'environment', { value: environment });
 				var resolution = environment.resolve(statement.label.identifier);
 				if (!resolution) { error = new CompileError.UndefinedLabel(statement.label); break; }
 				var [type, depth] = resolution;
