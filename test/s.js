@@ -1,5 +1,5 @@
 var t = require("@babel/types");
-var Statement = require("../Statement");
+var Label = require("../Label");
 var i = {
 	expression: {
 		undefined: expression => t.unaryExpression("void", t.numericLiteral(0)),
@@ -31,11 +31,11 @@ var i = {
 	},
 	statement: {
 		'[]': ($statement, $expression) => {
-			var labels = $statement.filter(Statement.isLabel);
+			var labels = $statement.filter(statement => statement instanceof Label);
 			var $statement = [
 				...$statement.map(
 					$statement =>
-						Statement.isLabel($statement) ? $statement :
+						$statement instanceof Label ? $statement :
 							$statement.type == 'var' ?
 								t.variableDeclaration("var", [t.variableDeclarator(t.identifier(escapeIdentifier($statement.name.identifier)))]) :
 								t.expressionStatement($statement)
@@ -48,10 +48,10 @@ var i = {
 					var label =
 						i < 0 ?
 							t.unaryExpression("void", t.numericLiteral(0)) :
-							t.stringLiteral($statement[i]);
+							t.stringLiteral($statement[i].name.identifier);
 					i++;
 					var consequent = [];
-					while (i < $statement.length && !Statement.isLabel($statement[i]))
+					while (i < $statement.length && !($statement[i] instanceof Label))
 						consequent.push($statement[i++]);
 					$case.push(t.switchCase(label, consequent));
 				}
@@ -75,7 +75,7 @@ var i = {
 										t.callExpression(
 											t.memberExpression(
 												t.arrayExpression(
-													labels.map(label => t.stringLiteral(label))
+													labels.map(label => t.stringLiteral(label.name.identifier))
 												),
 												t.identifier('includes')
 											),

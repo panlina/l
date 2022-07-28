@@ -7,6 +7,7 @@ import analyze = require('./analyze');
 import generate = require('./generate');
 import Expression = require('./Expression');
 import Statement = require('./Statement');
+import Label = require('./Label');
 import Program = require('./Program');
 import Scope = require('./Scope');
 import Environment = require('./Environment');
@@ -23,6 +24,7 @@ declare namespace l {
 		generate,
 		Expression,
 		Statement,
+		Label,
 		Program,
 		Scope,
 		Environment,

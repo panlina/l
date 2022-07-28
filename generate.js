@@ -1,10 +1,11 @@
 var Expression = require('./Expression');
 var Statement = require('./Statement');
+var Label = require('./Label');
 function generate(program) {
 	if (program instanceof Expression) {
 		var expression = program;
 		if (expression.label)
-			return `(${expression.label}:${generate(expression.__proto__)})`;
+			return `(${expression.label.name.identifier}:${generate(expression.__proto__)})`;
 		switch (expression.type) {
 			case 'undefined':
 				return `#${undefined}`;
@@ -104,8 +105,8 @@ function generate(program) {
 	if (program instanceof Array)
 		return program.map(
 			statement =>
-				Statement.isLabel(statement) ?
-					`${statement}:` :
+				statement instanceof Label ?
+					`${statement.name.identifier}:` :
 					generate(statement)
 		).join('');
 	if (program instanceof Statement) {

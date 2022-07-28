@@ -68,7 +68,7 @@ l {
 	char = ~("\""|"\\") any	-- literal
 		| "\\" ("\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v")	-- escaped
 	Statements = (Statement | Label)*
-	Label = identifier ":"
+	Label = ExpressionName ":"
 	Statement =
 		StatementAssign
 		| StatementVar

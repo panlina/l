@@ -1,4 +1,5 @@
 import Expression = require('./Expression');
 import Statement = require('./Statement');
-type Program = Expression | (Statement | Statement.Label)[];
+import Label = require('./Label');
+type Program = Expression | (Statement | Label)[];
 export = Program;

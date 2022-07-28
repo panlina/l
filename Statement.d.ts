@@ -1,4 +1,5 @@
 import Expression = require('./Expression');
+import Label = require('./Label');
 
 declare class Statement {
 	constructor(type: string);
@@ -18,8 +19,6 @@ declare namespace Statement {
 		constructor(name: Expression.Name);
 		name: Expression.Name;
 	}
-
-	export type Label = string;
 
 	export class Block extends Statement {
 		constructor(statement: (Statement | Label)[]);
@@ -50,6 +49,4 @@ declare namespace Statement {
 		constructor(name: string);
 		name: string;
 	}
-
-	export function isLabel(statement: Statement | Label): statement is Label;
 }

@@ -1,4 +1,4 @@
-import { Label } from './Statement';
+import Label = require('./Label');
 
 declare class Expression {
 	constructor(type: string);

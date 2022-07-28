@@ -1,6 +1,7 @@
 var grammar = require('./grammar');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
+var Label = require('./Label');
 var semantics = grammar.createSemantics().addOperation('parse', {
 	undefined: _undefined => new Expression.Undefined(),
 	null: _null => new Expression.Null(),
@@ -37,7 +38,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionFunction_function: (argument, arrow, expression) => new Expression.Function(argument.parse(), expression.parse()),
 	ExpressionLabeled_labeled: (label, expression) => Object.create(expression.parse(), { label: { value: label.parse() } }),
 	Statements: statement => statement.children.map(s => s.parse()),
-	Label: (identifier, colon) => identifier.parse(),
+	Label: (name, colon) => new Label(name.parse()),
 	StatementAssign: (let, equation, semicolon) => new Statement.Assign(equation.parse().left, equation.parse().right),
 	StatementVar: (_var, name, semicolon) => new Statement.Var(name.parse()),
 	StatementBlock: (open, statement, close) => new Statement.Block(statement.parse()),

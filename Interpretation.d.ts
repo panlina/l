@@ -1,6 +1,6 @@
 import Expression = require('./Expression');
 import Statement = require('./Statement');
-import { Label } from './Statement';
+import Label = require('./Label');
 interface Interpretation<T> {
 	expression: {
 		undefined: (expression: Expression.Undefined) => T;

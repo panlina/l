@@ -1,6 +1,7 @@
 var Scope = require('./Scope');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
+var Label = require('./Label');
 var CompileError = require('./CompileError');
 function analyze(program, environment) {
 	Object.defineProperty(program, 'environment', { value: environment });
@@ -128,20 +129,20 @@ function analyze(program, environment) {
 	function analyzeStatements(statement, expression, environment) {
 		var name = statement
 			.filter(statement =>
-				Statement.isLabel(statement)
+				statement instanceof Label
 				||
 				statement.type == 'var'
 			);
 		var name = name.reduce(
 			(name, v) => (
-				name[Statement.isLabel(v) ? v : v.name.identifier] = Statement.isLabel(v) ? 'label' : 'variable',
+				name[v instanceof Label ? v.name.identifier : v.name.identifier] = v instanceof Label ? 'label' : 'variable',
 				name
 			), {}
 		);
 		var e = environment.push(new Scope(name));
 		statement
 			.forEach(statement => {
-				if (!(Statement.isLabel(statement) || statement.type == 'var'))
+				if (!(statement instanceof Label || statement.type == 'var'))
 					analyze(statement, e);
 			});
 		analyze(expression, e);

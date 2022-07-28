@@ -1,6 +1,7 @@
 var Scope = require('./Scope');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
+var Label = require('./Label');
 var CompileError = require('./CompileError');
 var i = 0;
 function I() { return i++; }
@@ -193,7 +194,7 @@ function compile(program, environment, interpretation) {
 				);
 			case 'while':
 				return compile([
-					'while:before',
+					new Label(new Expression.Name('while:before')),
 					new Statement.Expression(
 						new Expression.Conditional(
 							statement.condition,
@@ -204,7 +205,7 @@ function compile(program, environment, interpretation) {
 							new Expression.Statement([])
 						)
 					),
-					'while:after'
+					new Label(new Expression.Name('while:after'))
 				], environment, interpretation);
 			case 'break':
 				var resolution = environment.resolve("while:after");
@@ -217,13 +218,13 @@ function compile(program, environment, interpretation) {
 	function compileStatements(statement, expression, environment) {
 		var name = statement
 			.filter(statement =>
-				Statement.isLabel(statement)
+				statement instanceof Label
 				||
 				statement.type == 'var'
 			);
 		var name = name.reduce(
 			(name, v) => (
-				name[Statement.isLabel(v) ? v : v.name.identifier] = Statement.isLabel(v) ? 'label' : 'variable',
+				name[v instanceof Label ? v.name.identifier : v.name.identifier] = v instanceof Label ? 'label' : 'variable',
 				name
 			), {}
 		);
@@ -231,7 +232,7 @@ function compile(program, environment, interpretation) {
 		var $statement =
 			statement
 				.map(statement =>
-					Statement.isLabel(statement) || statement.type == 'var' ?
+					statement instanceof Label || statement.type == 'var' ?
 						statement :
 						compile(statement, e, interpretation)
 				);

@@ -1,5 +1,5 @@
 var Scope = require("../Scope");
-var Statement = require("../Statement");
+var Label = require("../Label");
 var i = {
 	expression: {
 		undefined: expression => () => undefined,
@@ -52,8 +52,8 @@ var i = {
 			var labelDictionary = {};
 			for (var i = 0, j = 0; i < $statement.length; i++) {
 				var statement = $statement[i];
-				if (Statement.isLabel(statement))
-					labelDictionary[statement] = j;
+				if (statement instanceof Label)
+					labelDictionary[statement.name.identifier] = j;
 				else if (statement.type == 'var');
 				else
 					j++;
