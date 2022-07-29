@@ -5,7 +5,7 @@ function generate(program) {
 	if (program instanceof Expression) {
 		var expression = program;
 		if (expression.label)
-			return `(${expression.label.name.identifier}:${generate(expression.__proto__)})`;
+			return `(${generate(expression.label.name)}:${generate(expression.__proto__)})`;
 		switch (expression.type) {
 			case 'undefined':
 				return `#${undefined}`;
@@ -106,7 +106,7 @@ function generate(program) {
 		return program.map(
 			statement =>
 				statement instanceof Label ?
-					`${statement.name.identifier}:` :
+					`${generate(statement.name)}:` :
 					generate(statement)
 		).join('');
 	if (program instanceof Statement) {
@@ -115,11 +115,11 @@ function generate(program) {
 			case 'assign':
 				return `let ${generate(statement.left)}=${generate(statement.right)};`;
 			case 'var':
-				return `var ${statement.name.identifier};`;
+				return `var ${generate(statement.name)};`;
 			case 'block':
 				return `{${generate(statement.statement)}}`;
 			case 'goto':
-				return `goto ${statement.label.identifier};`;
+				return `goto ${generate(statement.label)};`;
 			case 'expression':
 				var $expression = generate(statement.expression);
 				return `${$expression};`;
