@@ -1,3 +1,4 @@
+import l = require('.');
 import Label = require('./Label');
 
 declare class Expression {
@@ -84,8 +85,8 @@ declare namespace Expression {
 	}
 
 	export class Statement extends Expression {
-		constructor(statement: (Statement | Label)[]);
-		statement: (Statement | Label)[];
+		constructor(statement: (l.Statement | Label)[]);
+		statement: (l.Statement | Label)[];
 	}
 
 	export class Function extends Expression {

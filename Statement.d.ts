@@ -1,4 +1,4 @@
-import Expression = require('./Expression');
+import l = require('.');
 import Label = require('./Label');
 
 declare class Statement {
@@ -10,14 +10,14 @@ export = Statement;
 
 declare namespace Statement {
 	export class Assign extends Statement {
-		constructor(left: Expression, right: Expression);
-		left: Expression;
-		right: Expression;
+		constructor(left: l.Expression, right: l.Expression);
+		left: l.Expression;
+		right: l.Expression;
 	}
 
 	export class Var extends Statement {
-		constructor(name: Expression.Name);
-		name: Expression.Name;
+		constructor(name: l.Expression.Name);
+		name: l.Expression.Name;
 	}
 
 	export class Block extends Statement {
@@ -26,18 +26,18 @@ declare namespace Statement {
 	}
 
 	export class Goto extends Statement {
-		constructor(label: Expression.Name);
-		label: Expression.Name;
+		constructor(label: l.Expression.Name);
+		label: l.Expression.Name;
 	}
 
 	export class Expression extends Statement {
-		constructor(expression: Expression);
-		expression: Expression;
+		constructor(expression: l.Expression);
+		expression: l.Expression;
 	}
 
 	export class While extends Statement {
-		constructor(condition: Expression, statement: Statement);
-		condition: Expression;
+		constructor(condition: l.Expression, statement: Statement);
+		condition: l.Expression;
 		statement: Statement;
 	}
 
