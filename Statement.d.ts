@@ -45,7 +45,7 @@ declare namespace Statement {
 		constructor();
 	}
 
-	export class Placeholder extends Expression {
+	export class Placeholder extends Statement {
 		constructor(name: string);
 		name: string;
 	}
