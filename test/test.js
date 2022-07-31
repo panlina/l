@@ -260,7 +260,7 @@ describe('analyze', function () {
 		var [label, goto] = program;
 		analyze(program, new Environment(new Scope({})));
 		assert.deepEqual(goto.label.environment, new Environment(
-			new Scope({ L: 'label',return: 'variable' }),
+			new Scope({ L: 'label', return: 'variable' }),
 			new Environment(new Scope({}))
 		));
 	});
