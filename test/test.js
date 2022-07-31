@@ -242,6 +242,7 @@ describe('analyze', function () {
 				new Environment(new Scope({}))
 			)
 		));
+		assert.equal(b.environment.scope.definition.b, program[1].statement[0].name);
 	});
 	it('function', function () {
 		var [statement] = l`let b=a;`;

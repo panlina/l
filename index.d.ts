@@ -15,6 +15,7 @@ import Interpretation = require('./Interpretation');
 import ParseError = require('./ParseError');
 import CompileError = require('./CompileError');
 import Annotated = require('./Annotated');
+import AnalyzedScope = require('./AnalyzedScope');
 declare namespace l {
 	export {
 		parse,
@@ -31,6 +32,7 @@ declare namespace l {
 		Interpretation,
 		ParseError,
 		CompileError,
-		Annotated
+		Annotated,
+		AnalyzedScope
 	}
 }

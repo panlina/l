@@ -133,13 +133,21 @@ function analyze(program, environment) {
 				||
 				statement.type == 'var'
 			);
+		var definition = name.reduce(
+			(name, v) => (
+				name[v instanceof Label ? v.name.identifier : v.name.identifier] = v instanceof Label ? v.name : v.name,
+				name
+			), {}
+		);
 		var name = name.reduce(
 			(name, v) => (
 				name[v instanceof Label ? v.name.identifier : v.name.identifier] = v instanceof Label ? 'label' : 'variable',
 				name
 			), {}
 		);
-		var e = environment.push(new Scope(name));
+		var scope = new Scope(name);
+		Object.defineProperty(scope, 'definition', { value: definition });
+		var e = environment.push(scope);
 		statement
 			.forEach(statement => {
 				if (!(statement instanceof Label || statement.type == 'var'))
