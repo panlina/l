@@ -255,6 +255,7 @@ describe('analyze', function () {
 				new Environment(new Scope({}))
 			)
 		));
+		assert.equal(statement.environment.parent.scope.definition.a, program.argument.element[0]);
 	});
 	it('label', function () {
 		var program = l`L: goto L;`;
@@ -264,6 +265,7 @@ describe('analyze', function () {
 			new Scope({ L: 'label', return: 'variable' }),
 			new Environment(new Scope({}))
 		));
+		assert.equal(goto.environment.scope.definition.L, label.name);
 	});
 	describe('error', function () {
 		var CompileError = require('../CompileError');
