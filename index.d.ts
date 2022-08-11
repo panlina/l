@@ -1,6 +1,7 @@
 import l = require('./l');
 export = l;
 import parse = require('./parse');
+import children = require('./children');
 import programAt = require('./programAt');
 import compile = require('./compile');
 import analyze = require('./analyze');
@@ -19,6 +20,7 @@ import AnalyzedScope = require('./AnalyzedScope');
 declare namespace l {
 	export {
 		parse,
+		children,
 		programAt,
 		compile,
 		analyze,

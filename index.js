@@ -1,5 +1,6 @@
 exports = module.exports = require('./l');
 exports.parse = require('./parse');
+exports.children = require('./children');
 exports.programAt = require('./programAt');
 exports.compile = require('./compile');
 exports.analyze = require('./analyze');
