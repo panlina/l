@@ -3,8 +3,9 @@ var Expression = require('./Expression');
 var Statement = require('./Statement');
 var Label = require('./Label');
 var CompileError = require('./CompileError');
-function analyze(program, environment) {
+function analyze(program, environment, parent) {
 	Object.defineProperty(program, 'environment', { value: environment });
+	Object.defineProperty(program, 'parent', { value: parent });
 	if (program instanceof Expression) {
 		var expression = program;
 		switch (expression.type) {
@@ -22,38 +23,38 @@ function analyze(program, environment) {
 				break;
 			case 'object':
 				expression.property.forEach(
-					property => { analyze(property.value, environment); }
+					property => { analyze(property.value, environment, program); }
 				);
 				break;
 			case 'array':
 				expression.element.forEach(
-					element => { analyze(element, environment); }
+					element => { analyze(element, environment, program); }
 				);
 				break;
 			case 'tuple':
 				expression.element.forEach(
-					element => { analyze(element, environment); }
+					element => { analyze(element, environment, program); }
 				);
 				break;
 			case 'property':
-				analyze(expression.expression, environment);
+				analyze(expression.expression, environment, program);
 				break;
 			case 'element':
-				analyze(expression.expression, environment);
-				analyze(expression.index, environment);
+				analyze(expression.expression, environment, program);
+				analyze(expression.index, environment, program);
 				break;
 			case 'call':
-				analyze(expression.expression, environment);
-				analyze(expression.argument, environment);
+				analyze(expression.expression, environment, program);
+				analyze(expression.argument, environment, program);
 				break;
 			case 'operation':
-				if (expression.left) analyze(expression.left, environment);
-				if (expression.right) analyze(expression.right, environment);
+				if (expression.left) analyze(expression.left, environment, program);
+				if (expression.right) analyze(expression.right, environment, program);
 				break;
 			case 'conditional':
-				analyze(expression.condition, environment);
-				analyze(expression.true, environment);
-				analyze(expression.false, environment);
+				analyze(expression.condition, environment, program);
+				analyze(expression.true, environment, program);
+				analyze(expression.false, environment, program);
 				break;
 			case 'statement':
 				analyzeStatements(
@@ -94,8 +95,8 @@ function analyze(program, environment) {
 			case 'assign':
 				if (!(statement.left.type in { name: 0, element: 0, property: 0, array: 0, tuple: 0, object: 0 }))
 					error = new CompileError.InvalidAssignment(statement);
-				analyze(statement.left, environment);
-				analyze(statement.right, environment);
+				analyze(statement.left, environment, program);
+				analyze(statement.right, environment, program);
 				break;
 			case 'block':
 				analyzeStatements(
@@ -113,11 +114,11 @@ function analyze(program, environment) {
 				if (type != 'label') error = new CompileError.UndefinedLabel(statement.label);
 				break;
 			case 'expression':
-				analyze(statement.expression, environment);
+				analyze(statement.expression, environment, program);
 				break;
 			case 'while':
-				analyze(statement.condition, environment);
-				analyze(statement.statement, environment);
+				analyze(statement.condition, environment, program);
+				analyze(statement.statement, environment, program);
 				break;
 			case 'break':
 				// TODO: break outside while
@@ -151,9 +152,9 @@ function analyze(program, environment) {
 		statement
 			.forEach(statement => {
 				if (!(statement instanceof Label))
-					analyze(statement, e);
+					analyze(statement, e, program);
 			});
-		analyze(expression, e);
+		analyze(expression, e, program);
 	}
 }
 module.exports = analyze;
