@@ -150,7 +150,7 @@ function analyze(program, environment) {
 		var e = environment.push(scope);
 		statement
 			.forEach(statement => {
-				if (!(statement instanceof Label || statement.type == 'var'))
+				if (!(statement instanceof Label))
 					analyze(statement, e);
 			});
 		analyze(expression, e);
