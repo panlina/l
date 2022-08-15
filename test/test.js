@@ -284,7 +284,12 @@ describe('analyze', function () {
 			analyze(l, new Environment(new Scope({})));
 			assert(l[0].label.error instanceof CompileError.UndefinedLabel);
 		});
-		// TODO: break outside while
+		it('break outside while', function () {
+			var l = "break;";
+			var l = parse(l);
+			analyze(l, new Environment(new Scope({})));
+			assert(l[0].error instanceof CompileError.BreakOutsideWhile);
+		});
 		it('invalid assignment', function () {
 			var l = "var a; let a + 1 = 0;";
 			var l = parse(l);

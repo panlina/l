@@ -121,7 +121,14 @@ function analyze(program, environment, parent) {
 				analyze(statement.statement, environment, program);
 				break;
 			case 'break':
-				// TODO: break outside while
+				var p = parent;
+				while (p) {
+					if (p instanceof Statement && p.type == 'while')
+						break;
+					p = p.parent;
+				}
+				if (!p)
+					error = new CompileError.BreakOutsideWhile(statement);
 				break;
 		}
 	}
