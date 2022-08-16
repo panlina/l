@@ -8,9 +8,13 @@ class UndefinedName extends CompileError {
 	constructor(expression) { super(expression); }
 	get message() { return `'${this.program.identifier}' is not defined.`; }
 }
-class UndefinedLabel extends CompileError {
-	constructor(label) { super(label); }
-	get message() { return `'${this.program.identifier}' is not defined.`; }
+class VariableNameExpected extends CompileError {
+	constructor(name) { super(name); }
+	get message() { return `'${this.program.identifier}' refers to a label where a variable is expected.`; }
+}
+class LabelNameExpected extends CompileError {
+	constructor(name) { super(name); }
+	get message() { return `'${this.program.identifier}' refers to a variable where a label is expected.`; }
 }
 class BreakOutsideWhile extends CompileError {
 	constructor(statement) { super(statement); }
@@ -25,7 +29,8 @@ class InvalidFunctionParameter extends CompileError {
 	get message() { return `function parameter is invalid.`; }
 }
 CompileError.UndefinedName = UndefinedName;
-CompileError.UndefinedLabel = UndefinedLabel;
+CompileError.VariableNameExpected = VariableNameExpected;
+CompileError.LabelNameExpected = LabelNameExpected;
 CompileError.BreakOutsideWhile = BreakOutsideWhile;
 CompileError.InvalidAssignment = InvalidAssignment;
 CompileError.InvalidFunctionParameter = InvalidFunctionParameter;

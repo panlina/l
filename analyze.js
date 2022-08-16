@@ -19,7 +19,7 @@ function analyze(program, environment, parent) {
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) { error = new CompileError.UndefinedName(expression); break; }
 				var [type, depth] = resolution;
-				if (type != 'variable') error = new CompileError.UndefinedName(expression);
+				if (type != 'variable') error = new CompileError.VariableNameExpected(expression);
 				break;
 			case 'object':
 				expression.property.forEach(
@@ -109,9 +109,9 @@ function analyze(program, environment, parent) {
 				// TODO: This duplicates implementation of analyze. A refactor is needed to remove it.
 				Object.defineProperty(statement.label, 'environment', { value: environment });
 				var resolution = environment.resolve(statement.label.identifier);
-				if (!resolution) { error = new CompileError.UndefinedLabel(statement.label); break; }
+				if (!resolution) { error = new CompileError.UndefinedName(statement.label); break; }
 				var [type, depth] = resolution;
-				if (type != 'label') error = new CompileError.UndefinedLabel(statement.label);
+				if (type != 'label') error = new CompileError.LabelNameExpected(statement.label);
 				break;
 			case 'expression':
 				analyze(statement.expression, environment, program);

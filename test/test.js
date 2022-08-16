@@ -200,7 +200,23 @@ describe('compile', function () {
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.UndefinedLabel);
+			}, CompileError.UndefinedName);
+		});
+		it('variable name expected', function () {
+			var i = require('./f');
+			var l = "L: var a; let a = L;";
+			var l = parse(l);
+			assert.throws(() => {
+				var f = compile(l, new Environment(new Scope({})), i);
+			}, CompileError.VariableNameExpected);
+		});
+		it('label name expected', function () {
+			var i = require('./f');
+			var l = "var a; goto a;";
+			var l = parse(l);
+			assert.throws(() => {
+				var f = compile(l, new Environment(new Scope({})), i);
+			}, CompileError.LabelNameExpected);
 		});
 		it('break outside while', function () {
 			var i = require('./f');
@@ -282,7 +298,19 @@ describe('analyze', function () {
 			var l = "goto L;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[0].label.error instanceof CompileError.UndefinedLabel);
+			assert(l[0].label.error instanceof CompileError.UndefinedName);
+		});
+		it('variable name expected', function () {
+			var l = "L: var a; let a = L;";
+			var l = parse(l);
+			analyze(l, new Environment(new Scope({})));
+			assert(l[2].right.error instanceof CompileError.VariableNameExpected);
+		});
+		it('label name expected', function () {
+			var l = "var a; goto a;";
+			var l = parse(l);
+			analyze(l, new Environment(new Scope({})));
+			assert(l[1].label.error instanceof CompileError.LabelNameExpected);
 		});
 		it('break outside while', function () {
 			var l = "break;";

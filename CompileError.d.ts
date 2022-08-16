@@ -7,8 +7,11 @@ declare namespace CompileError {
 	export class UndefinedName extends CompileError {
 		constructor(expression: Expression);
 	}
-	export class UndefinedLabel extends CompileError {
-		constructor(label: Expression.Name);
+	export class VariableNameExpected extends CompileError {
+		constructor(name: Expression.Name);
+	}
+	export class LabelNameExpected extends CompileError {
+		constructor(name: Expression.Name);
 	}
 	export class BreakOutsideWhile extends CompileError {
 		constructor(statement: Statement);

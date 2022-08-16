@@ -23,7 +23,7 @@ function compile(program, environment, interpretation) {
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) throw new CompileError.UndefinedName(expression);
 				var [type, depth] = resolution;
-				if (type != 'variable') throw new CompileError.UndefinedName(expression);
+				if (type != 'variable') throw new CompileError.VariableNameExpected(expression);
 				return interpretation.expression.name(expression, resolution);
 			case 'object':
 				var $property = expression.property.map(
@@ -182,9 +182,9 @@ function compile(program, environment, interpretation) {
 				);
 			case 'goto':
 				var resolution = environment.resolve(statement.label.identifier);
-				if (!resolution) throw new CompileError.UndefinedLabel(statement);
+				if (!resolution) throw new CompileError.UndefinedName(statement);
 				var [type, depth] = resolution;
-				if (type != 'label') throw new CompileError.UndefinedLabel(statement);
+				if (type != 'label') throw new CompileError.LabelNameExpected(statement.label);
 				return interpretation.statement.goto(statement.label);
 			case 'expression':
 				return compileStatements(
