@@ -19,7 +19,11 @@ function analyze(program, environment, parent) {
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) { error = new CompileError.UndefinedName(expression); break; }
 				var [type, depth] = resolution;
-				if (type != 'variable') error = new CompileError.VariableNameExpected(expression);
+				if (parent instanceof Statement && parent.type == 'goto') {
+					if (type != 'label') error = new CompileError.LabelNameExpected(expression);
+				}
+				else
+					if (type != 'variable') error = new CompileError.VariableNameExpected(expression);
 				break;
 			case 'object':
 				expression.property.forEach(
@@ -106,12 +110,7 @@ function analyze(program, environment, parent) {
 				);
 				break;
 			case 'goto':
-				// TODO: This duplicates implementation of analyze. A refactor is needed to remove it.
-				Object.defineProperty(statement.label, 'environment', { value: environment });
-				var resolution = environment.resolve(statement.label.identifier);
-				if (!resolution) { error = new CompileError.UndefinedName(statement.label); break; }
-				var [type, depth] = resolution;
-				if (type != 'label') error = new CompileError.LabelNameExpected(statement.label);
+				analyze(statement.label, environment, program);
 				break;
 			case 'expression':
 				analyze(statement.expression, environment, program);
