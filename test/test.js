@@ -258,7 +258,7 @@ describe('analyze', function () {
 				new Environment(new Scope({}))
 			)
 		));
-		assert.equal(b.environment.scope.definition.b, program[1].statement[0].name);
+		assert.equal(b.definition, program[1].statement[0].name);
 		assert.equal(b.parent, program[1].statement[1].left);
 	});
 	it('function', function () {
@@ -272,7 +272,7 @@ describe('analyze', function () {
 				new Environment(new Scope({}))
 			)
 		));
-		assert.equal(statement.environment.parent.scope.definition.a, program.argument.element[0]);
+		assert.equal(statement.right.definition, program.argument.element[0]);
 		assert.equal(statement.parent, program.expression);
 	});
 	it('label', function () {
@@ -283,7 +283,7 @@ describe('analyze', function () {
 			new Scope({ L: 'label', return: 'variable' }),
 			new Environment(new Scope({}))
 		));
-		assert.equal(goto.environment.scope.definition.L, label.name);
+		assert.equal(goto.label.definition, label.name);
 		assert.equal(goto.parent, program);
 	});
 	describe('error', function () {

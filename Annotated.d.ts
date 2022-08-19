@@ -10,6 +10,7 @@ type Annotated<T extends Expression | Statement> = T & {
 	parent: Program | undefined;
 	error: CompileError;
 	node: Node;
+	definition?: Expression.Name;
 }
 
 export = Annotated;

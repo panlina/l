@@ -131,6 +131,20 @@ function analyze(program, environment, parent) {
 				break;
 		}
 	}
+	if (program instanceof Expression)
+		if (program.type == 'name' && program.environment) {
+			var name = program;
+			Object.defineProperty(program, 'definition', {
+				get: () => {
+					var resolution = name.environment.resolve(name.identifier);
+					if (resolution) {
+						var [type, depth] = resolution;
+						var scope = name.environment.ancestor(depth).scope;
+						return scope.definition[name.identifier];
+					}
+				}
+			})
+		}
 	var error;
 	if (error) Object.defineProperty(error.program, 'error', { value: error });
 	function analyzeStatements(statement, expression, environment) {
