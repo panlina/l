@@ -96,6 +96,10 @@ function analyze(program, environment, parent) {
 	if (program instanceof Statement) {
 		var statement = program;
 		switch (statement.type) {
+			case 'var':
+				// TODO: This duplicates implementation of analyze. A refactor is needed to remove it.
+				Object.defineProperty(statement.name, 'parent', { value: statement });
+				break;
 			case 'assign':
 				if (!(statement.left.type in { name: 0, element: 0, property: 0, array: 0, tuple: 0, object: 0 }))
 					error = new CompileError.InvalidAssignment(statement);
