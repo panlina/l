@@ -135,6 +135,11 @@ function analyze(program, environment, parent) {
 				break;
 		}
 	}
+	if (program instanceof Label) {
+		var label = program;
+		// TODO: This duplicates implementation of analyze. A refactor is needed to remove it.
+		Object.defineProperty(label.name, 'parent', { value: label });
+	}
 	if (program instanceof Expression)
 		if (program.type == 'name' && program.environment) {
 			var name = program;
@@ -175,8 +180,7 @@ function analyze(program, environment, parent) {
 		var e = environment.push(scope);
 		statement
 			.forEach(statement => {
-				if (!(statement instanceof Label))
-					analyze(statement, e, program);
+				analyze(statement, e, program);
 			});
 		analyze(expression, e, program);
 	}
