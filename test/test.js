@@ -1,4 +1,5 @@
 var assert = require('assert');
+var shallowequal = require("shallowequal");
 var parse = require('../parse');
 var compile = require('../compile');
 var generate = require('../generate');
@@ -246,6 +247,7 @@ describe('compile', function () {
 });
 
 var analyze = require('../analyze');
+var findReferences = require('../findReferences');
 describe('analyze', function () {
 	it('', function () {
 		var b = l`b`;
@@ -259,6 +261,7 @@ describe('analyze', function () {
 			)
 		));
 		assert.equal(b.definition, program[1].statement[0].name);
+		assert(shallowequal(findReferences(program[0].name), [b.parent.parent.right]));
 		assert.equal(b.parent, program[1].statement[1].left);
 	});
 	it('function', function () {
@@ -273,6 +276,7 @@ describe('analyze', function () {
 			)
 		));
 		assert.equal(statement.right.definition, program.argument.element[0]);
+		assert(shallowequal(findReferences(program.argument.element[0]), [statement.right]));
 		assert.equal(statement.parent, program.expression);
 	});
 	it('label', function () {
@@ -284,6 +288,7 @@ describe('analyze', function () {
 			new Environment(new Scope({}))
 		));
 		assert.equal(goto.label.definition, label.name);
+		assert(shallowequal(findReferences(label.name), [goto.label]));
 		assert.equal(goto.parent, program);
 	});
 	describe('error', function () {

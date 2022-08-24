@@ -5,6 +5,7 @@ exports.traverse = require('./traverse');
 exports.programAt = require('./programAt');
 exports.compile = require('./compile');
 exports.analyze = require('./analyze');
+exports.findReferences = require('./findReferences');
 exports.generate = require('./generate');
 exports.Expression = require('./Expression');
 exports.Statement = require('./Statement');

@@ -6,6 +6,7 @@ import traverse = require('./traverse');
 import programAt = require('./programAt');
 import compile = require('./compile');
 import analyze = require('./analyze');
+import findReferences = require('./findReferences');
 import generate = require('./generate');
 import Expression = require('./Expression');
 import Statement = require('./Statement');
@@ -26,6 +27,7 @@ declare namespace l {
 		programAt,
 		compile,
 		analyze,
+		findReferences,
 		generate,
 		Expression,
 		Statement,
