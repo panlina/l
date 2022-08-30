@@ -9,5 +9,6 @@ exports.findReferences = require('./findReferences');
 exports.generate = require('./generate');
 exports.Expression = require('./Expression');
 exports.Statement = require('./Statement');
+exports.Label = require('./Label');
 exports.Scope = require('./Scope');
 exports.Environment = require('./Environment');
