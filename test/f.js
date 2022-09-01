@@ -3,7 +3,7 @@ var Label = require("../Label");
 var i = {
 	expression: {
 		undefined: expression => () => undefined,
-		null: expression => () => expression.value,
+		null: expression => () => null,
 		boolean: expression => () => expression.value,
 		number: expression => () => expression.value,
 		string: expression => () => expression.value,
