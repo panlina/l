@@ -61,9 +61,9 @@ function test($case) {
 	var environment = new Environment(new Scope({ ...$case.environment }));
 	var v = f(environment);
 	if ('return' in $case)
-		assert.deepEqual(v, $case.return);
+		assert.deepStrictEqual(v, $case.return);
 	if ('effect' in $case)
-		assert.deepEqual(environment.scope, new Scope($case.effect));
+		assert.deepStrictEqual(environment.scope, new Scope($case.effect));
 }
 
 describe('compile', function () {
@@ -253,7 +253,7 @@ describe('analyze', function () {
 		var b = l`b`;
 		var program = l`var a;{var b;let [${b}]=a;}`;
 		analyze(program, new Environment(new Scope({})));
-		assert.deepEqual(b.environment, new Environment(
+		assert.deepStrictEqual(b.environment, new Environment(
 			new Scope({ b: 'variable' }),
 			new Environment(
 				new Scope({ a: 'variable', return: 'variable' }),
@@ -268,7 +268,7 @@ describe('analyze', function () {
 		var [statement] = l`let b=a;`;
 		var program = l`[a]=>(var b;${statement})`;
 		analyze(program, new Environment(new Scope({})));
-		assert.deepEqual(statement.environment, new Environment(
+		assert.deepStrictEqual(statement.environment, new Environment(
 			new Scope({ b: 'variable', return: 'variable' }),
 			new Environment(
 				new Scope({ a: 'variable', return: 'variable' }),
@@ -283,7 +283,7 @@ describe('analyze', function () {
 		var program = l`L: goto L;`;
 		var [label, goto] = program;
 		analyze(program, new Environment(new Scope({})));
-		assert.deepEqual(goto.label.environment, new Environment(
+		assert.deepStrictEqual(goto.label.environment, new Environment(
 			new Scope({ L: 'label', return: 'variable' }),
 			new Environment(new Scope({}))
 		));

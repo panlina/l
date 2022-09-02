@@ -15,6 +15,8 @@ function test($case) {
 	vm.createContext(context);
 	var v = vm.runInContext(`(${g(s).code})`, context);
 	if ('return' in $case)
+		// TODO: should use `deepStrictEqual` here and below, but it breaks tests due to objects in different contexts having different `Object.prototype`
+		// see https://stackoverflow.com/questions/5875193/node-javascript-contexts-sharing-built-in-prototypes
 		assert.deepEqual(v, $case.return);
 	if ('effect' in $case)
 		assert.deepEqual(context, $case.effect);
