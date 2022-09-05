@@ -4,18 +4,18 @@ class Statement {
 	}
 }
 
+class Var extends Statement {
+	constructor(name) {
+		super('var');
+		this.name = name;
+	}
+}
+
 class Assign extends Statement {
 	constructor(left, right) {
 		super('assign');
 		this.left = left;
 		this.right = right;
-	}
-}
-
-class Var extends Statement {
-	constructor(name) {
-		super('var');
-		this.name = name;
 	}
 }
 

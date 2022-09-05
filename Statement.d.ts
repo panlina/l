@@ -9,15 +9,15 @@ declare class Statement {
 export = Statement;
 
 declare namespace Statement {
+	export class Var extends Statement {
+		constructor(name: l.Expression.Name);
+		name: l.Expression.Name;
+	}
+
 	export class Assign extends Statement {
 		constructor(left: l.Expression, right: l.Expression);
 		left: l.Expression;
 		right: l.Expression;
-	}
-
-	export class Var extends Statement {
-		constructor(name: l.Expression.Name);
-		name: l.Expression.Name;
 	}
 
 	export class Block extends Statement {
