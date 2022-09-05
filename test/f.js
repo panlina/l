@@ -11,7 +11,7 @@ var i = {
 			var [, depth] = resolution;
 			return environment => {
 				var scope = environment.ancestor(depth).scope;
-				return scope.resolve(expression.identifier);
+				return scope.name[expression.identifier];
 			};
 		},
 		object: $property =>

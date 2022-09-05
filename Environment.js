@@ -4,9 +4,8 @@ class Environment {
 		this.parent = parent;
 	}
 	resolve(name) {
-		var resolution = this.scope.resolve(name);
-		if (resolution !== undefined)
-			return [resolution, 0];
+		if (name in this.scope.name)
+			return [this.scope.name[name], 0];
 		if (this.parent) {
 			var resolution = this.parent.resolve(name);
 			if (resolution) {
