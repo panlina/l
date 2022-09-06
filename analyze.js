@@ -18,7 +18,7 @@ function analyze(program, environment, parent) {
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) { error = new CompileError.UndefinedName(expression); break; }
-				var [type, depth] = resolution;
+				var [type, scope] = resolution;
 				if (parent instanceof Statement && parent.type == 'goto') {
 					if (type != 'label') error = new CompileError.LabelNameExpected(expression);
 				}
@@ -147,8 +147,7 @@ function analyze(program, environment, parent) {
 				get: () => {
 					var resolution = name.environment.resolve(name.identifier);
 					if (resolution) {
-						var [type, depth] = resolution;
-						var scope = name.environment.ancestor(depth).scope;
+						var [type, scope] = resolution;
 						return scope.definition[name.identifier];
 					}
 				}

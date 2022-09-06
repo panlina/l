@@ -22,9 +22,9 @@ function compile(program, environment, interpretation) {
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
 				if (!resolution) throw new CompileError.UndefinedName(expression);
-				var [type, depth] = resolution;
+				var [type, scope] = resolution;
 				if (type != 'variable') throw new CompileError.VariableNameExpected(expression);
-				return interpretation.expression.name(expression, resolution);
+				return interpretation.expression.name(expression);
 			case 'object':
 				var $property = expression.property.map(
 					property => ({
@@ -105,13 +105,13 @@ function compile(program, environment, interpretation) {
 			case 'assign':
 				switch (statement.left.type) {
 					case 'name':
+						var resolution = environment.resolve(statement.left.identifier);
 						var $left = {
 							type: 'name',
-							expression: statement.left,
-							resolution: environment.resolve(statement.left.identifier)
+							expression: statement.left
 						};
-						if (!$left.resolution) throw new CompileError.UndefinedName(statement.left);
-						var [type, depth] = $left.resolution;
+						if (!resolution) throw new CompileError.UndefinedName(statement.left);
+						var [type, scope] = resolution;
 						if (type != 'variable') throw new CompileError.UndefinedName(statement.left);
 						break;
 					case 'element':
@@ -183,7 +183,7 @@ function compile(program, environment, interpretation) {
 			case 'goto':
 				var resolution = environment.resolve(statement.label.identifier);
 				if (!resolution) throw new CompileError.UndefinedName(statement);
-				var [type, depth] = resolution;
+				var [type, scope] = resolution;
 				if (type != 'label') throw new CompileError.LabelNameExpected(statement.label);
 				return interpretation.statement.goto(statement.label);
 			case 'expression':
@@ -210,7 +210,7 @@ function compile(program, environment, interpretation) {
 			case 'break':
 				var resolution = environment.resolve("while:after");
 				if (!resolution) throw new CompileError.BreakOutsideWhile(statement);
-				var [type, depth] = resolution;
+				var [type, scope] = resolution;
 				if (type != 'label') throw new CompileError.BreakOutsideWhile(statement);
 				return interpretation.statement.goto(new Expression.Name("while:after"));
 		}

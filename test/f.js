@@ -7,11 +7,10 @@ var i = {
 		boolean: expression => () => expression.value,
 		number: expression => () => expression.value,
 		string: expression => () => expression.value,
-		name: (expression, resolution) => {
-			var [, depth] = resolution;
+		name: expression => {
 			return environment => {
-				var scope = environment.ancestor(depth).scope;
-				return scope.name[expression.identifier];
+				var [value, scope] = environment.resolve(expression.identifier);
+				return value;
 			};
 		},
 		object: $property =>
@@ -50,17 +49,20 @@ var i = {
 	statement: {
 		'[]': ($statement, $expression) => {
 			var labelDictionary = {};
+			var variable = {};
 			for (var i = 0, j = 0; i < $statement.length; i++) {
 				var statement = $statement[i];
 				if (statement instanceof Label)
 					labelDictionary[statement.name.identifier] = j;
-				else if (statement.type == 'var');
+				else if (statement.type == 'var')
+					variable[statement.name.identifier] = undefined;
 				else
 					j++;
 			}
 			$statement = $statement.filter(statement => typeof statement == 'function');
+			variable['return'] = undefined;
 			return environment => {
-				environment = environment.push(new Scope({}));
+				environment = environment.push(new Scope(variable));
 				for (var i = 0; i < $statement.length;) {
 					var statement = $statement[i];
 					let l;
@@ -86,9 +88,8 @@ var i = {
 	},
 	assign: {
 		name: ($left, $right) => {
-			var [, depth] = $left.resolution;
 			return environment => {
-				var scope = environment.ancestor(depth).scope;
+				var [, scope] = environment.resolve($left.expression.identifier);
 				scope.name[$left.expression.identifier] = $right(environment);
 			};
 		},
