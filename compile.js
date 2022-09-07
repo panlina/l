@@ -106,24 +106,19 @@ function compile(program, environment, interpretation) {
 				switch (statement.left.type) {
 					case 'name':
 						var resolution = environment.resolve(statement.left.identifier);
-						var $left = {
-							type: 'name',
-							expression: statement.left
-						};
+						var $left = statement.left;
 						if (!resolution) throw new CompileError.UndefinedName(statement.left);
 						var [type, scope] = resolution;
 						if (type != 'variable') throw new CompileError.UndefinedName(statement.left);
 						break;
 					case 'element':
 						var $left = {
-							type: 'element',
 							expression: compile(statement.left.expression, environment, interpretation),
 							index: compile(statement.left.index, environment, interpretation)
 						};
 						break;
 					case 'property':
 						var $left = {
-							type: 'property',
 							expression: compile(statement.left.expression, environment, interpretation),
 							property: statement.left.property
 						};
@@ -173,7 +168,7 @@ function compile(program, environment, interpretation) {
 						throw new CompileError.InvalidAssignment(statement);
 				}
 				var $right = compile(statement.right, environment, interpretation);
-				return interpretation.assign[$left.type]($left, $right);
+				return interpretation.assign[statement.left.type]($left, $right);
 			case 'block':
 				return compileStatements(
 					statement.statement,

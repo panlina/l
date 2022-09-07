@@ -89,8 +89,8 @@ var i = {
 	assign: {
 		name: ($left, $right) => {
 			return environment => {
-				var [, scope] = environment.resolve($left.expression.identifier);
-				scope.name[$left.expression.identifier] = $right(environment);
+				var [, scope] = environment.resolve($left.identifier);
+				scope.name[$left.identifier] = $right(environment);
 			};
 		},
 		element: ($left, $right) =>

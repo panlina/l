@@ -23,7 +23,7 @@ interface Interpretation<T> {
 		goto: (label: Expression.Name) => T;
 	};
 	assign: {
-		name: ($left: { expression: Expression.Name }, $right: T) => T;
+		name: ($left: Expression.Name, $right: T) => T;
 		element: ($left: { expression: T, index: T }, $right: T) => T;
 		property: ($left: { expression: T, property: string }, $right: T) => T;
 	};
