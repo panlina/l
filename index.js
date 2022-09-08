@@ -12,3 +12,5 @@ exports.Statement = require('./Statement');
 exports.Label = require('./Label');
 exports.Scope = require('./Scope');
 exports.Environment = require('./Environment');
+exports.Machine = require('./Machine');
+exports.Value = require('./Value');
