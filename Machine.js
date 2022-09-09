@@ -1,3 +1,4 @@
+var RuntimeError = require('./RuntimeError');
 class Machine {
 	constructor(environment) {
 		this.environment = environment;
@@ -6,7 +7,7 @@ class Machine {
 		switch (statement.type) {
 			case 'assign':
 				var resolution = this.environment.resolve(statement.left.identifier);
-				// TODO: throw runtime error if name is undefined
+				if (!resolution) throw new RuntimeError.UndefinedName(statement.left);
 				var [, scope] = resolution;
 				scope.name[statement.left.identifier] = this.evaluate(statement.right);
 				break;
@@ -22,7 +23,7 @@ class Machine {
 				return expression;
 			case 'name':
 				var resolution = this.environment.resolve(expression.identifier);
-				// TODO: throw runtime error if name is undefined
+				if (!resolution) throw new RuntimeError.UndefinedName(expression);
 				var [value] = resolution;
 				return value;
 		}
