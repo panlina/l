@@ -1,7 +1,14 @@
 var RuntimeError = require('./RuntimeError');
 class Machine {
-	constructor(environment) {
+	constructor(environment, program) {
 		this.environment = environment;
+		this.program = program;
+		this.position = 0;
+	}
+	step() {
+		if (this.program instanceof Array)
+			if (this.position < this.program.length)
+				this.execute(this.program[this.position++]);
 	}
 	execute(statement) {
 		switch (statement.type) {
