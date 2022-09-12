@@ -16,6 +16,33 @@ describe('machine', function () {
 		machine.step();
 		assert(Value.equals(machine.evaluate(l`a`), new Value.Number(14)));
 	});
+	it('array', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`[12,26]`);
+		assert(Value.equals(a.element[0], new Value.Number(12)));
+		assert(Value.equals(a.element[1], new Value.Number(26)));
+	});
+	it('tuple', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`{12,26}`);
+		assert(Value.equals(a.element[0], new Value.Number(12)));
+		assert(Value.equals(a.element[1], new Value.Number(26)));
+	});
+	it('object', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`{a:12,b:26}`);
+		assert(Value.equals(a.property['a'], new Value.Number(12)));
+		assert(Value.equals(a.property['b'], new Value.Number(26)));
+	});
 	describe('error', function () {
 		var RuntimeError = require('../RuntimeError');
 		it('undefined name', function () {

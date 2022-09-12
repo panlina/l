@@ -28,6 +28,21 @@ declare namespace Value {
 		constructor(value: string);
 		value: string;
 	}
+
+	export class Array extends Value {
+		constructor(element: Value);
+		element: Value;
+	}
+
+	export class Tuple extends Value {
+		constructor(element: Value);
+		element: Value;
+	}
+
+	export class Object extends Value {
+		constructor(property: { [key: string]: Value });
+		property: { [key: string]: Value };
+	}
 }
 
 declare namespace Value {

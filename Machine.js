@@ -1,3 +1,4 @@
+var Value = require('./Value');
 var RuntimeError = require('./RuntimeError');
 class Machine {
 	constructor(environment, program) {
@@ -33,6 +34,14 @@ class Machine {
 				if (!resolution) throw new RuntimeError.UndefinedName(expression);
 				var [value] = resolution;
 				return value;
+			case 'array':
+			case 'tuple':
+				return new Value.Array(expression.element.map(e => this.evaluate(e)));
+			case 'object':
+				var $property = {};
+				for (var property of expression.property)
+					$property[property.name] = this.evaluate(property.value);
+				return new Value.Object($property);
 		}
 	}
 }

@@ -37,6 +37,27 @@ class String extends Value {
 	}
 }
 
+class Array extends Value {
+	constructor(element) {
+		super('array');
+		this.element = element;
+	}
+}
+
+class Tuple extends Value {
+	constructor(element) {
+		super('tuple');
+		this.element = element;
+	}
+}
+
+class Object extends Value {
+	constructor(property) {
+		super('object');
+		this.property = property;
+	}
+}
+
 function equals(left, right) {
 	if (left.type != right.type) return false;
 	switch (left.type) {
@@ -56,4 +77,7 @@ module.exports.Null = Null;
 module.exports.Boolean = Boolean;
 module.exports.Number = Number;
 module.exports.String = String;
+module.exports.Array = Array;
+module.exports.Tuple = Tuple;
+module.exports.Object = Object;
 module.exports.equals = equals;
