@@ -42,6 +42,10 @@ class Machine {
 				for (var property of expression.property)
 					$property[property.name] = this.evaluate(property.value);
 				return new Value.Object($property);
+			case 'property':
+				return this.evaluate(expression.expression).property[expression.property];
+			case 'element':
+				return this.evaluate(expression.expression).element[this.evaluate(expression.index).value];
 		}
 	}
 }
