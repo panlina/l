@@ -46,7 +46,45 @@ class Machine {
 				return this.evaluate(expression.expression).property[expression.property];
 			case 'element':
 				return this.evaluate(expression.expression).element[this.evaluate(expression.index).value];
+			case 'operation':
+				return operate(expression.operator, expression.left ? this.evaluate(expression.left) : undefined, expression.right ? this.evaluate(expression.right) : undefined);
 		}
+	}
+}
+function operate(operator, left, right) {
+	switch (operator) {
+		case '*':
+			return new Value.Number(left.value * right.value);
+		case '/':
+			return new Value.Number(left.value / right.value);
+		case '+':
+			return left != undefined ?
+				left.type == 'number' ?
+					new Value.Number(left.value + right.value) :
+					new Value.String(left.value + right.value) :
+				new Value.Number(right.value);
+		case '-':
+			return left != undefined ?
+				new Value.Number(left.value - right.value) :
+				new Value.Number(-right.value);
+		case '<=':
+			return new Value.Boolean(left.value <= right.value);
+		case '=':
+			return new Value.Boolean(left.value == right.value);
+		case '>=':
+			return new Value.Boolean(left.value >= right.value);
+		case '<':
+			return new Value.Boolean(left.value < right.value);
+		case '!=':
+			return new Value.Boolean(left.value != right.value);
+		case '>':
+			return new Value.Boolean(left.value > right.value);
+		case '!':
+			return new Value.Boolean(!right.value);
+		case '&':
+			return new Value.Boolean(left.value && right.value);
+		case '|':
+			return new Value.Boolean(left.value || right.value);
 	}
 }
 module.exports = Machine;

@@ -59,6 +59,18 @@ describe('machine', function () {
 		var a = machine.evaluate(l`array@1`);
 		assert(Value.equals(a, new Value.Number(26)));
 	});
+	it('operation', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		assert(Value.equals(machine.evaluate(l`1+2`), new Value.Number(3)));
+		assert(Value.equals(machine.evaluate(l`-1`), new Value.Number(-1)));
+		assert(Value.equals(machine.evaluate(l`"a"+"bc"`), new Value.String("abc")));
+		assert(Value.equals(machine.evaluate(l`12<=26`), new Value.Boolean(true)));
+		assert(Value.equals(machine.evaluate(l`!#false`), new Value.Boolean(true)));
+		assert(Value.equals(machine.evaluate(l`#false&#true`), new Value.Boolean(false)));
+	});
 	describe('error', function () {
 		var RuntimeError = require('../RuntimeError');
 		it('undefined name', function () {
