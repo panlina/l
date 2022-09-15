@@ -71,6 +71,14 @@ describe('machine', function () {
 		assert(Value.equals(machine.evaluate(l`!#false`), new Value.Boolean(true)));
 		assert(Value.equals(machine.evaluate(l`#false&#true`), new Value.Boolean(false)));
 	});
+	it('conditional', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`#true?1:0`);
+		assert(Value.equals(a, new Value.Number(1)));
+	});
 	describe('error', function () {
 		var RuntimeError = require('../RuntimeError');
 		it('undefined name', function () {

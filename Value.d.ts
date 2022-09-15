@@ -47,4 +47,5 @@ declare namespace Value {
 
 declare namespace Value {
 	export function equals(left: Value, right: Value): boolean;
+	export function truthy(value: Value): boolean;
 }

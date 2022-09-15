@@ -71,6 +71,18 @@ function equals(left, right) {
 	}
 }
 
+function truthy(value) {
+	switch (value.type) {
+		case 'undefined':
+		case 'null':
+			return false;
+		case 'boolean':
+		case 'number':
+		case 'string':
+			return value.value;
+	}
+}
+
 module.exports = Value;
 module.exports.Undefined = Undefined;
 module.exports.Null = Null;
@@ -81,3 +93,4 @@ module.exports.Array = Array;
 module.exports.Tuple = Tuple;
 module.exports.Object = Object;
 module.exports.equals = equals;
+module.exports.truthy = truthy;

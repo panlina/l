@@ -48,6 +48,10 @@ class Machine {
 				return this.evaluate(expression.expression).element[this.evaluate(expression.index).value];
 			case 'operation':
 				return operate(expression.operator, expression.left ? this.evaluate(expression.left) : undefined, expression.right ? this.evaluate(expression.right) : undefined);
+			case 'conditional':
+				return Value.truthy(this.evaluate(expression.condition)) ?
+					this.evaluate(expression.true) :
+					this.evaluate(expression.false);
 		}
 	}
 }
