@@ -1,3 +1,5 @@
+var Scope = require('./Scope');
+var Label = require('./Label');
 var Value = require('./Value');
 var RuntimeError = require('./RuntimeError');
 class Machine {
@@ -52,6 +54,27 @@ class Machine {
 				return Value.truthy(this.evaluate(expression.condition)) ?
 					this.evaluate(expression.true) :
 					this.evaluate(expression.false);
+			case 'statement':
+				var name = expression.statement
+					.filter(statement =>
+						statement.type == 'var'
+					);
+				var name = name.reduce(
+					(name, v) => (
+						name[v.name.identifier] = new Value.Undefined(),
+						name
+					), {}
+				);
+				name['return'] = new Value.Undefined();
+				var statement = expression.statement.filter(
+					statement => !(statement instanceof Label || statement.type == 'var')
+				);
+				this.environment = this.environment.push(new Scope(name));
+				for (var statement of statement)
+					this.execute(statement);
+				var $return = this.environment.scope.name['return'];
+				this.environment = this.environment.parent;
+				return $return;
 		}
 	}
 }

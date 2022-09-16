@@ -79,6 +79,14 @@ describe('machine', function () {
 		var a = machine.evaluate(l`#true?1:0`);
 		assert(Value.equals(a, new Value.Number(1)));
 	});
+	it('statement', function () {
+		var machine = new Machine(
+			new Environment(new Scope({ a: new Value.Number(0), b: new Value.Number(1) })),
+			l``
+		);
+		var a = machine.evaluate(l`(var a;let a=1;let return=a+b;)`);
+		assert(Value.equals(a, new Value.Number(2)));
+	});
 	describe('error', function () {
 		var RuntimeError = require('../RuntimeError');
 		it('undefined name', function () {
