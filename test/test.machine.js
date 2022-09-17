@@ -16,6 +16,16 @@ describe('machine', function () {
 		machine.step();
 		assert(Value.equals(machine.evaluate(l`a`), new Value.Number(14)));
 	});
+	describe('assign', function () {
+		it('name', function () {
+			var machine = new Machine(
+				new Environment(new Scope({ a: new Value.Undefined() })),
+				l``
+			);
+			machine.execute(l`let a=12;`[0]);
+			assert(Value.equals(machine.evaluate(l`a`), new Value.Number(12)));
+		});
+	});
 	it('array', function () {
 		var machine = new Machine(
 			new Environment(new Scope({})),
