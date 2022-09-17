@@ -25,6 +25,22 @@ describe('machine', function () {
 			machine.execute(l`let a=12;`[0]);
 			assert(Value.equals(machine.evaluate(l`a`), new Value.Number(12)));
 		});
+		it('element', function () {
+			var machine = new Machine(
+				new Environment(new Scope({ array: new Value.Array([new Value.Number(12), new Value.Number(26)]) })),
+				l``
+			);
+			machine.execute(l`let array@1=28;`[0]);
+			assert(Value.equals(machine.evaluate(l`array`).element[1], new Value.Number(28)));
+		});
+		it('property', function () {
+			var machine = new Machine(
+				new Environment(new Scope({ object: new Value.Object({ a: new Value.Number(12), b: new Value.Number(26) }) })),
+				l``
+			);
+			machine.execute(l`let object.a=14;`[0]);
+			assert(Value.equals(machine.evaluate(l`object`).property['a'], new Value.Number(14)));
+		});
 	});
 	it('array', function () {
 		var machine = new Machine(

@@ -16,11 +16,20 @@ class Machine {
 	execute(statement) {
 		switch (statement.type) {
 			case 'assign':
-				var resolution = this.environment.resolve(statement.left.identifier);
-				if (!resolution) throw new RuntimeError.UndefinedName(statement.left);
-				var [, scope] = resolution;
-				scope.name[statement.left.identifier] = this.evaluate(statement.right);
-				break;
+				switch (statement.left.type) {
+					case 'name':
+						var resolution = this.environment.resolve(statement.left.identifier);
+						if (!resolution) throw new RuntimeError.UndefinedName(statement.left);
+						var [, scope] = resolution;
+						scope.name[statement.left.identifier] = this.evaluate(statement.right);
+						break;
+					case 'element':
+						this.evaluate(statement.left.expression).element[this.evaluate(statement.left.index).value] = this.evaluate(statement.right);
+						break;
+					case 'property':
+						this.evaluate(statement.left.expression).property[statement.left.property] = this.evaluate(statement.right);
+						break;
+				}
 		}
 	}
 	evaluate(expression) {
