@@ -41,6 +41,33 @@ describe('machine', function () {
 			machine.execute(l`let object.a=14;`[0]);
 			assert(Value.equals(machine.evaluate(l`object`).property['a'], new Value.Number(14)));
 		});
+		it('array', function () {
+			var machine = new Machine(
+				new Environment(new Scope({ a: new Value.Undefined(), b: new Value.Undefined() })),
+				l``
+			);
+			machine.execute(l`let [a,b]=[12,26];`[0]);
+			assert(Value.equals(machine.evaluate(l`a`), new Value.Number(12)));
+			assert(Value.equals(machine.evaluate(l`b`), new Value.Number(26)));
+		});
+		it('tuple', function () {
+			var machine = new Machine(
+				new Environment(new Scope({ a: new Value.Undefined(), b: new Value.Undefined() })),
+				l``
+			);
+			machine.execute(l`let {a,b}={12,26};`[0]);
+			assert(Value.equals(machine.evaluate(l`a`), new Value.Number(12)));
+			assert(Value.equals(machine.evaluate(l`b`), new Value.Number(26)));
+		});
+		it('object', function () {
+			var machine = new Machine(
+				new Environment(new Scope({ a: new Value.Undefined(), b: new Value.Undefined() })),
+				l``
+			);
+			machine.execute(l`let {a:a,b:b}={a:12,b:26};`[0]);
+			assert(Value.equals(machine.evaluate(l`a`), new Value.Number(12)));
+			assert(Value.equals(machine.evaluate(l`b`), new Value.Number(26)));
+		});
 	});
 	it('array', function () {
 		var machine = new Machine(

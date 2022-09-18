@@ -16,20 +16,33 @@ class Machine {
 	execute(statement) {
 		switch (statement.type) {
 			case 'assign':
-				switch (statement.left.type) {
-					case 'name':
-						var resolution = this.environment.resolve(statement.left.identifier);
-						if (!resolution) throw new RuntimeError.UndefinedName(statement.left);
-						var [, scope] = resolution;
-						scope.name[statement.left.identifier] = this.evaluate(statement.right);
-						break;
-					case 'element':
-						this.evaluate(statement.left.expression).element[this.evaluate(statement.left.index).value] = this.evaluate(statement.right);
-						break;
-					case 'property':
-						this.evaluate(statement.left.expression).property[statement.left.property] = this.evaluate(statement.right);
-						break;
-				}
+				this.assign(statement.left, this.evaluate(statement.right));
+				break;
+		}
+	}
+	assign(expression, value) {
+		switch (expression.type) {
+			case 'name':
+				var resolution = this.environment.resolve(expression.identifier);
+				if (!resolution) throw new RuntimeError.UndefinedName(expression);
+				var [, scope] = resolution;
+				scope.name[expression.identifier] = value;
+				break;
+			case 'element':
+				this.evaluate(expression.expression).element[this.evaluate(expression.index).value] = value;
+				break;
+			case 'property':
+				this.evaluate(expression.expression).property[expression.property] = value;
+				break;
+			case 'array':
+			case 'tuple':
+				for (var i in expression.element)
+					this.assign(expression.element[i], value.element[i]);
+				break;
+			case 'object':
+				for (var p of expression.property)
+					this.assign(p.value, value.property[p.name]);
+				break;
 		}
 	}
 	evaluate(expression) {
