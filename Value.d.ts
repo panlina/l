@@ -1,3 +1,6 @@
+import Expression = require("./Expression");
+import Environment = require("./Environment");
+
 declare class Value {
 	constructor(type: string);
 	type: string;
@@ -42,6 +45,12 @@ declare namespace Value {
 	export class Object extends Value {
 		constructor(property: { [key: string]: Value });
 		property: { [key: string]: Value };
+	}
+
+	export class Function extends Value {
+		constructor(expression: Expression, environment: Environment<Value>);
+		expression: Expression;
+		environment: Environment<Value>;
 	}
 }
 

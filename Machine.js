@@ -70,6 +70,17 @@ class Machine {
 				return this.evaluate(expression.expression).property[expression.property];
 			case 'element':
 				return this.evaluate(expression.expression).element[this.evaluate(expression.index).value];
+			case 'call':
+				var $expression = this.evaluate(expression.expression);
+				var $argument = this.evaluate(expression.argument);
+				var environment = this.environment;
+				this.environment = $expression.environment.push(new Scope({}));
+				this.environment.scope.name[$expression.expression.argument.identifier] = new Value.Undefined();
+				this.environment.scope.name['return'] = new Value.Undefined();
+				this.assign($expression.expression.argument, $argument);
+				var $return = this.evaluate($expression.expression.expression);
+				this.environment = environment;
+				return $return;
 			case 'operation':
 				return operate(expression.operator, expression.left ? this.evaluate(expression.left) : undefined, expression.right ? this.evaluate(expression.right) : undefined);
 			case 'conditional':
@@ -97,6 +108,8 @@ class Machine {
 				var $return = this.environment.scope.name['return'];
 				this.environment = this.environment.parent;
 				return $return;
+			case 'function':
+				return new Value.Function(expression, this.environment);
 		}
 	}
 }

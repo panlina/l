@@ -140,6 +140,14 @@ describe('machine', function () {
 		var a = machine.evaluate(l`(var a;let a=1;let return=a+b;)`);
 		assert(Value.equals(a, new Value.Number(2)));
 	});
+	it('function, call', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`((b=>(x=>x+b))1)0`);
+		assert(Value.equals(a, new Value.Number(1)));
+	});
 	describe('error', function () {
 		var RuntimeError = require('../RuntimeError');
 		it('undefined name', function () {

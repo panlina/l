@@ -58,6 +58,14 @@ class Object extends Value {
 	}
 }
 
+class Function extends Value {
+	constructor(expression, environment) {
+		super('function');
+		this.expression = expression;
+		this.environment = environment;
+	}
+}
+
 function equals(left, right) {
 	if (left.type != right.type) return false;
 	switch (left.type) {
@@ -92,5 +100,6 @@ module.exports.String = String;
 module.exports.Array = Array;
 module.exports.Tuple = Tuple;
 module.exports.Object = Object;
+module.exports.Function = Function;
 module.exports.equals = equals;
 module.exports.truthy = truthy;
