@@ -81,7 +81,7 @@ function analyze(program, environment, parent) {
 						case 'name': return [argument];
 						case 'array': case 'tuple': return argument.element.map(name).flat();
 						case 'object': return argument.property.map(p => name(p.value)).flat();
-						default: error = new CompileError.InvalidFunctionParameter(expression); return [];
+						default: error = new CompileError.InvalidFunctionParameter(argument); return [];
 					}
 				}
 				break;

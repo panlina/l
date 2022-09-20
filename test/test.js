@@ -139,7 +139,7 @@ describe('analyze', function () {
 			var l = "f x => x";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l.error instanceof CompileError.InvalidFunctionParameter);
+			assert(l.argument.error instanceof CompileError.InvalidFunctionParameter);
 		});
 	});
 });

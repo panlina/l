@@ -88,7 +88,7 @@ function compile(program, environment, interpretation) {
 						case 'name': return [argument];
 						case 'array': case 'tuple': return argument.element.map(name).flat();
 						case 'object': return argument.property.map(p => name(p.value)).flat();
-						default: throw new CompileError.InvalidFunctionParameter(expression);
+						default: throw new CompileError.InvalidFunctionParameter(argument);
 					}
 				}
 		}
