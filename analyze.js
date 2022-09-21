@@ -17,13 +17,13 @@ function analyze(program, environment, parent) {
 				break;
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
-				if (!resolution) { error = new CompileError.UndefinedName(expression); break; }
+				if (!resolution) { assignError(new CompileError.UndefinedName(expression)); break; }
 				var [type, scope] = resolution;
 				if (parent instanceof Statement && parent.type == 'goto') {
-					if (type != 'label') error = new CompileError.LabelNameExpected(expression);
+					if (type != 'label') assignError(new CompileError.LabelNameExpected(expression));
 				}
 				else
-					if (type != 'variable') error = new CompileError.VariableNameExpected(expression);
+					if (type != 'variable') assignError(new CompileError.VariableNameExpected(expression));
 				break;
 			case 'object':
 				expression.property.forEach(
@@ -81,7 +81,7 @@ function analyze(program, environment, parent) {
 						case 'name': return [argument];
 						case 'array': case 'tuple': return argument.element.map(name).flat();
 						case 'object': return argument.property.map(p => name(p.value)).flat();
-						default: error = new CompileError.InvalidFunctionParameter(argument); return [];
+						default: assignError(new CompileError.InvalidFunctionParameter(argument)); return [];
 					}
 				}
 				break;
@@ -102,7 +102,7 @@ function analyze(program, environment, parent) {
 				break;
 			case 'assign':
 				if (!(statement.left.type in { name: 0, element: 0, property: 0, array: 0, tuple: 0, object: 0 }))
-					error = new CompileError.InvalidAssignment(statement);
+					assignError(new CompileError.InvalidAssignment(statement));
 				analyze(statement.left, environment, program);
 				analyze(statement.right, environment, program);
 				break;
@@ -131,7 +131,7 @@ function analyze(program, environment, parent) {
 					p = p.parent;
 				}
 				if (!p)
-					error = new CompileError.BreakOutsideWhile(statement);
+					assignError(new CompileError.BreakOutsideWhile(statement));
 				break;
 		}
 	}
@@ -153,8 +153,9 @@ function analyze(program, environment, parent) {
 				}
 			})
 		}
-	var error;
-	if (error) Object.defineProperty(error.program, 'error', { value: error });
+	function assignError(error) {
+		Object.defineProperty(error.program, 'error', { value: error });
+	}
 	function analyzeStatements(statement, expression, environment) {
 		var name = statement
 			.filter(statement =>
