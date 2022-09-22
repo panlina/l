@@ -3,6 +3,7 @@ var Expression = require('./Expression');
 var Statement = require('./Statement');
 var Label = require('./Label');
 var CompileError = require('./CompileError');
+var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 var i = 0;
 function I() { return i++; }
 function compile(program, environment, interpretation) {
@@ -76,21 +77,13 @@ function compile(program, environment, interpretation) {
 					compileStatements(
 						[
 							new Statement.Var(new Expression.Name('return')),
-							...name(expression.argument).map(n => new Statement.Var(n)),
+							...[...extractFunctionArgumentNames(expression.argument)].map(n => new Statement.Var(n)),
 							new Statement.Assign(expression.argument, new Expression.Name('argument'))
 						],
 						expression.expression,
 						environment.push(new Scope({ argument: 'variable' }))
 					)
 				);
-				function name(argument) {
-					switch (argument.type) {
-						case 'name': return [argument];
-						case 'array': case 'tuple': return argument.element.map(name).flat();
-						case 'object': return argument.property.map(p => name(p.value)).flat();
-						default: throw new CompileError.InvalidFunctionParameter(argument);
-					}
-				}
 		}
 	}
 	if (program instanceof Array)
