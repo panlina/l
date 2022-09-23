@@ -148,6 +148,14 @@ describe('machine', function () {
 		var a = machine.evaluate(l`((b=>(x=>x+b))1)0`);
 		assert(Value.equals(a, new Value.Number(1)));
 	});
+	it('function argument destructuring', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`({x,y}=>x+y){1,2}`);
+		assert(Value.equals(a, new Value.Number(3)));
+	});
 	describe('error', function () {
 		var RuntimeError = require('../RuntimeError');
 		it('undefined name', function () {

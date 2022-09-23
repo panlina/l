@@ -2,6 +2,7 @@ var Scope = require('./Scope');
 var Label = require('./Label');
 var Value = require('./Value');
 var RuntimeError = require('./RuntimeError');
+var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 class Machine {
 	constructor(environment, program) {
 		this.environment = environment;
@@ -75,7 +76,8 @@ class Machine {
 				var $argument = this.evaluate(expression.argument);
 				var environment = this.environment;
 				this.environment = $expression.environment.push(new Scope({}));
-				this.environment.scope.name[$expression.expression.argument.identifier] = new Value.Undefined();
+				for (var name of extractFunctionArgumentNames($expression.expression.argument))
+					this.environment.scope.name[name.identifier] = new Value.Undefined();
 				this.environment.scope.name['return'] = new Value.Undefined();
 				this.assign($expression.expression.argument, $argument);
 				var $return = this.evaluate($expression.expression.expression);
