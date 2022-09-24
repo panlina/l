@@ -73,11 +73,16 @@ function compile(program, environment, interpretation) {
 					environment
 				);
 			case 'function':
+				var name = [];
+				for (var n of extractFunctionArgumentNames(expression.argument)) {
+					if (n instanceof CompileError.InvalidFunctionParameter) throw n;
+					name.push(n);
+				}
 				return interpretation.abstract(
 					compileStatements(
 						[
 							new Statement.Var(new Expression.Name('return')),
-							...[...extractFunctionArgumentNames(expression.argument)].map(n => new Statement.Var(n)),
+							...name.map(n => new Statement.Var(n)),
 							new Statement.Assign(expression.argument, new Expression.Name('argument'))
 						],
 						expression.expression,

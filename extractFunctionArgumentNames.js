@@ -10,7 +10,7 @@ function* extractFunctionArgumentNames(argument) {
 			for (var p of argument.property)
 				yield* extractFunctionArgumentNames(p.value);
 			break;
-		default: throw new CompileError.InvalidFunctionParameter(argument);
+		default: yield new CompileError.InvalidFunctionParameter(argument);
 	}
 }
 module.exports = extractFunctionArgumentNames;
