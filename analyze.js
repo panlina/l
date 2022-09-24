@@ -3,6 +3,7 @@ var Expression = require('./Expression');
 var Statement = require('./Statement');
 var Label = require('./Label');
 var CompileError = require('./CompileError');
+var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 function analyze(program, environment, parent) {
 	Object.defineProperty(program, 'environment', { value: environment });
 	Object.defineProperty(program, 'parent', { value: parent });
@@ -68,22 +69,18 @@ function analyze(program, environment, parent) {
 				);
 				break;
 			case 'function':
+				var name = [];
+				for (var n of extractFunctionArgumentNames(expression.argument))
+					if (n instanceof CompileError.InvalidFunctionParameter) assignError(n);
+					else name.push(n);
 				analyzeStatements(
 					[
 						new Statement.Var(new Expression.Name('return')),
-						...name(expression.argument).map(n => new Statement.Var(n))
+						...name.map(n => new Statement.Var(n))
 					],
 					expression.expression,
 					environment
 				);
-				function name(argument) {
-					switch (argument.type) {
-						case 'name': return [argument];
-						case 'array': case 'tuple': return argument.element.map(name).flat();
-						case 'object': return argument.property.map(p => name(p.value)).flat();
-						default: assignError(new CompileError.InvalidFunctionParameter(argument)); return [];
-					}
-				}
 				break;
 		}
 	}
