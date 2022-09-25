@@ -19,6 +19,25 @@ class Machine {
 			case 'assign':
 				this.assign(statement.left, this.evaluate(statement.right));
 				break;
+			case 'block':
+				var name = statement.statement
+					.filter(statement =>
+						statement.type == 'var'
+					);
+				var name = name.reduce(
+					(name, v) => (
+						name[v.name.identifier] = new Value.Undefined(),
+						name
+					), {}
+				);
+				var statement = statement.statement.filter(
+					statement => !(statement instanceof Label || statement.type == 'var')
+				);
+				this.environment = this.environment.push(new Scope(name));
+				for (var statement of statement)
+					this.execute(statement);
+				this.environment = this.environment.parent;
+				break;
 		}
 	}
 	assign(expression, value) {

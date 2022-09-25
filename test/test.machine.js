@@ -69,6 +69,14 @@ describe('machine', function () {
 			assert(Value.equals(machine.evaluate(l`b`), new Value.Number(26)));
 		});
 	});
+	it('block', function () {
+		var machine = new Machine(
+			new Environment(new Scope({ a: new Value.Number(0), b: new Value.Number(1), c: new Value.Number(1) })),
+			l``
+		);
+		machine.execute(l`{var a;let a=1;let c=a+b;}`[0]);
+		assert(Value.equals(machine.evaluate(l`c`), new Value.Number(2)));
+	});
 	it('array', function () {
 		var machine = new Machine(
 			new Environment(new Scope({})),
