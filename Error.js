@@ -1,37 +1,37 @@
-class CompileError extends Error {
+class Error extends global.Error {
 	constructor(program) {
 		super();
 		this.program = program;
 	}
 }
-class UndefinedName extends CompileError {
+class UndefinedName extends Error {
 	constructor(expression) { super(expression); }
 	get message() { return `'${this.program.identifier}' is not defined.`; }
 }
-class VariableNameExpected extends CompileError {
+class VariableNameExpected extends Error {
 	constructor(name) { super(name); }
 	get message() { return `'${this.program.identifier}' refers to a label where a variable is expected.`; }
 }
-class LabelNameExpected extends CompileError {
+class LabelNameExpected extends Error {
 	constructor(name) { super(name); }
 	get message() { return `'${this.program.identifier}' refers to a variable where a label is expected.`; }
 }
-class BreakOutsideWhile extends CompileError {
+class BreakOutsideWhile extends Error {
 	constructor(statement) { super(statement); }
 	get message() { return `break must be inside while.`; }
 }
-class InvalidAssignment extends CompileError {
+class InvalidAssignment extends Error {
 	constructor(statement) { super(statement); }
 	get message() { return `cannot assign to ${this.program.left.type} expression.`; }
 }
-class InvalidFunctionParameter extends CompileError {
+class InvalidFunctionParameter extends Error {
 	constructor(expression) { super(expression); }
 	get message() { return `function parameter is invalid.`; }
 }
-CompileError.UndefinedName = UndefinedName;
-CompileError.VariableNameExpected = VariableNameExpected;
-CompileError.LabelNameExpected = LabelNameExpected;
-CompileError.BreakOutsideWhile = BreakOutsideWhile;
-CompileError.InvalidAssignment = InvalidAssignment;
-CompileError.InvalidFunctionParameter = InvalidFunctionParameter;
-module.exports = CompileError;
+Error.UndefinedName = UndefinedName;
+Error.VariableNameExpected = VariableNameExpected;
+Error.LabelNameExpected = LabelNameExpected;
+Error.BreakOutsideWhile = BreakOutsideWhile;
+Error.InvalidAssignment = InvalidAssignment;
+Error.InvalidFunctionParameter = InvalidFunctionParameter;
+module.exports = Error;

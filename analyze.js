@@ -2,7 +2,7 @@ var Scope = require('./Scope');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
 var Label = require('./Label');
-var CompileError = require('./CompileError');
+var Error = require('./Error');
 var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 function analyze(program, environment, parent) {
 	Object.defineProperty(program, 'environment', { value: environment });
@@ -18,13 +18,13 @@ function analyze(program, environment, parent) {
 				break;
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
-				if (!resolution) { assignError(new CompileError.UndefinedName(expression)); break; }
+				if (!resolution) { assignError(new Error.UndefinedName(expression)); break; }
 				var [type, scope] = resolution;
 				if (parent instanceof Statement && parent.type == 'goto') {
-					if (type != 'label') assignError(new CompileError.LabelNameExpected(expression));
+					if (type != 'label') assignError(new Error.LabelNameExpected(expression));
 				}
 				else
-					if (type != 'variable') assignError(new CompileError.VariableNameExpected(expression));
+					if (type != 'variable') assignError(new Error.VariableNameExpected(expression));
 				break;
 			case 'object':
 				expression.property.forEach(
@@ -71,7 +71,7 @@ function analyze(program, environment, parent) {
 			case 'function':
 				var name = [];
 				for (var n of extractFunctionArgumentNames(expression.argument))
-					if (n instanceof CompileError.InvalidFunctionParameter) assignError(n);
+					if (n instanceof Error.InvalidFunctionParameter) assignError(n);
 					else name.push(n);
 				analyzeStatements(
 					[
@@ -99,7 +99,7 @@ function analyze(program, environment, parent) {
 				break;
 			case 'assign':
 				if (!(statement.left.type in { name: 0, element: 0, property: 0, array: 0, tuple: 0, object: 0 }))
-					assignError(new CompileError.InvalidAssignment(statement));
+					assignError(new Error.InvalidAssignment(statement));
 				analyze(statement.left, environment, program);
 				analyze(statement.right, environment, program);
 				break;
@@ -128,7 +128,7 @@ function analyze(program, environment, parent) {
 					p = p.parent;
 				}
 				if (!p)
-					assignError(new CompileError.BreakOutsideWhile(statement));
+					assignError(new Error.BreakOutsideWhile(statement));
 				break;
 		}
 	}

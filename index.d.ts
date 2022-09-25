@@ -16,7 +16,7 @@ import Scope = require('./Scope');
 import Environment = require('./Environment');
 import Interpretation = require('./Interpretation');
 import ParseError = require('./ParseError');
-import CompileError = require('./CompileError');
+import Error = require('./Error');
 import Annotated = require('./Annotated');
 import AnalyzedScope = require('./AnalyzedScope');
 import Machine = require('./Machine');
@@ -39,7 +39,7 @@ declare namespace l {
 		Environment,
 		Interpretation,
 		ParseError,
-		CompileError,
+		Error,
 		Annotated,
 		AnalyzedScope,
 		Machine,

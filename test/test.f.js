@@ -137,14 +137,14 @@ describe('compile', function () {
 		test(require('./case/scope'));
 	});
 	describe('error', function () {
-		var CompileError = require('../CompileError');
+		var Error = require('../Error');
 		it('undefined name', function () {
 			var i = require('./f');
 			var l = "a";
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.UndefinedName);
+			}, Error.UndefinedName);
 		});
 		it('undefined label', function () {
 			var i = require('./f');
@@ -152,7 +152,7 @@ describe('compile', function () {
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.UndefinedName);
+			}, Error.UndefinedName);
 		});
 		it('variable name expected', function () {
 			var i = require('./f');
@@ -160,7 +160,7 @@ describe('compile', function () {
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.VariableNameExpected);
+			}, Error.VariableNameExpected);
 		});
 		it('label name expected', function () {
 			var i = require('./f');
@@ -168,7 +168,7 @@ describe('compile', function () {
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.LabelNameExpected);
+			}, Error.LabelNameExpected);
 		});
 		it('break outside while', function () {
 			var i = require('./f');
@@ -176,7 +176,7 @@ describe('compile', function () {
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.BreakOutsideWhile);
+			}, Error.BreakOutsideWhile);
 		});
 		it('invalid assignment', function () {
 			var i = require('./f');
@@ -184,7 +184,7 @@ describe('compile', function () {
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.InvalidAssignment);
+			}, Error.InvalidAssignment);
 		});
 		it('invalid function parameter', function () {
 			var i = require('./f');
@@ -192,7 +192,7 @@ describe('compile', function () {
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, CompileError.InvalidFunctionParameter);
+			}, Error.InvalidFunctionParameter);
 		});
 	});
 });

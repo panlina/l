@@ -98,48 +98,48 @@ describe('analyze', function () {
 		assert.equal(goto.parent, program);
 	});
 	describe('error', function () {
-		var CompileError = require('../CompileError');
+		var Error = require('../Error');
 		it('undefined name', function () {
 			var l = "a";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l.error instanceof CompileError.UndefinedName);
+			assert(l.error instanceof Error.UndefinedName);
 		});
 		it('undefined label', function () {
 			var l = "goto L;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[0].label.error instanceof CompileError.UndefinedName);
+			assert(l[0].label.error instanceof Error.UndefinedName);
 		});
 		it('variable name expected', function () {
 			var l = "L: var a; let a = L;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[2].right.error instanceof CompileError.VariableNameExpected);
+			assert(l[2].right.error instanceof Error.VariableNameExpected);
 		});
 		it('label name expected', function () {
 			var l = "var a; goto a;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[1].label.error instanceof CompileError.LabelNameExpected);
+			assert(l[1].label.error instanceof Error.LabelNameExpected);
 		});
 		it('break outside while', function () {
 			var l = "break;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[0].error instanceof CompileError.BreakOutsideWhile);
+			assert(l[0].error instanceof Error.BreakOutsideWhile);
 		});
 		it('invalid assignment', function () {
 			var l = "var a; let a + 1 = 0;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[1].error instanceof CompileError.InvalidAssignment);
+			assert(l[1].error instanceof Error.InvalidAssignment);
 		});
 		it('invalid function parameter', function () {
 			var l = "f x => x";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l.argument.error instanceof CompileError.InvalidFunctionParameter);
+			assert(l.argument.error instanceof Error.InvalidFunctionParameter);
 		});
 	});
 });

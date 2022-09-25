@@ -1,7 +1,7 @@
 var Scope = require('./Scope');
 var Label = require('./Label');
 var Value = require('./Value');
-var RuntimeError = require('./RuntimeError');
+var Error = require('./Error');
 var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 class Machine {
 	constructor(environment, program) {
@@ -25,7 +25,7 @@ class Machine {
 		switch (expression.type) {
 			case 'name':
 				var resolution = this.environment.resolve(expression.identifier);
-				if (!resolution) throw new RuntimeError.UndefinedName(expression);
+				if (!resolution) throw new Error.UndefinedName(expression);
 				var [, scope] = resolution;
 				scope.name[expression.identifier] = value;
 				break;
@@ -56,7 +56,7 @@ class Machine {
 				return expression;
 			case 'name':
 				var resolution = this.environment.resolve(expression.identifier);
-				if (!resolution) throw new RuntimeError.UndefinedName(expression);
+				if (!resolution) throw new Error.UndefinedName(expression);
 				var [value] = resolution;
 				return value;
 			case 'array':

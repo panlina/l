@@ -2,7 +2,7 @@ var Scope = require('./Scope');
 var Expression = require('./Expression');
 var Statement = require('./Statement');
 var Label = require('./Label');
-var CompileError = require('./CompileError');
+var Error = require('./Error');
 var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 var i = 0;
 function I() { return i++; }
@@ -22,9 +22,9 @@ function compile(program, environment, interpretation) {
 				return interpretation.expression.string(expression);
 			case 'name':
 				var resolution = environment.resolve(expression.identifier);
-				if (!resolution) throw new CompileError.UndefinedName(expression);
+				if (!resolution) throw new Error.UndefinedName(expression);
 				var [type, scope] = resolution;
-				if (type != 'variable') throw new CompileError.VariableNameExpected(expression);
+				if (type != 'variable') throw new Error.VariableNameExpected(expression);
 				return interpretation.expression.name(expression);
 			case 'object':
 				var $property = expression.property.map(
@@ -75,7 +75,7 @@ function compile(program, environment, interpretation) {
 			case 'function':
 				var name = [];
 				for (var n of extractFunctionArgumentNames(expression.argument)) {
-					if (n instanceof CompileError.InvalidFunctionParameter) throw n;
+					if (n instanceof Error.InvalidFunctionParameter) throw n;
 					name.push(n);
 				}
 				return interpretation.abstract(
@@ -105,9 +105,9 @@ function compile(program, environment, interpretation) {
 					case 'name':
 						var resolution = environment.resolve(statement.left.identifier);
 						var $left = statement.left;
-						if (!resolution) throw new CompileError.UndefinedName(statement.left);
+						if (!resolution) throw new Error.UndefinedName(statement.left);
 						var [type, scope] = resolution;
-						if (type != 'variable') throw new CompileError.UndefinedName(statement.left);
+						if (type != 'variable') throw new Error.UndefinedName(statement.left);
 						break;
 					case 'element':
 						var $left = {
@@ -163,7 +163,7 @@ function compile(program, environment, interpretation) {
 						);
 						break;
 					default:
-						throw new CompileError.InvalidAssignment(statement);
+						throw new Error.InvalidAssignment(statement);
 				}
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[statement.left.type]($left, $right);
@@ -175,9 +175,9 @@ function compile(program, environment, interpretation) {
 				);
 			case 'goto':
 				var resolution = environment.resolve(statement.label.identifier);
-				if (!resolution) throw new CompileError.UndefinedName(statement);
+				if (!resolution) throw new Error.UndefinedName(statement);
 				var [type, scope] = resolution;
-				if (type != 'label') throw new CompileError.LabelNameExpected(statement.label);
+				if (type != 'label') throw new Error.LabelNameExpected(statement.label);
 				return interpretation.statement.goto(statement.label);
 			case 'expression':
 				return compileStatements(
@@ -202,9 +202,9 @@ function compile(program, environment, interpretation) {
 				], environment, interpretation);
 			case 'break':
 				var resolution = environment.resolve("while:after");
-				if (!resolution) throw new CompileError.BreakOutsideWhile(statement);
+				if (!resolution) throw new Error.BreakOutsideWhile(statement);
 				var [type, scope] = resolution;
-				if (type != 'label') throw new CompileError.BreakOutsideWhile(statement);
+				if (type != 'label') throw new Error.BreakOutsideWhile(statement);
 				return interpretation.statement.goto(new Expression.Name("while:after"));
 		}
 	}

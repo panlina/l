@@ -13,6 +13,6 @@ exports.Label = require('./Label');
 exports.Scope = require('./Scope');
 exports.Environment = require('./Environment');
 exports.ParseError = require('./ParseError');
-exports.CompileError = require('./CompileError');
+exports.Error = require('./Error');
 exports.Machine = require('./Machine');
 exports.Value = require('./Value');

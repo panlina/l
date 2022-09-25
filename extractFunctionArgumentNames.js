@@ -1,4 +1,4 @@
-var CompileError = require('./CompileError');
+var Error = require('./Error');
 function* extractFunctionArgumentNames(argument) {
 	switch (argument.type) {
 		case 'name': yield argument; break;
@@ -10,7 +10,7 @@ function* extractFunctionArgumentNames(argument) {
 			for (var p of argument.property)
 				yield* extractFunctionArgumentNames(p.value);
 			break;
-		default: yield new CompileError.InvalidFunctionParameter(argument);
+		default: yield new Error.InvalidFunctionParameter(argument);
 	}
 }
 module.exports = extractFunctionArgumentNames;

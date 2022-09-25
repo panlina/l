@@ -157,7 +157,7 @@ describe('machine', function () {
 		assert(Value.equals(a, new Value.Number(3)));
 	});
 	describe('error', function () {
-		var RuntimeError = require('../RuntimeError');
+		var Error = require('../Error');
 		it('undefined name', function () {
 			var machine = new Machine(
 				new Environment(new Scope({ a: new Value.Undefined() })),
@@ -165,7 +165,7 @@ describe('machine', function () {
 			);
 			assert.throws(() => {
 				machine.execute(l`let a=b;`[0]);
-			}, RuntimeError.UndefinedName);
+			}, Error.UndefinedName);
 		});
 	});
 });

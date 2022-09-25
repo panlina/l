@@ -1,4 +1,4 @@
 import Expression = require('./Expression');
-import CompileError = require('./CompileError');
-declare function extractFunctionArgumentNames(argument: Expression): Generator<Expression.Name | CompileError.InvalidFunctionParameter>;
+import Error = require('./Error');
+declare function extractFunctionArgumentNames(argument: Expression): Generator<Expression.Name | Error.InvalidFunctionParameter>;
 export = extractFunctionArgumentNames;

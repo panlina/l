@@ -3,12 +3,12 @@ import Environment = require("./Environment");
 import Expression = require('./Expression');
 import Program = require('./Program');
 import Statement = require('./Statement');
-import CompileError = require('./CompileError');
+import Error = require('./Error');
 
 type Annotated<T extends Expression | Statement> = T & {
 	environment: Environment<'variable' | 'label'>;
 	parent: Program | undefined;
-	error: CompileError;
+	error: Error;
 	node: Node;
 	definition?: Expression.Name;
 }
