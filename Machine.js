@@ -38,6 +38,9 @@ class Machine {
 					this.execute(statement);
 				this.environment = this.environment.parent;
 				break;
+			case 'expression':
+				this.evaluate(statement.expression);
+				break;
 		}
 	}
 	assign(expression, value) {

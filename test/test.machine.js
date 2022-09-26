@@ -77,6 +77,15 @@ describe('machine', function () {
 		machine.execute(l`{var a;let a=1;let c=a+b;}`[0]);
 		assert(Value.equals(machine.evaluate(l`c`), new Value.Number(2)));
 	});
+	it('expression statement', function () {
+		var machine = new Machine(
+			new Environment(new Scope({ a: new Value.Number(1), reset: new Value.Undefined() })),
+			l``
+		);
+		machine.execute(l`let reset = (_ => (let a = 0;));`[0]);
+		machine.execute(l`reset 0;`[0]);
+		assert(Value.equals(machine.evaluate(l`a`), new Value.Number(0)));
+	});
 	it('array', function () {
 		var machine = new Machine(
 			new Environment(new Scope({})),
