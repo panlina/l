@@ -107,7 +107,7 @@ function compile(program, environment, interpretation) {
 						var $left = statement.left;
 						if (!resolution) throw new Error.UndefinedName(statement.left);
 						var [type, scope] = resolution;
-						if (type != 'variable') throw new Error.UndefinedName(statement.left);
+						if (type != 'variable') throw new Error.VariableNameExpected(statement.left);
 						break;
 					case 'element':
 						var $left = {
