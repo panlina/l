@@ -20,9 +20,9 @@ class BreakOutsideWhile extends Error {
 	constructor(statement) { super(statement); }
 	get message() { return `break must be inside while.`; }
 }
-class InvalidAssignment extends Error {
-	constructor(statement) { super(statement); }
-	get message() { return `cannot assign to ${this.program.left.type} expression.`; }
+class InvalidAssignee extends Error {
+	constructor(expression) { super(expression); }
+	get message() { return `cannot assign to ${this.program.type} expression.`; }
 }
 class InvalidFunctionParameter extends Error {
 	constructor(expression) { super(expression); }
@@ -32,6 +32,6 @@ Error.UndefinedName = UndefinedName;
 Error.VariableNameExpected = VariableNameExpected;
 Error.LabelNameExpected = LabelNameExpected;
 Error.BreakOutsideWhile = BreakOutsideWhile;
-Error.InvalidAssignment = InvalidAssignment;
+Error.InvalidAssignee = InvalidAssignee;
 Error.InvalidFunctionParameter = InvalidFunctionParameter;
 module.exports = Error;

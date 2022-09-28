@@ -163,7 +163,7 @@ function compile(program, environment, interpretation) {
 						);
 						break;
 					default:
-						throw new Error.InvalidAssignment(statement);
+						throw new Error.InvalidAssignee(statement.left);
 				}
 				var $right = compile(statement.right, environment, interpretation);
 				return interpretation.assign[statement.left.type]($left, $right);

@@ -16,8 +16,8 @@ declare namespace Error {
 	export class BreakOutsideWhile extends Error {
 		constructor(statement: Statement);
 	}
-	export class InvalidAssignment extends Error {
-		constructor(statement: Statement);
+	export class InvalidAssignee extends Error {
+		constructor(expression: Expression);
 	}
 	export class InvalidFunctionParameter extends Error {
 		constructor(expression: Expression);

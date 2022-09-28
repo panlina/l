@@ -178,13 +178,13 @@ describe('compile', function () {
 				var f = compile(l, new Environment(new Scope({})), i);
 			}, Error.BreakOutsideWhile);
 		});
-		it('invalid assignment', function () {
+		it('invalid assignee', function () {
 			var i = require('./f');
 			var l = "var a; let a + 1 = 0;";
 			var l = parse(l);
 			assert.throws(() => {
 				var f = compile(l, new Environment(new Scope({})), i);
-			}, Error.InvalidAssignment);
+			}, Error.InvalidAssignee);
 		});
 		it('invalid function parameter', function () {
 			var i = require('./f');

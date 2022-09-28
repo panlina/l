@@ -99,7 +99,7 @@ function analyze(program, environment, parent) {
 				break;
 			case 'assign':
 				if (!(statement.left.type in { name: 0, element: 0, property: 0, array: 0, tuple: 0, object: 0 }))
-					assignError(new Error.InvalidAssignment(statement));
+					assignError(new Error.InvalidAssignee(statement.left));
 				analyze(statement.left, environment, program);
 				analyze(statement.right, environment, program);
 				break;

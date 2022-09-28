@@ -129,11 +129,11 @@ describe('analyze', function () {
 			analyze(l, new Environment(new Scope({})));
 			assert(l[0].error instanceof Error.BreakOutsideWhile);
 		});
-		it('invalid assignment', function () {
+		it('invalid assignee', function () {
 			var l = "var a; let a + 1 = 0;";
 			var l = parse(l);
 			analyze(l, new Environment(new Scope({})));
-			assert(l[1].error instanceof Error.InvalidAssignment);
+			assert(l[1].left.error instanceof Error.InvalidAssignee);
 		});
 		it('invalid function parameter', function () {
 			var l = "f x => x";
