@@ -66,6 +66,8 @@ class Machine {
 				for (var p of expression.property)
 					this.assign(p.value, value.property[p.name]);
 				break;
+			default:
+				throw new Error.InvalidAssignee(expression);
 		}
 	}
 	evaluate(expression) {

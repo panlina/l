@@ -184,5 +184,14 @@ describe('machine', function () {
 				machine.execute(l`let a=b;`[0]);
 			}, Error.UndefinedName);
 		});
+		it('invalid assignment', function () {
+			var machine = new Machine(
+				new Environment(new Scope({ a: new Value.Undefined() })),
+				l``
+			);
+			assert.throws(() => {
+				machine.execute(l`let a+1=0;`[0]);
+			}, Error.InvalidAssignee);
+		});
 	});
 });
