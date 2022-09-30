@@ -193,5 +193,14 @@ describe('machine', function () {
 				machine.execute(l`let a+1=0;`[0]);
 			}, Error.InvalidAssignee);
 		});
+		it('invalid function parameter', function () {
+			var machine = new Machine(
+				new Environment(new Scope({})),
+				l``
+			);
+			assert.throws(() => {
+				machine.evaluate(l`f x=>x`);
+			}, Error.InvalidFunctionParameter);
+		});
 	});
 });

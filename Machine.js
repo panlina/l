@@ -135,6 +135,8 @@ class Machine {
 				this.environment = this.environment.parent;
 				return $return;
 			case 'function':
+				for (var name of extractFunctionArgumentNames(expression.argument))
+					if (name instanceof Error.InvalidFunctionParameter) throw name;
 				return new Value.Function(expression, this.environment);
 		}
 	}
