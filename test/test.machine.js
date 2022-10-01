@@ -202,5 +202,14 @@ describe('machine', function () {
 				machine.evaluate(l`f x=>x`);
 			}, Error.InvalidFunctionParameter);
 		});
+		it('function expected', function () {
+			var machine = new Machine(
+				new Environment(new Scope({})),
+				l``
+			);
+			assert.throws(() => {
+				machine.evaluate(l`1 0`);
+			}, Error.FunctionExpected);
+		});
 	});
 });

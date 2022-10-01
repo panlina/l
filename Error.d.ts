@@ -22,5 +22,8 @@ declare namespace Error {
 	export class InvalidFunctionParameter extends Error {
 		constructor(expression: Expression);
 	}
+	export class FunctionExpected extends Error {
+		constructor(expression: Expression);
+	}
 }
 export = Error;

@@ -28,10 +28,15 @@ class InvalidFunctionParameter extends Error {
 	constructor(expression) { super(expression); }
 	get message() { return `function parameter is invalid.`; }
 }
+class FunctionExpected extends Error {
+	constructor(expression) { super(expression); }
+	get message() { return `function expected.`; }
+}
 Error.UndefinedName = UndefinedName;
 Error.VariableNameExpected = VariableNameExpected;
 Error.LabelNameExpected = LabelNameExpected;
 Error.BreakOutsideWhile = BreakOutsideWhile;
 Error.InvalidAssignee = InvalidAssignee;
 Error.InvalidFunctionParameter = InvalidFunctionParameter;
+Error.FunctionExpected = FunctionExpected;
 module.exports = Error;

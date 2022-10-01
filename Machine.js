@@ -97,6 +97,7 @@ class Machine {
 				return this.evaluate(expression.expression).element[this.evaluate(expression.index).value];
 			case 'call':
 				var $expression = this.evaluate(expression.expression);
+				if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
 				var $argument = this.evaluate(expression.argument);
 				var environment = this.environment;
 				this.environment = $expression.environment.push(new Scope({}));
