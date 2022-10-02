@@ -32,6 +32,10 @@ class FunctionExpected extends Error {
 	constructor(expression) { super(expression); }
 	get message() { return `function expected.`; }
 }
+class ArrayOrTupleExpected extends Error {
+	constructor(expression) { super(expression); }
+	get message() { return `array or tuple expected.`; }
+}
 Error.UndefinedName = UndefinedName;
 Error.VariableNameExpected = VariableNameExpected;
 Error.LabelNameExpected = LabelNameExpected;
@@ -39,4 +43,5 @@ Error.BreakOutsideWhile = BreakOutsideWhile;
 Error.InvalidAssignee = InvalidAssignee;
 Error.InvalidFunctionParameter = InvalidFunctionParameter;
 Error.FunctionExpected = FunctionExpected;
+Error.ArrayOrTupleExpected = ArrayOrTupleExpected;
 module.exports = Error;

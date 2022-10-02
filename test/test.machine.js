@@ -211,5 +211,14 @@ describe('machine', function () {
 				machine.evaluate(l`1 0`);
 			}, Error.FunctionExpected);
 		});
+		it('array or tuple expected', function () {
+			var machine = new Machine(
+				new Environment(new Scope({})),
+				l``
+			);
+			assert.throws(() => {
+				machine.evaluate(l`1@0`);
+			}, Error.ArrayOrTupleExpected);
+		});
 	});
 });

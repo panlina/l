@@ -25,5 +25,8 @@ declare namespace Error {
 	export class FunctionExpected extends Error {
 		constructor(expression: Expression);
 	}
+	export class ArrayOrTupleExpected extends Error {
+		constructor(expression: Expression);
+	}
 }
 export = Error;
