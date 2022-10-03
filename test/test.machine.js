@@ -220,5 +220,14 @@ describe('machine', function () {
 				machine.evaluate(l`1@0`);
 			}, Error.ArrayOrTupleExpected);
 		});
+		it('number expected', function () {
+			var machine = new Machine(
+				new Environment(new Scope({})),
+				l``
+			);
+			assert.throws(() => {
+				machine.evaluate(l`[]@"a"`);
+			}, Error.NumberExpected);
+		});
 	});
 });
