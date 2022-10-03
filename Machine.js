@@ -98,6 +98,7 @@ class Machine {
 				if ($expression.type != 'array' && $expression.type != 'tuple') throw new Error.ArrayOrTupleExpected(expression.expression);
 				var $index = this.evaluate(expression.index);
 				if ($index.type != 'number') throw new Error.NumberExpected(expression.index);
+				if ($index.value >= $expression.element.length) throw new Error.ArrayOrTupleIndexOutOfBound(expression.index);
 				return $expression.element[$index.value];
 			case 'call':
 				var $expression = this.evaluate(expression.expression);

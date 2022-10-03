@@ -229,5 +229,17 @@ describe('machine', function () {
 				machine.evaluate(l`[]@"a"`);
 			}, Error.NumberExpected);
 		});
+		it('array or tuple out of bound', function () {
+			var machine = new Machine(
+				new Environment(new Scope({})),
+				l``
+			);
+			assert.throws(() => {
+				machine.evaluate(l`[0]@1`);
+			}, Error.ArrayOrTupleOutOfBound);
+			assert.throws(() => {
+				machine.evaluate(l`{0}@1`);
+			}, Error.ArrayOrTupleOutOfBound);
+		});
 	});
 });

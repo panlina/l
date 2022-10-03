@@ -31,5 +31,8 @@ declare namespace Error {
 	export class NumberExpected extends Error {
 		constructor(expression: Expression);
 	}
+	export class ArrayOrTupleIndexOutOfBound extends Error {
+		constructor(expression: Expression);
+	}
 }
 export = Error;
