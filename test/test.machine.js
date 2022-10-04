@@ -241,5 +241,14 @@ describe('machine', function () {
 				machine.evaluate(l`{0}@1`);
 			}, Error.ArrayOrTupleOutOfBound);
 		});
+		it('object expected', function () {
+			var machine = new Machine(
+				new Environment(new Scope({})),
+				l``
+			);
+			assert.throws(() => {
+				machine.evaluate(l`1.a`);
+			}, Error.ObjectExpected);
+		});
 	});
 });

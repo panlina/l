@@ -44,6 +44,10 @@ class ArrayOrTupleIndexOutOfBound extends Error {
 	constructor(expression) { super(expression); }
 	get message() { return `number expected.`; }
 }
+class ObjectExpected extends Error {
+	constructor(expression) { super(expression); }
+	get message() { return `object expected.`; }
+}
 Error.UndefinedName = UndefinedName;
 Error.VariableNameExpected = VariableNameExpected;
 Error.LabelNameExpected = LabelNameExpected;
@@ -54,4 +58,5 @@ Error.FunctionExpected = FunctionExpected;
 Error.ArrayOrTupleExpected = ArrayOrTupleExpected;
 Error.NumberExpected = NumberExpected;
 Error.ArrayOrTupleIndexOutOfBound = ArrayOrTupleIndexOutOfBound;
+Error.ObjectExpected = ObjectExpected;
 module.exports = Error;

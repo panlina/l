@@ -92,7 +92,9 @@ class Machine {
 					$property[property.name] = this.evaluate(property.value);
 				return new Value.Object($property);
 			case 'property':
-				return this.evaluate(expression.expression).property[expression.property];
+				var $expression = this.evaluate(expression.expression);
+				if ($expression.type != 'object') throw new Error.ObjectExpected(expression.expression);
+				return $expression.property[expression.property];
 			case 'element':
 				var $expression = this.evaluate(expression.expression);
 				if ($expression.type != 'array' && $expression.type != 'tuple') throw new Error.ArrayOrTupleExpected(expression.expression);
