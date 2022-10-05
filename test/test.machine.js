@@ -183,6 +183,9 @@ describe('machine', function () {
 			assert.throws(() => {
 				machine.execute(l`let a=b;`[0]);
 			}, Error.UndefinedName);
+			assert.throws(() => {
+				machine.execute(l`let c=a;`[0]);
+			}, Error.UndefinedName);
 		});
 		it('invalid assignment', function () {
 			var machine = new Machine(
