@@ -222,6 +222,9 @@ describe('machine', function () {
 			assert.throws(() => {
 				machine.evaluate(l`1@0`);
 			}, Error.ArrayOrTupleExpected);
+			assert.throws(() => {
+				machine.execute(l`let 1@0=0;`[0]);
+			}, Error.ArrayOrTupleExpected);
 		});
 		it('number expected', function () {
 			var machine = new Machine(
@@ -230,6 +233,9 @@ describe('machine', function () {
 			);
 			assert.throws(() => {
 				machine.evaluate(l`[]@"a"`);
+			}, Error.NumberExpected);
+			assert.throws(() => {
+				machine.execute(l`let []@"a"=0;`[0]);
 			}, Error.NumberExpected);
 		});
 		it('array or tuple out of bound', function () {
@@ -243,6 +249,12 @@ describe('machine', function () {
 			assert.throws(() => {
 				machine.evaluate(l`{0}@1`);
 			}, Error.ArrayOrTupleOutOfBound);
+			assert.throws(() => {
+				machine.execute(l`let [0]@1=0;`[0]);
+			}, Error.ArrayOrTupleOutOfBound);
+			assert.throws(() => {
+				machine.execute(l`let {0}@1=0;`[0]);
+			}, Error.ArrayOrTupleOutOfBound);
 		});
 		it('object expected', function () {
 			var machine = new Machine(
@@ -251,6 +263,9 @@ describe('machine', function () {
 			);
 			assert.throws(() => {
 				machine.evaluate(l`1.a`);
+			}, Error.ObjectExpected);
+			assert.throws(() => {
+				machine.execute(l`let 1.a=0;`[0]);
 			}, Error.ObjectExpected);
 		});
 	});

@@ -52,10 +52,17 @@ class Machine {
 				scope.name[expression.identifier] = value;
 				break;
 			case 'element':
-				this.evaluate(expression.expression).element[this.evaluate(expression.index).value] = value;
+				var $expression = this.evaluate(expression.expression);
+				if ($expression.type != 'array' && $expression.type != 'tuple') throw new Error.ArrayOrTupleExpected(expression.expression);
+				var $index = this.evaluate(expression.index);
+				if ($index.type != 'number') throw new Error.NumberExpected(expression.index);
+				if ($index.value >= $expression.element.length) throw new Error.ArrayOrTupleIndexOutOfBound(expression.index);
+				$expression.element[$index.value] = value;
 				break;
 			case 'property':
-				this.evaluate(expression.expression).property[expression.property] = value;
+				var $expression = this.evaluate(expression.expression);
+				if ($expression.type != 'object') throw new Error.ObjectExpected(expression.expression);
+				$expression.property[expression.property] = value;
 				break;
 			case 'array':
 			case 'tuple':
