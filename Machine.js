@@ -80,11 +80,15 @@ class Machine {
 	evaluate(expression) {
 		switch (expression.type) {
 			case 'undefined':
+				return new Value.Undefined();
 			case 'null':
+				return new Value.Null();
 			case 'boolean':
+				return new Value.Boolean(expression.value);
 			case 'number':
+				return new Value.Number(expression.value);
 			case 'string':
-				return expression;
+				return new Value.String(expression.value);
 			case 'name':
 				var resolution = this.environment.resolve(expression.identifier);
 				if (!resolution) throw new Error.UndefinedName(expression);
