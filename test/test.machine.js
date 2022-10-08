@@ -16,6 +16,46 @@ describe('machine', function () {
 		machine.step();
 		assert(Value.equals(machine.evaluate(l`a`), new Value.Number(14)));
 	});
+	it('undefined', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`#undefined`);
+		assert(Value.equals(a, new Value.Undefined()));
+	});
+	it('null', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`#null`);
+		assert(Value.equals(a, new Value.Null()));
+	});
+	it('boolean', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`#true`);
+		assert(Value.equals(a, new Value.Boolean(true)));
+	});
+	it('number', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`12`);
+		assert(Value.equals(a, new Value.Number(12)));
+	});
+	it('string', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`"abc"`);
+		assert(Value.equals(a, new Value.String("abc")));
+	});
 	it('array', function () {
 		var machine = new Machine(
 			new Environment(new Scope({})),
