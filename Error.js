@@ -48,6 +48,10 @@ class ObjectExpected extends Error {
 	constructor(expression) { super(expression); }
 	get message() { return `object expected.`; }
 }
+class WrongOperandType extends Error {
+	constructor(expression) { super(expression); }
+	get message() { return `wrong operand type.`; }
+}
 Error.UndefinedName = UndefinedName;
 Error.VariableNameExpected = VariableNameExpected;
 Error.LabelNameExpected = LabelNameExpected;
@@ -59,4 +63,5 @@ Error.ArrayOrTupleExpected = ArrayOrTupleExpected;
 Error.NumberExpected = NumberExpected;
 Error.ArrayOrTupleIndexOutOfBound = ArrayOrTupleIndexOutOfBound;
 Error.ObjectExpected = ObjectExpected;
+Error.WrongOperandType = WrongOperandType;
 module.exports = Error;

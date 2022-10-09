@@ -308,5 +308,20 @@ describe('machine', function () {
 				machine.execute(l`let 1.a=0;`[0]);
 			}, Error.ObjectExpected);
 		});
+		it('operation', function () {
+			var machine = new Machine(
+				new Environment(new Scope({})),
+				l``
+			);
+			assert.throws(() => {
+				machine.evaluate(l`1*"a"`);
+			}, Error.WrongOperandType);
+			assert.throws(() => {
+				machine.evaluate(l`1+"a"`);
+			}, Error.WrongOperandType);
+			assert.throws(() => {
+				machine.evaluate(l`-"a"`);
+			}, Error.WrongOperandType);
+		});
 	});
 });

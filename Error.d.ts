@@ -37,5 +37,8 @@ declare namespace Error {
 	export class ObjectExpected extends Error {
 		constructor(expression: Expression);
 	}
+	export class WrongOperandType extends Error {
+		constructor(expression: Expression);
+	}
 }
 export = Error;

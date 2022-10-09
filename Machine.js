@@ -127,7 +127,14 @@ class Machine {
 				this.environment = environment;
 				return $return;
 			case 'operation':
-				return operate(expression.operator, expression.left ? this.evaluate(expression.left) : undefined, expression.right ? this.evaluate(expression.right) : undefined);
+				var $left = expression.left ? this.evaluate(expression.left) : undefined;
+				var $right = expression.right ? this.evaluate(expression.right) : undefined;
+				try {
+					return operate(expression.operator, $left, $right);
+				} catch (e) {
+					if (e == 'left') throw new Error.WrongOperandType(expression.left);
+					if (e == 'right') throw new Error.WrongOperandType(expression.right);
+				}
 			case 'conditional':
 				return Value.truthy(this.evaluate(expression.condition)) ?
 					this.evaluate(expression.true) :
@@ -163,19 +170,39 @@ class Machine {
 function operate(operator, left, right) {
 	switch (operator) {
 		case '*':
+			if (left.type != 'number') throw 'left';
+			if (right.type != 'number') throw 'right';
 			return new Value.Number(left.value * right.value);
 		case '/':
+			if (left.type != 'number') throw 'left';
+			if (right.type != 'number') throw 'right';
 			return new Value.Number(left.value / right.value);
 		case '+':
-			return left != undefined ?
-				left.type == 'number' ?
-					new Value.Number(left.value + right.value) :
-					new Value.String(left.value + right.value) :
-				new Value.Number(right.value);
+			if (left != undefined) {
+				if (left.type == 'number' && right.type == 'number')
+					return new Value.Number(left.value + right.value);
+				if (left.type == 'string' && right.type == 'string')
+					return new Value.String(left.value + right.value);
+				if (left.type == 'number' || left.type == 'string')
+					throw 'right';
+				else
+					throw 'left';
+			} else {
+				if (right.type != 'number') throw 'right';
+				return new Value.Number(right.value);
+			}
 		case '-':
-			return left != undefined ?
-				new Value.Number(left.value - right.value) :
-				new Value.Number(-right.value);
+			if (left != undefined) {
+				if (left.type == 'number' && right.type == 'number')
+					return new Value.Number(left.value - right.value);
+				if (left.type == 'number')
+					throw 'right';
+				else
+					throw 'left';
+			} else {
+				if (right.type != 'number') throw 'right';
+				return new Value.Number(-right.value);
+			}
 		case '<=':
 			return new Value.Boolean(left.value <= right.value);
 		case '=':
