@@ -204,17 +204,53 @@ function operate(operator, left, right) {
 				return new Value.Number(-right.value);
 			}
 		case '<=':
-			return new Value.Boolean(left.value <= right.value);
+			if (
+				left.type == 'number' && right.type == 'number'
+				||
+				left.type == 'string' && right.type == 'string'
+			)
+				return new Value.Boolean(left.value <= right.value);
+			if (left.type == 'number' || left.type == 'string')
+				throw 'right';
+			else
+				throw 'left';
 		case '=':
 			return new Value.Boolean(left.value == right.value);
 		case '>=':
-			return new Value.Boolean(left.value >= right.value);
+			if (
+				left.type == 'number' && right.type == 'number'
+				||
+				left.type == 'string' && right.type == 'string'
+			)
+				return new Value.Boolean(left.value >= right.value);
+			if (left.type == 'number' || left.type == 'string')
+				throw 'right';
+			else
+				throw 'left';
 		case '<':
-			return new Value.Boolean(left.value < right.value);
+			if (
+				left.type == 'number' && right.type == 'number'
+				||
+				left.type == 'string' && right.type == 'string'
+			)
+				return new Value.Boolean(left.value < right.value);
+			if (left.type == 'number' || left.type == 'string')
+				throw 'right';
+			else
+				throw 'left';
 		case '!=':
 			return new Value.Boolean(left.value != right.value);
 		case '>':
-			return new Value.Boolean(left.value > right.value);
+			if (
+				left.type == 'number' && right.type == 'number'
+				||
+				left.type == 'string' && right.type == 'string'
+			)
+				return new Value.Boolean(left.value > right.value);
+			if (left.type == 'number' || left.type == 'string')
+				throw 'right';
+			else
+				throw 'left';
 		case '!':
 			return new Value.Boolean(!right.value);
 		case '&':

@@ -320,7 +320,7 @@ describe('machine', function () {
 				machine.evaluate(l`1+"a"`);
 			}, Error.WrongOperandType);
 			assert.throws(() => {
-				machine.evaluate(l`-"a"`);
+				machine.evaluate(l`1<="a"`);
 			}, Error.WrongOperandType);
 		});
 	});
