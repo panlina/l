@@ -322,6 +322,9 @@ describe('machine', function () {
 			assert.throws(() => {
 				machine.evaluate(l`1<="a"`);
 			}, Error.WrongOperandType);
+			assert.throws(() => {
+				machine.evaluate(l`1="a"`);
+			}, Error.WrongOperandType);
 		});
 	});
 });

@@ -215,6 +215,12 @@ function operate(operator, left, right) {
 			else
 				throw 'left';
 		case '=':
+			if (left.type != 'undefined' && left.type != 'null' && left.type != 'boolean' && left.type != 'number' && left.type != 'string')
+				throw 'left';
+			if (right.type != 'undefined' && right.type != 'null' && right.type != 'boolean' && right.type != 'number' && right.type != 'string')
+				throw 'right';
+			if (left.type != right.type)
+				throw 'right';
 			return new Value.Boolean(left.value == right.value);
 		case '>=':
 			if (
@@ -239,6 +245,12 @@ function operate(operator, left, right) {
 			else
 				throw 'left';
 		case '!=':
+			if (left.type != 'undefined' && left.type != 'null' && left.type != 'boolean' && left.type != 'number' && left.type != 'string')
+				throw 'left';
+			if (right.type != 'undefined' && right.type != 'null' && right.type != 'boolean' && right.type != 'number' && right.type != 'string')
+				throw 'right';
+			if (left.type != right.type)
+				throw 'right';
 			return new Value.Boolean(left.value != right.value);
 		case '>':
 			if (
