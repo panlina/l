@@ -1,4 +1,6 @@
 var Scope = require('./Scope');
+var Expression = require('./Expression');
+var Statement = require('./Statement');
 var Label = require('./Label');
 var Value = require('./Value');
 var Error = require('./Error');
@@ -20,23 +22,7 @@ class Machine {
 				this.assign(statement.left, this.evaluate(statement.right));
 				break;
 			case 'block':
-				var name = statement.statement
-					.filter(statement =>
-						statement.type == 'var'
-					);
-				var name = name.reduce(
-					(name, v) => (
-						name[v.name.identifier] = new Value.Undefined(),
-						name
-					), {}
-				);
-				var statement = statement.statement.filter(
-					statement => !(statement instanceof Label || statement.type == 'var')
-				);
-				this.environment = this.environment.push(new Scope(name));
-				for (var statement of statement)
-					this.execute(statement);
-				this.environment = this.environment.parent;
+				this.evaluateStatements(statement.statement, new Expression.Undefined());
 				break;
 			case 'expression':
 				this.evaluate(statement.expression);
@@ -140,31 +126,36 @@ class Machine {
 					this.evaluate(expression.true) :
 					this.evaluate(expression.false);
 			case 'statement':
-				var name = expression.statement
-					.filter(statement =>
-						statement.type == 'var'
-					);
-				var name = name.reduce(
-					(name, v) => (
-						name[v.name.identifier] = new Value.Undefined(),
-						name
-					), {}
+				return this.evaluateStatements(
+					[new Statement.Var(new Expression.Name('return')), ...expression.statement],
+					new Expression.Name('return')
 				);
-				name['return'] = new Value.Undefined();
-				var statement = expression.statement.filter(
-					statement => !(statement instanceof Label || statement.type == 'var')
-				);
-				this.environment = this.environment.push(new Scope(name));
-				for (var statement of statement)
-					this.execute(statement);
-				var $return = this.environment.scope.name['return'];
-				this.environment = this.environment.parent;
-				return $return;
 			case 'function':
 				for (var name of extractFunctionArgumentNames(expression.argument))
 					if (name instanceof Error.InvalidFunctionParameter) throw name;
 				return new Value.Function(expression, this.environment);
 		}
+	}
+	evaluateStatements(statement, expression) {
+		var name = statement
+			.filter(statement =>
+				statement.type == 'var'
+			);
+		var name = name.reduce(
+			(name, v) => (
+				name[v.name.identifier] = new Value.Undefined(),
+				name
+			), {}
+		);
+		var statement = statement.filter(
+			statement => !(statement instanceof Label || statement.type == 'var')
+		);
+		this.environment = this.environment.push(new Scope(name));
+		for (var statement of statement)
+			this.execute(statement);
+		var $return = this.evaluate(expression);
+		this.environment = this.environment.parent;
+		return $return;
 	}
 }
 function operate(operator, left, right) {
