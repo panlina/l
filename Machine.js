@@ -63,78 +63,86 @@ class Machine {
 				throw new Error.InvalidAssignee(expression);
 		}
 	}
-	evaluate(expression) {
-		switch (expression.type) {
-			case 'undefined':
-				return new Value.Undefined();
-			case 'null':
-				return new Value.Null();
-			case 'boolean':
-				return new Value.Boolean(expression.value);
-			case 'number':
-				return new Value.Number(expression.value);
-			case 'string':
-				return new Value.String(expression.value);
-			case 'name':
-				var resolution = this.environment.resolve(expression.identifier);
-				if (!resolution) throw new Error.UndefinedName(expression);
-				var [value] = resolution;
-				return value;
-			case 'array':
-			case 'tuple':
-				return new Value.Array(expression.element.map(e => this.evaluate(e)));
-			case 'object':
-				var $property = {};
-				for (var property of expression.property)
-					$property[property.name] = this.evaluate(property.value);
-				return new Value.Object($property);
-			case 'property':
-				var $expression = this.evaluate(expression.expression);
-				if ($expression.type != 'object') throw new Error.ObjectExpected(expression.expression);
-				return $expression.property[expression.property];
-			case 'element':
-				var $expression = this.evaluate(expression.expression);
-				if ($expression.type != 'array' && $expression.type != 'tuple') throw new Error.ArrayOrTupleExpected(expression.expression);
-				var $index = this.evaluate(expression.index);
-				if ($index.type != 'number') throw new Error.NumberExpected(expression.index);
-				if ($index.value >= $expression.element.length) throw new Error.ArrayOrTupleIndexOutOfBound(expression.index);
-				return $expression.element[$index.value];
-			case 'call':
-				var $expression = this.evaluate(expression.expression);
-				if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
-				var $argument = this.evaluate(expression.argument);
-				var environment = this.environment;
-				this.environment = $expression.environment.push(new Scope({}));
-				for (var name of extractFunctionArgumentNames($expression.expression.argument))
-					this.environment.scope.name[name.identifier] = new Value.Undefined();
-				this.environment.scope.name['return'] = new Value.Undefined();
-				this.assign($expression.expression.argument, $argument);
-				var $return = this.evaluate($expression.expression.expression);
-				this.environment = environment;
-				return $return;
-			case 'operation':
-				var $left = expression.left ? this.evaluate(expression.left) : undefined;
-				var $right = expression.right ? this.evaluate(expression.right) : undefined;
-				try {
-					return operate(expression.operator, $left, $right);
-				} catch (e) {
-					if (e == 'left') throw new Error.WrongOperandType(expression.left);
-					if (e == 'right') throw new Error.WrongOperandType(expression.right);
-				}
-			case 'conditional':
-				return Value.truthy(this.evaluate(expression.condition)) ?
-					this.evaluate(expression.true) :
-					this.evaluate(expression.false);
-			case 'statement':
-				return this.evaluateStatements(
-					[new Statement.Var(new Expression.Name('return')), ...expression.statement],
-					new Expression.Name('return')
-				);
-			case 'function':
-				for (var name of extractFunctionArgumentNames(expression.argument))
-					if (name instanceof Error.InvalidFunctionParameter) throw name;
-				return new Value.Function(expression, this.environment);
+	evaluate(program) {
+		if (program instanceof Expression) {
+			var expression = program;
+			switch (expression.type) {
+				case 'undefined':
+					return new Value.Undefined();
+				case 'null':
+					return new Value.Null();
+				case 'boolean':
+					return new Value.Boolean(expression.value);
+				case 'number':
+					return new Value.Number(expression.value);
+				case 'string':
+					return new Value.String(expression.value);
+				case 'name':
+					var resolution = this.environment.resolve(expression.identifier);
+					if (!resolution) throw new Error.UndefinedName(expression);
+					var [value] = resolution;
+					return value;
+				case 'array':
+				case 'tuple':
+					return new Value.Array(expression.element.map(e => this.evaluate(e)));
+				case 'object':
+					var $property = {};
+					for (var property of expression.property)
+						$property[property.name] = this.evaluate(property.value);
+					return new Value.Object($property);
+				case 'property':
+					var $expression = this.evaluate(expression.expression);
+					if ($expression.type != 'object') throw new Error.ObjectExpected(expression.expression);
+					return $expression.property[expression.property];
+				case 'element':
+					var $expression = this.evaluate(expression.expression);
+					if ($expression.type != 'array' && $expression.type != 'tuple') throw new Error.ArrayOrTupleExpected(expression.expression);
+					var $index = this.evaluate(expression.index);
+					if ($index.type != 'number') throw new Error.NumberExpected(expression.index);
+					if ($index.value >= $expression.element.length) throw new Error.ArrayOrTupleIndexOutOfBound(expression.index);
+					return $expression.element[$index.value];
+				case 'call':
+					var $expression = this.evaluate(expression.expression);
+					if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
+					var $argument = this.evaluate(expression.argument);
+					var environment = this.environment;
+					this.environment = $expression.environment.push(new Scope({}));
+					for (var name of extractFunctionArgumentNames($expression.expression.argument))
+						this.environment.scope.name[name.identifier] = new Value.Undefined();
+					this.environment.scope.name['return'] = new Value.Undefined();
+					this.assign($expression.expression.argument, $argument);
+					var $return = this.evaluate($expression.expression.expression);
+					this.environment = environment;
+					return $return;
+				case 'operation':
+					var $left = expression.left ? this.evaluate(expression.left) : undefined;
+					var $right = expression.right ? this.evaluate(expression.right) : undefined;
+					try {
+						return operate(expression.operator, $left, $right);
+					} catch (e) {
+						if (e == 'left') throw new Error.WrongOperandType(expression.left);
+						if (e == 'right') throw new Error.WrongOperandType(expression.right);
+					}
+				case 'conditional':
+					return Value.truthy(this.evaluate(expression.condition)) ?
+						this.evaluate(expression.true) :
+						this.evaluate(expression.false);
+				case 'statement':
+					return this.evaluateStatements(
+						[new Statement.Var(new Expression.Name('return')), ...expression.statement],
+						new Expression.Name('return')
+					);
+				case 'function':
+					for (var name of extractFunctionArgumentNames(expression.argument))
+						if (name instanceof Error.InvalidFunctionParameter) throw name;
+					return new Value.Function(expression, this.environment);
+			}
 		}
+		if (program instanceof Array)
+			return this.evaluateStatements(
+				[new Statement.Var(new Expression.Name('return')), ...program],
+				new Expression.Name('return')
+			);
 	}
 	evaluateStatements(statement, expression) {
 		var name = statement

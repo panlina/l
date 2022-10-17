@@ -9,12 +9,11 @@ describe('machine', function () {
 	it('', function () {
 		var machine = new Machine(
 			new Environment(new Scope({ a: new Value.Undefined() })),
-			l`let a=12;let a=14;`
+			l``
 		);
-		machine.step();
+		var a = machine.evaluate(l`let a=12;let return=14;`);
 		assert(Value.equals(machine.evaluate(l`a`), new Value.Number(12)));
-		machine.step();
-		assert(Value.equals(machine.evaluate(l`a`), new Value.Number(14)));
+		assert(Value.equals(a, new Value.Number(14)));
 	});
 	it('undefined', function () {
 		var machine = new Machine(
