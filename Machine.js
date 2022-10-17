@@ -24,6 +24,9 @@ class Machine {
 			case 'block':
 				this.evaluateStatements(statement.statement, new Expression.Undefined());
 				break;
+			case 'goto':
+				throw statement.label.identifier;
+				break;
 			case 'expression':
 				this.evaluate(statement.expression);
 				break;
@@ -145,22 +148,37 @@ class Machine {
 			);
 	}
 	evaluateStatements(statement, expression) {
-		var name = statement
-			.filter(statement =>
-				statement.type == 'var'
-			);
-		var name = name.reduce(
-			(name, v) => (
-				name[v.name.identifier] = new Value.Undefined(),
-				name
-			), {}
-		);
+		var labelDictionary = {};
+		var variable = {};
+		for (var i = 0, j = 0; i < statement.length; i++) {
+			var s = statement[i];
+			if (s instanceof Label)
+				labelDictionary[s.name.identifier] = j;
+			else if (s.type == 'var')
+				variable[s.name.identifier] = undefined;
+			else
+				j++;
+		}
 		var statement = statement.filter(
 			statement => !(statement instanceof Label || statement.type == 'var')
 		);
-		this.environment = this.environment.push(new Scope(name));
-		for (var statement of statement)
-			this.execute(statement);
+		variable['return'] = new Value.Undefined();
+		this.environment = this.environment.push(new Scope(variable));
+		for (var i = 0; i < statement.length;) {
+			var s = statement[i];
+			let l;
+			try { this.execute(s); }
+			catch (label) {
+				if (label in labelDictionary)
+					l = label;
+				else
+					throw label;
+			}
+			if (l != undefined)
+				i = labelDictionary[l];
+			else
+				i++;
+		}
 		var $return = this.evaluate(expression);
 		this.environment = this.environment.parent;
 		return $return;
