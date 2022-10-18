@@ -30,6 +30,10 @@ class Machine {
 			case 'expression':
 				this.evaluate(statement.expression);
 				break;
+			case 'while':
+				while (Value.truthy(this.evaluate(statement.condition)))
+					this.execute(statement.statement);
+				break;
 		}
 	}
 	assign(expression, value) {

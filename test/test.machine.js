@@ -220,6 +220,20 @@ describe('machine', function () {
 		machine.execute(l`reset 0;`[0]);
 		assert(Value.equals(machine.evaluate(l`a`), new Value.Number(0)));
 	});
+	it('while', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`
+			var n;
+			let n = 10;
+			while n > 4 do
+				let n = n - 1;
+			let return = n;
+		`);
+		assert(Value.equals(a, new Value.Number(4)));
+	});
 	describe('error', function () {
 		var Error = require('../Error');
 		it('undefined name', function () {
