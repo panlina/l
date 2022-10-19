@@ -32,7 +32,16 @@ class Machine {
 				break;
 			case 'while':
 				while (Value.truthy(this.evaluate(statement.condition)))
-					this.execute(statement.statement);
+					try { this.execute(statement.statement); }
+					catch (e) {
+						if (e == '.break')
+							break;
+						else
+							throw e;
+					}
+				break;
+			case 'break':
+				throw '.break';
 				break;
 		}
 	}

@@ -234,6 +234,22 @@ describe('machine', function () {
 		`);
 		assert(Value.equals(a, new Value.Number(4)));
 	});
+	it('break', function () {
+		var machine = new Machine(
+			new Environment(new Scope({})),
+			l``
+		);
+		var a = machine.evaluate(l`
+			var n;
+			let n = 10;
+			while #true do {
+				n = 4 ? (break;) : 0;
+				let n = n - 1;
+			}
+			let return = n;
+		`);
+		assert(Value.equals(a, new Value.Number(4)));
+	});
 	describe('error', function () {
 		var Error = require('../Error');
 		it('undefined name', function () {
