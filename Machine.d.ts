@@ -4,9 +4,9 @@ import Program = require('./Program');
 import Environment = require('./Environment');
 import Value = require('./Value');
 declare class Machine {
-	constructor(environment: Environment<Value>, program: Program);
+	constructor(environment: Environment<Value>);
 	environment: Environment<Value>;
-	program: Program;
+	run(program: Program): Generator<Expression | Statement, Value | undefined>;
 	execute(statement: Statement): void;
 	evaluate(expression: Expression): Value;
 }
