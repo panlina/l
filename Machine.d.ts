@@ -6,8 +6,16 @@ import Value = require('./Value');
 declare class Machine {
 	constructor(environment: Environment<Value>);
 	environment: Environment<Value>;
-	run(program: Program): Generator<Expression | Statement, Value | undefined>;
+	run(program: Program): Machine.Session;
 	execute(statement: Statement): void;
 	evaluate(expression: Expression): Value;
 }
 export = Machine;
+declare namespace Machine {
+	export class Session {
+		constructor(generator: Generator<Expression | Statement, Value | undefined>);
+		current: Expression | Statement;
+		return: Value | undefined;
+		step(): boolean;
+	}
+}

@@ -9,7 +9,10 @@ class Machine {
 	constructor(environment) {
 		this.environment = environment;
 	}
-	*run(program) {
+	run(program) {
+		return new Session(this._run(program));
+	}
+	*_run(program) {
 		if (program instanceof Expression) {
 			var expression = program;
 			switch (expression.type) {
@@ -38,44 +41,44 @@ class Machine {
 				case 'tuple':
 					var $element = [];
 					for (var e of expression.element)
-						$element.push(yield* this.run(e));
+						$element.push(yield* this._run(e));
 					yield expression;
 					return new Value.Array($element);
 				case 'object':
 					var $property = {};
 					for (var property of expression.property)
-						$property[property.name] = yield* this.run(property.value);
+						$property[property.name] = yield* this._run(property.value);
 					yield expression;
 					return new Value.Object($property);
 				case 'property':
-					var $expression = yield* this.run(expression.expression);
+					var $expression = yield* this._run(expression.expression);
 					if ($expression.type != 'object') throw new Error.ObjectExpected(expression.expression);
 					yield expression;
 					return $expression.property[expression.property];
 				case 'element':
-					var $expression = yield* this.run(expression.expression);
+					var $expression = yield* this._run(expression.expression);
 					if ($expression.type != 'array' && $expression.type != 'tuple') throw new Error.ArrayOrTupleExpected(expression.expression);
-					var $index = yield* this.run(expression.index);
+					var $index = yield* this._run(expression.index);
 					if ($index.type != 'number') throw new Error.NumberExpected(expression.index);
 					if ($index.value >= $expression.element.length) throw new Error.ArrayOrTupleIndexOutOfBound(expression.index);
 					yield expression;
 					return $expression.element[$index.value];
 				case 'call':
-					var $expression = yield* this.run(expression.expression);
+					var $expression = yield* this._run(expression.expression);
 					if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
-					var $argument = yield* this.run(expression.argument);
+					var $argument = yield* this._run(expression.argument);
 					var environment = this.environment;
 					this.environment = $expression.environment.push(new Scope({}));
 					for (var name of extractFunctionArgumentNames($expression.expression.argument))
 						this.environment.scope.name[name.identifier] = new Value.Undefined();
 					this.environment.scope.name['return'] = new Value.Undefined();
 					this.assign($expression.expression.argument, $argument);
-					var $return = yield* this.run($expression.expression.expression);
+					var $return = yield* this._run($expression.expression.expression);
 					this.environment = environment;
 					return $return;
 				case 'operation':
-					var $left = expression.left ? yield* this.run(expression.left) : undefined;
-					var $right = expression.right ? yield* this.run(expression.right) : undefined;
+					var $left = expression.left ? yield* this._run(expression.left) : undefined;
+					var $right = expression.right ? yield* this._run(expression.right) : undefined;
 					yield expression;
 					try {
 						return operate(expression.operator, $left, $right);
@@ -84,9 +87,9 @@ class Machine {
 						if (e == 'right') throw new Error.WrongOperandType(expression.right);
 					}
 				case 'conditional':
-					return Value.truthy(yield* this.run(expression.condition)) ?
-						yield* this.run(expression.true) :
-						yield* this.run(expression.false);
+					return Value.truthy(yield* this._run(expression.condition)) ?
+						yield* this._run(expression.true) :
+						yield* this._run(expression.false);
 				case 'statement':
 					return yield* this.runStatements(
 						[new Statement.Var(new Expression.Name('return')), ...expression.statement],
@@ -108,7 +111,7 @@ class Machine {
 			var statement = program;
 			switch (statement.type) {
 				case 'assign':
-					var $right = yield* this.run(statement.right);
+					var $right = yield* this._run(statement.right);
 					yield statement;
 					this.assign(statement.left, $right);
 					break;
@@ -120,11 +123,11 @@ class Machine {
 					throw statement.label.identifier;
 					break;
 				case 'expression':
-					yield* this.run(statement.expression);
+					yield* this._run(statement.expression);
 					break;
 				case 'while':
-					while (Value.truthy(yield* this.run(statement.condition)))
-						try { yield* this.run(statement.statement); }
+					while (Value.truthy(yield* this._run(statement.condition)))
+						try { yield* this._run(statement.statement); }
 						catch (e) {
 							if (e == '.break')
 								break;
@@ -193,7 +196,7 @@ class Machine {
 		for (var i = 0; i < statement.length;) {
 			var s = statement[i];
 			let l;
-			try { yield* this.run(s); }
+			try { yield* this._run(s); }
 			catch (label) {
 				if (label in labelDictionary)
 					l = label;
@@ -205,16 +208,16 @@ class Machine {
 			else
 				i++;
 		}
-		var $return = yield* this.run(expression);
+		var $return = yield* this._run(expression);
 		this.environment = this.environment.parent;
 		return $return;
 	}
 	execute(program) {
-		var generator = this.run(program);
+		var generator = this._run(program);
 		while (!generator.next().done);
 	}
 	evaluate(program) {
-		var generator = this.run(program);
+		var generator = this._run(program);
 		var next;
 		while (!(next = generator.next()).done);
 		return next.value;
@@ -324,4 +327,20 @@ function operate(operator, left, right) {
 			return new Value.Boolean(left.value || right.value);
 	}
 }
+class Session {
+	constructor(generator) {
+		this.current;
+		this.return;
+		this.generator = generator;
+	}
+	step() {
+		var { value: value, done: done } = this.generator.next();
+		if (done)
+			this.return = value;
+		else
+			this.current = value;
+		return done;
+	}
+}
+Machine.Session = Session;
 module.exports = Machine;
