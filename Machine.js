@@ -334,11 +334,16 @@ class Session {
 		this.generator = generator;
 	}
 	step() {
-		var { value: value, done: done } = this.generator.next();
-		if (done)
-			this.return = value;
-		else
-			this.current = value;
+		for (; ;) {
+			var { value: value, done: done } = this.generator.next();
+			if (done)
+				this.return = value;
+			else {
+				this.current = value;
+				if (!value.node) continue;
+			}
+			break;
+		}
 		return done;
 	}
 }
