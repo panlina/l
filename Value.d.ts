@@ -48,8 +48,8 @@ declare namespace Value {
 	}
 
 	export class Function extends Value {
-		constructor(expression: Expression, environment: Environment<Value>);
-		expression: Expression;
+		constructor(expression: Expression.Function, environment: Environment<Value>);
+		expression: Expression.Function;
 		environment: Environment<Value>;
 	}
 }
