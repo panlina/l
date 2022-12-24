@@ -67,6 +67,7 @@ class Machine {
 					var $expression = yield* this._run(expression.expression);
 					if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
 					var $argument = yield* this._run(expression.argument);
+					yield expression;
 					var environment = this.environment;
 					this.environment = $expression.environment.push(new Scope({}));
 					for (var name of extractFunctionArgumentNames($expression.expression.argument))
