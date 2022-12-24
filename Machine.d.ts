@@ -16,6 +16,7 @@ declare namespace Machine {
 		constructor(generator: Generator<Expression | Statement, Value | undefined>);
 		current: Expression | Statement;
 		return: Value | undefined;
+		callstack: Expression.Call[];
 		step(): boolean;
 	}
 }

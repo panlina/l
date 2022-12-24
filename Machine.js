@@ -68,6 +68,7 @@ class Machine {
 					if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
 					var $argument = yield* this._run(expression.argument);
 					yield expression;
+					yield 'call';
 					var environment = this.environment;
 					this.environment = $expression.environment.push(new Scope({}));
 					for (var name of extractFunctionArgumentNames($expression.expression.argument))
@@ -76,6 +77,7 @@ class Machine {
 					this.assign($expression.expression.argument, $argument);
 					var $return = yield* this._run($expression.expression.expression);
 					this.environment = environment;
+					yield 'return';
 					return $return;
 				case 'operation':
 					var $left = expression.left ? yield* this._run(expression.left) : undefined;
@@ -332,6 +334,7 @@ class Session {
 	constructor(generator) {
 		this.current;
 		this.return;
+		this.callstack = [];
 		this.generator = generator;
 	}
 	step() {
@@ -340,6 +343,16 @@ class Session {
 			if (done)
 				this.return = value;
 			else {
+				if (value instanceof Expression.Call)
+					this.call = value;
+				if (value == 'call') {
+					this.callstack.unshift(this.call);
+					continue;
+				}
+				else if (value == 'return') {
+					this.callstack.shift();
+					continue;
+				}
 				this.current = value;
 				if (!value.node) continue;
 			}
