@@ -8,9 +8,27 @@ var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 class Machine {
 	constructor(environment) {
 		this.environment = environment;
+		this.current;
+		this.return;
+		this.callstack;
+		this.generator;
+	}
+	step() {
+		for (; ;) {
+			var { value: value, done: done } = this.generator.next();
+			if (done)
+				this.return = value;
+			else {
+				this.current = value;
+				if (!value.node) continue;
+			}
+			break;
+		}
+		return done;
 	}
 	run(program) {
-		return new Session(this._run(program));
+		this.callstack = [];
+		this.generator = this._run(program);
 	}
 	*_run(program) {
 		if (program instanceof Expression) {
@@ -68,7 +86,7 @@ class Machine {
 					if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
 					var $argument = yield* this._run(expression.argument);
 					yield expression;
-					yield 'call';
+					this.callstack.unshift(expression);
 					var environment = this.environment;
 					this.environment = $expression.environment.push(new Scope({}));
 					for (var name of extractFunctionArgumentNames($expression.expression.argument))
@@ -77,7 +95,7 @@ class Machine {
 					this.assign($expression.expression.argument, $argument);
 					var $return = yield* this._run($expression.expression.expression);
 					this.environment = environment;
-					yield 'return';
+					this.callstack.shift();
 					return $return;
 				case 'operation':
 					var $left = expression.left ? yield* this._run(expression.left) : undefined;
@@ -216,10 +234,12 @@ class Machine {
 		return $return;
 	}
 	execute(program) {
+		this.callstack = [];
 		var generator = this._run(program);
 		while (!generator.next().done);
 	}
 	evaluate(program) {
+		this.callstack = [];
 		var generator = this._run(program);
 		var next;
 		while (!(next = generator.next()).done);
@@ -330,36 +350,4 @@ function operate(operator, left, right) {
 			return new Value.Boolean(left.value || right.value);
 	}
 }
-class Session {
-	constructor(generator) {
-		this.current;
-		this.return;
-		this.callstack = [];
-		this.generator = generator;
-	}
-	step() {
-		for (; ;) {
-			var { value: value, done: done } = this.generator.next();
-			if (done)
-				this.return = value;
-			else {
-				if (value instanceof Expression.Call)
-					this.call = value;
-				if (value == 'call') {
-					this.callstack.unshift(this.call);
-					continue;
-				}
-				else if (value == 'return') {
-					this.callstack.shift();
-					continue;
-				}
-				this.current = value;
-				if (!value.node) continue;
-			}
-			break;
-		}
-		return done;
-	}
-}
-Machine.Session = Session;
 module.exports = Machine;
