@@ -8,10 +8,16 @@ declare class Machine {
 	environment: Environment<Value>;
 	current: Expression | Statement;
 	return: Value | undefined;
-	callstack: Expression.Call[];
+	callstack: Machine.StackFrame[];
 	step(): boolean;
 	run(program: Program): void;
 	execute(statement: Statement): void;
 	evaluate(expression: Expression): Value;
 }
 export = Machine;
+declare namespace Machine {
+	export class StackFrame {
+		environment: Environment<Value>;
+		current: Expression | Statement;
+	}
+}
