@@ -207,7 +207,7 @@ class Machine {
 			if (s instanceof Label)
 				labelDictionary[s.name.identifier] = j;
 			else if (s.type == 'var')
-				variable[s.name.identifier] = undefined;
+				variable[s.name.identifier] = new Value.Undefined();
 			else
 				j++;
 		}
