@@ -8,13 +8,13 @@ var extractFunctionArgumentNames = require('./extractFunctionArgumentNames');
 class Machine {
 	constructor(environment) {
 		this.return;
-		this.callstack = [{ environment: environment }];
+		this.callStack = [{ environment: environment }];
 		this.generator;
 	}
-	get environment() { return this.callstack[0].environment; }
-	set environment(value) { this.callstack[0].environment = value; }
-	get current() { return this.callstack[0].current; }
-	set current(value) { this.callstack[0].current = value; }
+	get environment() { return this.callStack[0].environment; }
+	set environment(value) { this.callStack[0].environment = value; }
+	get current() { return this.callStack[0].current; }
+	set current(value) { this.callStack[0].current = value; }
 	step() {
 		for (; ;) {
 			var { value: value, done: done } = this.generator.next();
@@ -29,7 +29,7 @@ class Machine {
 		return done;
 	}
 	run(program) {
-		this.callstack = [{ environment: this.environment }];
+		this.callStack = [{ environment: this.environment }];
 		this.generator = this._run(program);
 	}
 	*_run(program) {
@@ -88,7 +88,7 @@ class Machine {
 					if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
 					var $argument = yield* this._run(expression.argument);
 					yield expression;
-					this.callstack.unshift({ current: expression, environment: this.environment });
+					this.callStack.unshift({ current: expression, environment: this.environment });
 					var environment = this.environment;
 					this.environment = $expression.environment.push(new Scope({}));
 					for (var name of extractFunctionArgumentNames($expression.expression.argument))
@@ -97,7 +97,7 @@ class Machine {
 					this.assign($expression.expression.argument, $argument);
 					var $return = yield* this._run($expression.expression.expression);
 					this.environment = environment;
-					this.callstack.shift();
+					this.callStack.shift();
 					return $return;
 				case 'operation':
 					var $left = expression.left ? yield* this._run(expression.left) : undefined;
@@ -236,12 +236,12 @@ class Machine {
 		return $return;
 	}
 	execute(program) {
-		this.callstack = [{ environment: this.environment }];
+		this.callStack = [{ environment: this.environment }];
 		var generator = this._run(program);
 		while (!generator.next().done);
 	}
 	evaluate(program) {
-		this.callstack = [{ environment: this.environment }];
+		this.callStack = [{ environment: this.environment }];
 		var generator = this._run(program);
 		var next;
 		while (!(next = generator.next()).done);

@@ -8,7 +8,7 @@ declare class Machine {
 	environment: Environment<Value>;
 	current: Expression | Statement;
 	return: Value | undefined;
-	callstack: Machine.StackFrame[];
+	callStack: Machine.StackFrame[];
 	step(): boolean;
 	run(program: Program): void;
 	execute(statement: Statement): void;
