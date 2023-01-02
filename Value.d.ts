@@ -34,12 +34,12 @@ declare namespace Value {
 
 	export class Array extends Value {
 		constructor(element: Value);
-		element: Value;
+		element: Value[];
 	}
 
 	export class Tuple extends Value {
 		constructor(element: Value);
-		element: Value;
+		element: Value[];
 	}
 
 	export class Object extends Value {
