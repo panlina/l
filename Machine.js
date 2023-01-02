@@ -58,12 +58,17 @@ class Machine {
 					var [value] = resolution;
 					return value;
 				case 'array':
-				case 'tuple':
 					var $element = [];
 					for (var e of expression.element)
 						$element.push(yield* this._run(e));
 					yield expression;
 					return new Value.Array($element);
+				case 'tuple':
+					var $element = [];
+					for (var e of expression.element)
+						$element.push(yield* this._run(e));
+					yield expression;
+					return new Value.Tuple($element);
 				case 'object':
 					var $property = {};
 					for (var property of expression.property)
