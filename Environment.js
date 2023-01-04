@@ -10,5 +10,9 @@ class Environment {
 			return this.parent.resolve(name);
 	}
 	push(scope) { return new Environment(scope, this); }
+	*[Symbol.iterator]() {
+		for (var environment = this; environment; environment = environment.parent)
+			yield environment.scope;
+	}
 }
 module.exports = Environment;

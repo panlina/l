@@ -6,6 +6,7 @@ declare class Environment<T> {
 	parent: Environment<T> | undefined;
 	resolve(name: string): [T, Scope<T>] | undefined;
 	push(scope: Scope<T>): Environment<T>;
+	[Symbol.iterator](): Generator<Scope<T>>;
 }
 
 export = Environment;
