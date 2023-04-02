@@ -240,14 +240,14 @@ class Machine {
 		this.environment = this.environment.parent;
 		return $return;
 	}
-	execute(program) {
+	execute(statement) {
 		this.callStack = [{ environment: this.environment }];
-		var generator = this._run(program);
+		var generator = this._run(statement);
 		while (!generator.next().done);
 	}
-	evaluate(program) {
+	evaluate(expression) {
 		this.callStack = [{ environment: this.environment }];
-		var generator = this._run(program);
+		var generator = this._run(expression);
 		var next;
 		while (!(next = generator.next()).done);
 		return next.value;
