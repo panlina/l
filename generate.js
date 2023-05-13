@@ -70,6 +70,7 @@ function generate(program) {
 						$right = `(${$right})`;
 				}
 				var $operator = expression.operator;
+				if ($operator == 'typeof') $operator = `${$operator} `;
 				return `${$left || ''}${$operator}${$right || ''}`;
 				function operatorPrecedence(expression) {
 					return require('./operator').resolve(

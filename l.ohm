@@ -31,6 +31,9 @@ l {
 		| ExpressionAddUnary
 	ExpressionAddUnary =
 		("+"|"-") ExpressionAddUnary	-- add
+		| ExpressionTypeof
+	ExpressionTypeof =
+		"typeof" ExpressionTypeof	-- typeof
 		| ExpressionCall
 	ExpressionCall =
 		ExpressionMember ExpressionCall	-- call
@@ -58,7 +61,7 @@ l {
 		| number
 		| string
 	ExpressionName = identifier
-	identifier = ~(("let" | "var" | "goto" | "while" | "do" | "break") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
+	identifier = ~(("let" | "var" | "goto" | "while" | "do" | "break" | "typeof") ~(alnum|"_")) &(letter|"_") (alnum|"_")+
 	undefined = "#undefined"
 	null = "#null"
 	false = "#false"

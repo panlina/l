@@ -103,6 +103,7 @@ describe('machine', function () {
 			new Environment(new Scope({})),
 			l``
 		);
+		assert(Value.equals(machine.evaluate(l`typeof 0`), new Value.String('number')));
 		assert(Value.equals(machine.evaluate(l`1+2`), new Value.Number(3)));
 		assert(Value.equals(machine.evaluate(l`-1`), new Value.Number(-1)));
 		assert(Value.equals(machine.evaluate(l`"a"+"bc"`), new Value.String("abc")));

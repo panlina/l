@@ -255,6 +255,8 @@ class Machine {
 }
 function operate(operator, left, right) {
 	switch (operator) {
+		case 'typeof':
+			return new Value.String(right.type);
 		case '*':
 			if (left.type != 'number') throw 'left';
 			if (right.type != 'number') throw 'right';

@@ -147,6 +147,8 @@ function escapeIdentifier(identifier) {
 }
 function operate(operator, left, right) {
 	switch (operator) {
+		case 'typeof':
+			return t.unaryExpression('typeof', right);
 		case '*':
 			return t.binaryExpression('*', left, right);
 		case '/':

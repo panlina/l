@@ -106,6 +106,8 @@ var i = {
 };
 function operate(operator, left, right) {
 	switch (operator) {
+		case 'typeof':
+			return typeof right;
 		case '*':
 			return left * right;
 		case '/':

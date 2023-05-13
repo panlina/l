@@ -1,4 +1,5 @@
 var operator = [
+	{ name: 'typeof', left: false, right: true, precedence: 0 },
 	{ name: '+', left: false, right: true, precedence: 0 },
 	{ name: '-', left: false, right: true, precedence: 0 },
 	{ name: '*', left: true, right: true, precedence: 1 },

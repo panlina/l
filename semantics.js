@@ -23,6 +23,7 @@ var semantics = grammar.createSemantics().addOperation('parse', {
 	ExpressionMember_property: (expression, dot, property) => new Expression.Property(expression.parse(), property.parse()),
 	ExpressionMember_element: (expression, at, index) => new Expression.Element(expression.parse(), index.parse()),
 	ExpressionCall_call: (expression, argument) => new Expression.Call(expression.parse(), argument.parse()),
+	ExpressionTypeof_typeof: (_typeof, expression) => new Expression.Operation('typeof', undefined, expression.parse()),
 	ExpressionAdd_add: binary,
 	ExpressionMultiply_multiply: binary,
 	ExpressionAddUnary_add: unary,

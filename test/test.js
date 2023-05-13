@@ -18,7 +18,7 @@ describe('parse, generate', function () {
 		assert.equal(generate(syntax), source);
 	});
 	it("precedence", function () {
-		var source = "x=>!f [0,1]@1+1|1&0?#true:#false";
+		var source = "x=>!f [0,1]@1+1|typeof 0=\"number\"&0?#true:#false";
 		var syntax = parse(source);
 		assert.equal(generate(syntax), source);
 	});
