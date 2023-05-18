@@ -66,6 +66,13 @@ class Function extends Value {
 	}
 }
 
+class NativeFunction extends Value {
+	constructor(value) {
+		super('function');
+		this.value = value;
+	}
+}
+
 function equals(left, right) {
 	if (left.type != right.type) return false;
 	switch (left.type) {
@@ -101,5 +108,6 @@ module.exports.Array = Array;
 module.exports.Tuple = Tuple;
 module.exports.Object = Object;
 module.exports.Function = Function;
+module.exports.NativeFunction = NativeFunction;
 module.exports.equals = equals;
 module.exports.truthy = truthy;

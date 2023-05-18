@@ -129,10 +129,16 @@ describe('machine', function () {
 	});
 	it('function, call', function () {
 		var machine = new Machine(
-			new Environment(new Scope({})),
+			new Environment(new Scope({
+				succ: new Value.NativeFunction(
+					(/**@type {Value.Number}*/n) => new Value.Number(n.value + 1)
+				)
+			})),
 			l``
 		);
 		var a = machine.evaluate(l`((b=>(x=>x+b))1)0`);
+		assert(Value.equals(a, new Value.Number(1)));
+		var a = machine.evaluate(l`succ 0`);
 		assert(Value.equals(a, new Value.Number(1)));
 	});
 	it('function argument destructuring', function () {

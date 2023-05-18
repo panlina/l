@@ -52,6 +52,11 @@ declare namespace Value {
 		expression: Expression.Function;
 		environment: Environment<Value>;
 	}
+
+	export class NativeFunction extends Value {
+		constructor(value: (argument: Value) => Value);
+		value: (argument: Value) => Value;
+	}
 }
 
 declare namespace Value {

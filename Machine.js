@@ -93,16 +93,19 @@ class Machine {
 					if ($expression.type != 'function') throw new Error.FunctionExpected(expression.expression);
 					var $argument = yield* this._run(expression.argument);
 					yield expression;
-					this.callStack.unshift({ current: expression, environment: this.environment });
-					var environment = this.environment;
-					this.environment = $expression.environment.push(new Scope({}));
-					for (var name of extractFunctionArgumentNames($expression.expression.argument))
-						this.environment.scope.name[name.identifier] = new Value.Undefined();
-					this.environment.scope.name['return'] = new Value.Undefined();
-					this.assign($expression.expression.argument, $argument);
-					var $return = yield* this._run($expression.expression.expression);
-					this.environment = environment;
-					this.callStack.shift();
+					if ($expression instanceof Value.Function) {
+						this.callStack.unshift({ current: expression, environment: this.environment });
+						var environment = this.environment;
+						this.environment = $expression.environment.push(new Scope({}));
+						for (var name of extractFunctionArgumentNames($expression.expression.argument))
+							this.environment.scope.name[name.identifier] = new Value.Undefined();
+						this.environment.scope.name['return'] = new Value.Undefined();
+						this.assign($expression.expression.argument, $argument);
+						var $return = yield* this._run($expression.expression.expression);
+						this.environment = environment;
+						this.callStack.shift();
+					} else if ($expression instanceof Value.NativeFunction)
+						$return = $expression.value($argument);
 					return $return;
 				case 'operation':
 					var $left = expression.left ? yield* this._run(expression.left) : undefined;
