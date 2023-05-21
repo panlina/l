@@ -1,3 +1,5 @@
+var util = require('util');
+
 class Value {
 	constructor(type) {
 		this.type = type;
@@ -8,12 +10,14 @@ class Undefined extends Value {
 	constructor() {
 		super('undefined');
 	}
+	[util.inspect.custom]() { return undefined; }
 }
 
 class Null extends Value {
 	constructor() {
 		super('null');
 	}
+	[util.inspect.custom]() { return null; }
 }
 
 class Boolean extends Value {
@@ -21,6 +25,7 @@ class Boolean extends Value {
 		super('boolean');
 		this.value = value;
 	}
+	[util.inspect.custom]() { return this.value; }
 }
 
 class Number extends Value {
@@ -28,12 +33,16 @@ class Number extends Value {
 		super('number');
 		this.value = value;
 	}
+	[util.inspect.custom]() { return this.value; }
 }
 
 class String extends Value {
 	constructor(value) {
 		super('string');
 		this.value = value;
+	}
+	[util.inspect.custom](depth, inspectOptions, inspect) {
+		return inspectOptions.stylize(JSON.stringify(this.value), 'string');
 	}
 }
 
@@ -42,12 +51,16 @@ class Array extends Value {
 		super('array');
 		this.element = element;
 	}
+	[util.inspect.custom]() { return this.element; }
 }
 
 class Tuple extends Value {
 	constructor(element) {
 		super('tuple');
 		this.element = element;
+	}
+	[util.inspect.custom](depth, inspectOptions, inspect) {
+		return `{${inspect(this.element, inspectOptions).slice(1, -1)}}`;
 	}
 }
 
@@ -56,6 +69,7 @@ class Object extends Value {
 		super('object');
 		this.property = property;
 	}
+	[util.inspect.custom]() { return this.property; }
 }
 
 class Function extends Value {
@@ -64,12 +78,18 @@ class Function extends Value {
 		this.expression = expression;
 		this.environment = environment;
 	}
+	[util.inspect.custom](depth, inspectOptions, inspect) {
+		return inspectOptions.stylize("[function]", 'special');
+	}
 }
 
 class NativeFunction extends Value {
 	constructor(value) {
 		super('function');
 		this.value = value;
+	}
+	[util.inspect.custom](depth, inspectOptions, inspect) {
+		return inspectOptions.stylize("[native function]", 'special');
 	}
 }
 
